@@ -1,0 +1,7 @@
+# ignore auto-generated docs
+**/*.html
+**/*.css
+docs/**/*.js
+
+# ignore files specifically marked not to commit to repo
+**.ignore.js

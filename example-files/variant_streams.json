@@ -1,0 +1,27 @@
+{
+  "audio_fr": {
+    "default_for_media_type": true,
+    "label": "Français",
+    "language": "fr-fr",
+    "sources": [
+      {
+        "files_api_path": "audio-french.mp4",
+        "stream_index": 0
+      }
+    ],
+    "type": "audio"
+  },
+  "video": {
+    "default_for_media_type": true,
+    "label": "video",
+    "language": "",
+    "mapping_info": "",
+    "sources": [
+      {
+        "files_api_path": "video-1080p.mp4",
+        "stream_index": 0
+      }
+    ],
+    "type": "video"
+  }
+}
