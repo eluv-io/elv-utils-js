@@ -1,4 +1,7 @@
 // code related to Content Types
+const compare = require('@eluvio/elv-js-helpers/Functional/compare')
+const pick = require('@eluvio/elv-js-helpers/Functional/pick')
+
 const {fabricItemDesc} = require('../helpers')
 
 const Client = require('./Client')
@@ -18,6 +21,12 @@ const New = context => {
     const response = await client.ContentObject({libraryId, objectId, versionHash})
     logger.log(`Found: ${response.type}`)
     return response.type
+  }
+
+  const list = async () => {
+    const client = await context.concerns.Client.get()
+    const response = await client.ContentTypes()
+    return Object.values(response).map(pick(['id','name'])).sort((a,b) => compare(a.name.toLowerCase(),b.name.toLowerCase()))
   }
 
   // look up a content type by name, id, or hash and return hash
@@ -42,6 +51,7 @@ const New = context => {
   // instance interface
   return {
     forItem,
+    list,
     refToVersionHash
   }
 }
