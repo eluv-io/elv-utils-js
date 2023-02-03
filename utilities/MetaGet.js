@@ -15,8 +15,8 @@ class MetaGet extends Utility {
       concerns: [JPath, ExistObjOrVer, ArgOutfile],
       options: [
         ModOpt('jpath', {X: 'to extract'}),
-        NewOpt('subtree', {
-          descTemplate: 'Path of subtree to retrieve (include leading \'/\'). If omitted, all metadata is retrieved.',
+        NewOpt('path', {
+          descTemplate: 'Path within metadata to retrieve (include leading \'/\'). If omitted, all visible metadata is retrieved.',
           type: 'string'
         })
       ]
@@ -24,36 +24,35 @@ class MetaGet extends Utility {
   }
 
   async body() {
-    const {subtree, outfile} = this.args
+    const {path, outfile} = this.args
 
     // Check that keys are valid path strings
-    if(subtree && !Metadata.validPathFormat({path: subtree})) {
-      throw Error('"' + subtree + '" is not in valid format for a metadata path (make sure it starts with a \'/\')')
-    }
+    if (path) Metadata.validatePathFormat({path})
 
     await this.concerns.ExistObjOrVer.argsProc()
 
-    const metadata = await this.concerns.ExistObjOrVer.metadata({subtree})
-    if(kindOf(metadata) === 'undefined') throw Error('no metadata found')
+    const metadata = await this.concerns.ExistObjOrVer.metadata({subtree: path})
+    if (kindOf(metadata) === 'undefined') throw Error('no metadata found')
     const filteredMetadata = this.args.jpath
       ? this.concerns.JPath.match({metadata})
       : metadata
-    if(kindOf(filteredMetadata) === 'undefined') throw Error('no metadata matched --jpath filter')
+    if (kindOf(filteredMetadata) === 'undefined') throw Error('no metadata matched --jpath filter')
 
-    if(outfile) {
+    if (outfile) {
       this.concerns.ArgOutfile.writeJson({obj: filteredMetadata})
     } else {
+      this.logger.log()
       this.logger.logObject(filteredMetadata)
     }
     this.logger.data('metadata', filteredMetadata)
   }
 
   header() {
-    return `Get metadata for ${this.args.versionHash || this.args.objectId}${this.args.subtree ? ` subtree: ${this.args.subtree}` : ''}`
+    return `Get metadata for ${this.args.versionHash || this.args.objectId}${this.args.path ? ` path: ${this.args.path}` : ''}`
   }
 }
 
-if(require.main === module) {
+if (require.main === module) {
   Utility.cmdLineInvoke(MetaGet)
 } else {
   module.exports = MetaGet

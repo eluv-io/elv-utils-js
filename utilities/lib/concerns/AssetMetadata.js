@@ -12,7 +12,7 @@ const coerceAssetMetadata = arg => kindOf(arg) === 'object'
   : throwError('--assetMetadata must be used with a .FIELD_NAME suffix, e.g.: --assetMetadata.catalog_id movie12345')
 
 const blueprint = {
-  name: 'ArgAssetMetadata',
+  name: 'AssetMetadata',
   options: [
     NewOpt('assetMetadata', {
       coerce: coerceAssetMetadata,

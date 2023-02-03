@@ -15,18 +15,18 @@ class MetaCopy extends Utility {
       options: [
         ModOpt('objectId', {ofX: ' item to modify'}),
         ModOpt('libraryId', {ofX: ' object to modify'}),
-        NewOpt('sourcePath', {
+        NewOpt('path', {
           demand: true,
-          descTemplate: 'Metadata path pointing to value or subtree to be copied (include leading \'/\')',
+          descTemplate: 'Metadata path to copy from (include leading \'/\')',
           type: 'string'
         }),
         NewOpt('targetPath', {
           demand: true,
-          descTemplate: 'Metadata path within object indicating location to copy to for value or subtree (include leading \'/\')',
+          descTemplate: 'Metadata path to copy to (include leading \'/\')',
           type: 'string'
         }),
         NewOpt('force', {
-          descTemplate: 'If target metadata path within object exists, overwrite and replace existing value/subtree',
+          descTemplate: 'If target path already exists, overwrite existing value/subtree',
           type: 'boolean'
         })
       ]
@@ -34,17 +34,23 @@ class MetaCopy extends Utility {
   }
 
   async body() {
-    const {targetPath, sourcePath} = this.args
+    const {targetPath, path} = this.args
 
     // Check that paths are valid path strings
-    Metadata.validatePathFormat({path: sourcePath})
+    Metadata.validatePathFormat({path})
     Metadata.validatePathFormat({path: targetPath})
 
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
     const currentMetadata = await this.concerns.ExistObj.metadata()
 
-    // check to make sure sourcePath exists
-    Metadata.validatePathExists({metadata: currentMetadata, path: sourcePath})
+    // check to make sure path exists
+    Metadata.validatePathExists({metadata: currentMetadata, path})
+
+    // check that targetPath can be set/created
+    Metadata.validateTargetPath({
+      metadata: currentMetadata,
+      path: targetPath
+    })
 
     // make sure targetPath does NOT exist, or --force specified
     this.concerns.Metadata.checkTargetPath({
@@ -53,13 +59,13 @@ class MetaCopy extends Utility {
       targetPath
     })
 
-    // copy sourcePath attribute to targetPath
+    // copy path to targetPath
     const valueToCopy = Metadata.valueAtPath({
       metadata: currentMetadata,
-      path: sourcePath
+      path
     })
     const revisedMetadata = R.clone(currentMetadata)
-    objectPath.set(revisedMetadata, Metadata.pathPieces({path: targetPath}), valueToCopy)
+    objectPath.set(revisedMetadata, Metadata.pathToArray({path: targetPath}), valueToCopy)
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({
@@ -71,7 +77,7 @@ class MetaCopy extends Utility {
   }
 
   header() {
-    return `Copy metadata for object ${this.args.objectId} from ${this.args.sourcePath} to ${this.args.targetPath}`
+    return `Copy metadata for object ${this.args.objectId} from ${this.args.path} to ${this.args.targetPath}`
   }
 }
 

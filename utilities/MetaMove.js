@@ -16,18 +16,18 @@ class MetaMove extends Utility {
       options: [
         ModOpt('objectId', {ofX: ' item to modify'}),
         ModOpt('libraryId', {ofX: ' object to modify'}),
-        NewOpt('oldPath', {
+        NewOpt('path', {
           demand: true,
-          descTemplate: 'Old metadata path pointing to value or subtree to be moved (include leading \'/\')',
+          descTemplate: 'Metadata path to the value to move (start with \'/\').',
           type: 'string'
         }),
-        NewOpt('newPath', {
+        NewOpt('targetPath', {
           demand: true,
-          descTemplate: 'New metadata path within object indicating new location for value or subtree (include leading \'/\')',
+          descTemplate: 'Metadata path within object to move the value to (start with \'/\')',
           type: 'string'
         }),
         NewOpt('force', {
-          descTemplate: 'If target new metadata path within object exists, overwrite and replace existing value/subtree',
+          descTemplate: 'If targetPath already exists, overwrite and replace existing value/subtree',
           type: 'boolean'
         })
       ]
@@ -35,37 +35,40 @@ class MetaMove extends Utility {
   }
 
   async body() {
-    const {newPath, oldPath} = this.args
+    const {targetPath, path} = this.args
 
     // Check that paths are valid path strings
-    Metadata.validatePathFormat({path: oldPath})
-    Metadata.validatePathFormat({path: newPath})
+    Metadata.validatePathFormat({path})
+    Metadata.validatePathFormat({path: targetPath})
 
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
     const currentMetadata = await this.concerns.ExistObj.metadata()
 
-    // check to make sure oldPath exists
-    if(!Metadata.pathExists({
-      metadata: currentMetadata,
-      path: oldPath
-    })) throw new Error('Metadata path \'' + oldPath + '\' not found.')
+    // check to make sure path exists
+    Metadata.validatePathExists({metadata: currentMetadata, path})
 
-    // make sure newPath does NOT exist, or --force specified
+    // check that targetPath can be set/created
+    Metadata.validateTargetPath({
+      metadata: currentMetadata,
+      path: targetPath
+    })
+
+    // make sure targetPath does NOT exist, or --force specified
     this.concerns.Metadata.checkTargetPath({
       force: this.args.force,
       metadata: currentMetadata,
-      targetPath: newPath
+      targetPath
     })
 
-    // move oldPath attribute to newPath
+    // move value from path to targetPath
     const valueToMove = Metadata.valueAtPath({
       metadata: currentMetadata,
-      path: oldPath
+      path
     })
     const revisedMetadata = R.clone(currentMetadata)
 
-    objectPath.del(revisedMetadata, Metadata.pathPieces({path: oldPath}))
-    objectPath.set(revisedMetadata, Metadata.pathPieces({path: newPath}), valueToMove)
+    objectPath.del(revisedMetadata, Metadata.pathToArray({path}))
+    objectPath.set(revisedMetadata, Metadata.pathToArray({path: targetPath}), valueToMove)
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({
@@ -77,7 +80,7 @@ class MetaMove extends Utility {
   }
 
   header() {
-    return `Move metadata for object ${this.args.objectId} from ${this.args.oldPath} to ${this.args.newPath}`
+    return `Move metadata for object ${this.args.objectId} from ${this.args.path} to ${this.args.targetPath}`
   }
 }
 

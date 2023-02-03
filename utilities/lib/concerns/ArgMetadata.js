@@ -7,7 +7,7 @@ const blueprint = {
   concerns: [JSON],
   options: [
     NewOpt('metadata', {
-      descTemplate: 'JSON string (or file path if prefixed with \'@\') for metadata{X}',
+      descTemplate: 'JSON string for metadata or path to JSON file containing the metadata{X}',
       type: 'string'
     })
   ]
@@ -16,7 +16,7 @@ const blueprint = {
 const New = context => {
   const argMetadata = context.args.metadata
 
-  // convert --metadata argument to object (either literal JSON or @filePath)
+  // convert --metadata argument to object (either literal JSON or filePath)
   const asObject = () => argMetadata
     ? context.concerns.JSON.parseStringOrFile({strOrPath: argMetadata})
     : null

@@ -129,10 +129,15 @@ const readFile = (filePath, cwd = '.', logger) => {
   return fs.readFileSync(fullPath)
 }
 
-// if string starts with '@', interpret as path and read, else return string
-const stringOrFileContents = (str, cwd = '.', logger) => str.startsWith('@')
-  ? readFile(str.substring(1), cwd, logger)
-  : str
+// Try interpreting the string as a file path. If that fails, return string
+const stringOrFileContents = (str, cwd = '.', logger) => {
+  try {
+    const exists = fs.existsSync(path.join(cwd,str))
+    return exists ? readFile(str, cwd, logger) : str
+  } catch (e) {
+    return str
+  }
+}
 
 
 // --------------------------------------------

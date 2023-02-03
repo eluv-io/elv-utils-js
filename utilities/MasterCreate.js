@@ -7,7 +7,7 @@ const Utility = require('./lib/Utility')
 const V = require('./lib/models/Variant')
 const VariantModel = V.VariantModel
 
-const ArgAssetMetadata = require('./lib/concerns/ArgAssetMetadata')
+const AssetMetadata = require('./lib/concerns/AssetMetadata')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
 const ArgType = require('./lib/concerns/ArgType')
 const Client = require('./lib/concerns/Client')
@@ -19,7 +19,7 @@ const LocalFile = require('./lib/concerns/LocalFile')
 class MasterCreate extends Utility {
   blueprint() {
     return {
-      concerns: [Client, CloudFile, JSON, LocalFile, ArgAssetMetadata, ArgMetadata, ContentType, ArgType],
+      concerns: [Client, CloudFile, JSON, LocalFile, AssetMetadata, ArgMetadata, ContentType, ArgType],
       options: [
         StdOpt('libraryId', {demand: true, forX: 'new production master'}),
         ModOpt('type', {demand: true, forX: 'new production master'}),
@@ -61,7 +61,7 @@ class MasterCreate extends Utility {
       VariantModel(variant)
     }
 
-    const newPublicMetadata = this.concerns.ArgAssetMetadata.publicMetadata({
+    const newPublicMetadata = this.concerns.AssetMetadata.publicMetadata({
       oldPublicMetadata: metadataFromArg.public,
       backupNameSuffix: 'MASTER'
     })

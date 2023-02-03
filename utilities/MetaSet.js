@@ -19,7 +19,8 @@ class MetaSet extends Utility {
       ],
       options: [
         NewOpt('path', {
-          descTemplate: 'Path within metadata to set (start with \'/\'). If omitted, all existing metadata will be replaced.',
+          demand: true,
+          descTemplate: 'Path within metadata to set (start with \'/\').',
           type: 'string'
         }),
         NewOpt('force', {
@@ -33,7 +34,7 @@ class MetaSet extends Utility {
 
   async body() {
     const logger = this.logger
-    const {path} = this.args
+    const {path, force} = this.args
 
     // Check that path is a valid path string
     Metadata.validatePathFormat({path})
@@ -47,15 +48,21 @@ class MetaSet extends Utility {
     logger.log('Retrieving existing metadata from object...')
     const currentMetadata = await this.concerns.ExistObj.metadata()
 
+    // check that targetPath can be set
+    Metadata.validateTargetPath({
+      metadata: currentMetadata,
+      path
+    })
+
     // make sure targetPath does NOT exist, or --force specified
     this.concerns.Metadata.checkTargetPath({
-      force: this.args.force,
+      force,
       metadata: currentMetadata,
       targetPath: path
     })
 
     const revisedMetadata = R.clone(currentMetadata)
-    objectPath.set(revisedMetadata, Metadata.pathPieces({path}), metadataFromArg)
+    objectPath.set(revisedMetadata, Metadata.pathToArray({path}), metadataFromArg)
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({
@@ -67,7 +74,7 @@ class MetaSet extends Utility {
   }
 
   header() {
-    return `Replace metadata ${this.args.path ? `at ${this.args.path} ` : ''}for object ${this.args.objectId}`
+    return `Set metadata ${this.args.path ? `at ${this.args.path} ` : ''}for object ${this.args.objectId}`
   }
 }
 

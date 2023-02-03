@@ -5,7 +5,7 @@ const {seconds} = require('./lib/helpers')
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ArgAssetMetadata = require('./lib/concerns/ArgAssetMetadata')
+const AssetMetadata = require('./lib/concerns/AssetMetadata')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
 const ArgType = require('./lib/concerns/ArgType')
@@ -42,7 +42,7 @@ class MezCreate extends Utility {
   blueprint() {
     return {
       concerns: [
-        ArgAssetMetadata,
+        AssetMetadata,
         ArgMetadata,
         ArgObjectId,
         ArgType,
@@ -158,7 +158,7 @@ class MezCreate extends Utility {
       metadataFromArg
     )
 
-    const newPublicMetadata = this.concerns.ArgAssetMetadata.publicMetadata({
+    const newPublicMetadata = this.concerns.AssetMetadata.publicMetadata({
       oldPublicMetadata: mergedExistingAndArgMetadata.public,
       backupNameSuffix: 'MEZ'
     })

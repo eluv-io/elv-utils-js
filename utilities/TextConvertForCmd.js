@@ -5,7 +5,7 @@ const escape=require('shell-escape')
 const schema = {
   properties: {
     text: {
-      description: 'Enter text to escape',
+      description: 'Enter text to convert',
       required: true,
       type: 'string'
     }
@@ -25,7 +25,7 @@ prompt.get(schema,  (err, result) => {
   console.log('---------------------')
   console.log(result.text)
   console.log()
-  console.log('Escaped for shell:')
+  console.log('Converted for command line:')
   console.log('---------------------')
   console.log(escape([result.text]))
   console.log()
