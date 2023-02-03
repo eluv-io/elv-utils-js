@@ -3,7 +3,7 @@ const Utility = require('./lib/Utility')
 
 const ExistVer = require('./lib/concerns/ExistVer')
 
-class VersionDelete extends Utility {
+class ObjectDeleteVersion extends Utility {
   blueprint() {
     return {
       concerns: [ExistVer]
@@ -20,7 +20,7 @@ class VersionDelete extends Utility {
 }
 
 if(require.main === module) {
-  Utility.cmdLineInvoke(VersionDelete)
+  Utility.cmdLineInvoke(ObjectDeleteVersion)
 } else {
-  module.exports = VersionDelete
+  module.exports = ObjectDeleteVersion
 }

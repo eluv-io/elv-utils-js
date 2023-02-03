@@ -9,7 +9,7 @@ const Logger = require('./lib/concerns/Logger')
 
 const permissionTypes = ['see', 'access', 'manage']
 
-class AddGroupPerm extends Utility {
+class ObjectAddGroupPerm extends Utility {
   blueprint() {
     return {
       concerns: [Logger, ArgObjectId, Client],
@@ -50,7 +50,7 @@ class AddGroupPerm extends Utility {
 }
 
 if (require.main === module) {
-  Utility.cmdLineInvoke(AddGroupPerm)
+  Utility.cmdLineInvoke(ObjectAddGroupPerm)
 } else {
-  module.exports = AddGroupPerm
+  module.exports = ObjectAddGroupPerm
 }

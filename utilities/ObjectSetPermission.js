@@ -9,7 +9,7 @@ const Logger = require('./lib/concerns/Logger')
 
 const permissionTypes = ['owner', 'editable', 'viewable', 'listable', 'public']
 
-class SetPermission extends Utility {
+class ObjectSetPermission extends Utility {
   blueprint() {
     return {
       concerns: [Logger, ArgObjectId, Client],
@@ -55,7 +55,7 @@ class SetPermission extends Utility {
 }
 
 if(require.main === module) {
-  Utility.cmdLineInvoke(SetPermission)
+  Utility.cmdLineInvoke(ObjectSetPermission)
 } else {
-  module.exports = SetPermission
+  module.exports = ObjectSetPermission
 }

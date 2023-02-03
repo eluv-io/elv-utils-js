@@ -42,9 +42,9 @@ class MasterCreate extends Utility {
     const logger = this.logger
     const J = this.concerns.JSON
 
-    const {encrypt, unencrypted} = this.args
+    const {encrypt, storeClear} = this.args
 
-    if(encrypt && unencrypted) throw new Error('Cannot specify both --encrypt and --unencrypted')
+    if(encrypt && storeClear) throw new Error('Cannot specify both --encrypt and --storeClear')
 
     let access
     if(this.args.s3Reference || this.args.s3Copy) {
@@ -79,7 +79,6 @@ class MasterCreate extends Utility {
     const type = await this.concerns.ArgType.typVersionHash()
     const {libraryId, s3Copy, s3Reference} = this.args
 
-
     const createResponse = await client.CreateProductionMaster({
       libraryId,
       type,
@@ -87,7 +86,7 @@ class MasterCreate extends Utility {
       description: 'Production Master for ' + metadata.public.asset_metadata.title,
       metadata,
       fileInfo,
-      encrypt: !unencrypted,
+      encrypt: !storeClear,
       access,
       copy: s3Copy && !s3Reference,
       callback: (access ? this.concerns.CloudFile : this.concerns.LocalFile).callback

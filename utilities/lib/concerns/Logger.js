@@ -65,6 +65,7 @@ const New = (context) => {
     const prefix = timestamps ? args.shift() + ' ' : ''
 
     const item = (args.length === 1 ? args[0] : prefix + util.format(...args))
+    if(item?.name === 'ElvHttpClientError') return formatElvHttpClientError(item)
     let details = []
     if(Object.keys(item).includes('message')) {
       details.push(`${prefix}${item.message}`)
@@ -84,6 +85,15 @@ const New = (context) => {
       return details.join('\n')
     }
     return prefix + item
+  }
+
+  const formatElvHttpClientError = err => {
+    if(err.body?.errors && err.body?.errors.length > 0) {
+      return err.body.errors.map(e => e.kind ? e.kind : `${e}`).join('\n')
+    }
+    if(err.body) return JSON.stringify(err.body)
+    if(err.message) return err.message
+    return `${err}`
   }
 
   const isBlankMessage = (list) => R.equals(list, ['']) || R.equals(list, [])

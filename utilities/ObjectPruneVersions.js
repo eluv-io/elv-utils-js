@@ -15,7 +15,7 @@ const chkKeepNewOrKeepOld = (argv) => {
   return true // tell yargs that the arguments passed the check
 }
 
-class PruneVersions extends Utility {
+class ObjectPruneVersions extends Utility {
   blueprint() {
     return {
       concerns: [ExistObj, Version],
@@ -76,7 +76,7 @@ class PruneVersions extends Utility {
 }
 
 if(require.main === module) {
-  Utility.cmdLineInvoke(PruneVersions)
+  Utility.cmdLineInvoke(ObjectPruneVersions)
 } else {
-  module.exports = PruneVersions
+  module.exports = ObjectPruneVersions
 }

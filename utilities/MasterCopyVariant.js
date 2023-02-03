@@ -1,4 +1,4 @@
-// Remove an existing variant from a production master
+// Copy an existing variant
 
 const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
@@ -29,7 +29,7 @@ class MasterCopyVariant extends Utility {
   async body() {
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
 
-    const {streamKey, newVariantKey, variantKey} = this.args
+    const {newVariantKey, variantKey} = this.args
 
     // get production_master metadata
     const variants = await this.concerns.ExistObj.metadata({subtree: '/production_master/variants'})
@@ -43,7 +43,7 @@ class MasterCopyVariant extends Utility {
     this.logger.log('Saving changes...')
     // write metadata back
     const newHash = await this.concerns.Metadata.write({
-      commitMessage: `Delete stream '${streamKey}' from variant '${variantKey}'`,
+      commitMessage: `Copy variant '${variantKey}' to '${newVariantKey}'`,
       libraryId,
       metadata: variants,
       objectId,

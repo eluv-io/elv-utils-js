@@ -1,4 +1,11 @@
 // base class for utility scripts
+let nodeMajorVersion
+try {
+  nodeMajorVersion = parseInt(process.version.match(/^v(\d+)\.\d+/)[1])
+} catch (e) {
+  throw Error(`Error while checking version of Node.js: ${e}`)
+}
+if (nodeMajorVersion < 14) throw Error(`Node.js version at least 14 required (found: ${process.version})`)
 
 const R = require('@eluvio/ramda-fork')
 const yargs = require('yargs/yargs')
@@ -6,7 +13,6 @@ const yargsTerminalWidth = require('yargs').terminalWidth
 
 const {loadConcerns} = require('./concerns')
 const {callContext, cmdLineContext} = require('./context')
-const {trimSlashes} = require('./helpers')
 const {ChainOutArgModel} = require('./models/ChainOutArg')
 const {BuildWidget} = require('./options')
 
@@ -29,16 +35,6 @@ const chainOutArgValidate = arg => {
     throw Error(`--chainOut value(s) invalid: ${e.message}`)
   }
   return arg
-}
-
-const chainOutString = ({chainOutArg, data}) => {
-  const obj = {}
-  const pairs = R.splitEvery(2, chainOutArg)
-  for(const [argName, dataPath] of pairs) {
-    obj[argName] = R.path(trimSlashes(dataPath).split('/'),data)
-  }
-  return obj
-  // return shellEscape([JSON.stringify(obj)]);
 }
 
 const checkFunctionFactory = checksMap => {
@@ -160,12 +156,6 @@ module.exports = class Utility {
         this.footer(),
         ''
       )
-      if(this.args.chainOut) {
-        this.logger.data('chain_out',chainOutString({
-          chainOutArg: this.args.chainOut,
-          data: this.logger.dataGet()
-        }))
-      }
       // this.logger.data("successValue", successValue);
       this.logger.data('exit_code', 0)
       this.logger.data('success_value', successValue)
