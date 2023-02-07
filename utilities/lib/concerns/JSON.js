@@ -45,9 +45,15 @@ const New = (context) => {
     return parsed
   }
 
-  const parseStringOrFile = ({strOrPath}) => parseString({
-    str: stringOrFileContents(strOrPath, cwd, logger)
-  })
+  const parseStringOrFile = ({strOrPath}) => {
+    try {
+      return parseString({
+        str: stringOrFileContents(strOrPath, cwd, logger)
+      })
+    } catch (e) {
+      throw Error(`could not interpret '${strOrPath}' as file path or JSON string`)
+    }
+  }
 
   return {
     parse,

@@ -17,7 +17,7 @@ class ListParts extends Utility {
     this.logger.data('parts', partList)
 
     if(outfile) {
-      this.concerns.ArgOutfile.writeJson({obj: partList})
+      this.concerns.ArgOutfile.writeJson(partList)
     } else {
       this.logger.logTable({list: partList})
     }

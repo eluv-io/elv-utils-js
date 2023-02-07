@@ -31,7 +31,7 @@ class MasterCreate extends Utility {
           type: 'boolean'
         }),
         NewOpt('streams', {
-          descTemplate: 'JSON string (or file path if prefixed with \'@\') containing stream specifications for variant in new production master',
+          descTemplate: 'JSON string or path to JSON file containing stream specifications for variant in new production master',
           type: 'string'
         })
       ]

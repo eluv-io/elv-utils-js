@@ -1,5 +1,6 @@
 // code for scripts that work on either an object or a specific version of an object
 
+
 const ArgObjectId = require('./ArgObjectId')
 const ArgVersionHash = require('./ArgVersionHash')
 const Client = require('./Client')
@@ -16,6 +17,8 @@ const blueprint = {
   concerns: [ArgObjectId, ArgVersionHash, Client],
   checksMap: {chkNoObjectIdOrHash}
 }
+
+
 
 const New = context => {
 

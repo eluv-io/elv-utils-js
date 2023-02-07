@@ -21,6 +21,20 @@ const MediaContainerFormatModel = ObjectModel({
 })
 
 
+const MEDIA_STREAM_TYPE_AUDIO = 'StreamAudio'
+const MEDIA_STREAM_TYPE_DATA = 'StreamData'
+const MEDIA_STREAM_TYPE_IMAGE = 'StreamImage'
+const MEDIA_STREAM_TYPE_SUBTITLE = 'StreamSubtitle'
+const MEDIA_STREAM_TYPE_VIDEO = 'StreamVideo'
+
+const MediaStreamTypeModel = BasicModel([
+  MEDIA_STREAM_TYPE_AUDIO,
+  MEDIA_STREAM_TYPE_DATA,
+  MEDIA_STREAM_TYPE_IMAGE,
+  MEDIA_STREAM_TYPE_SUBTITLE,
+  MEDIA_STREAM_TYPE_VIDEO
+])
+
 // common fields, dimension fields, duration fields
 const MediaStreamCommonFieldsModel = ObjectModel({
   codec_name: String,
@@ -53,29 +67,29 @@ const MediaStreamAudioModel = MediaStreamCommonFieldsModel.extend(
     channel_layout: String,
     channels: PositiveInteger,
     sample_rate: PositiveInteger,
-    type: 'StreamAudio'
+    type: MEDIA_STREAM_TYPE_AUDIO
   }
-)
+).as('MediaStreamAudio')
 
 const MediaStreamDataModel = MediaStreamCommonFieldsModel.extend(
   MediaStreamDurationFieldsModel,
   {
-    type: 'StreamData'
+    type: MEDIA_STREAM_TYPE_DATA
   }
-)
+).as('MediaStreamData')
 
 const MediaStreamImageModel = MediaStreamCommonFieldsModel.extend(
   MediaStreamDimensionFieldsModel,
   {
-    type: 'StreamImage'
+    type: MEDIA_STREAM_TYPE_IMAGE
   }
-)
+).as('MediaStreamImage')
 
 const MediaStreamSubtitleModel = MediaStreamCommonFieldsModel.extend(
   {
-    type: 'StreamSubtitle'
+    type: MEDIA_STREAM_TYPE_SUBTITLE
   }
-)
+).as('MediaStreamSubtitle')
 
 const MediaStreamVideoModel = MediaStreamCommonFieldsModel.extend(
   MediaStreamDimensionFieldsModel,
@@ -84,18 +98,31 @@ const MediaStreamVideoModel = MediaStreamCommonFieldsModel.extend(
     field_order: String,
     frame_rate: String,
     hdr: [HDRFieldsModel],
-    type: 'StreamVideo'
+    type: MEDIA_STREAM_TYPE_VIDEO
   }
-)
+).as('MediaStreamVideo')
 
-
-const MediaStreamModel = BasicModel([
-  MediaStreamAudioModel,
-  MediaStreamDataModel,
-  MediaStreamImageModel,
-  MediaStreamSubtitleModel,
-  MediaStreamVideoModel
-])
+const MediaStreamModel = ObjectModel({}).extend().assert(i => {
+  switch (i.type) {
+    case MEDIA_STREAM_TYPE_AUDIO:
+      MediaStreamAudioModel(i)
+      break
+    case MEDIA_STREAM_TYPE_DATA:
+      MediaStreamDataModel(i)
+      break
+    case MEDIA_STREAM_TYPE_IMAGE:
+      MediaStreamImageModel(i)
+      break
+    case MEDIA_STREAM_TYPE_SUBTITLE:
+      MediaStreamSubtitleModel(i)
+      break
+    case MEDIA_STREAM_TYPE_VIDEO:
+      MediaStreamVideoModel(i)
+      break
+    default:
+      throw Error(`Unrecognized stream type: ${i.type}`)
+  }
+})
 
 const MediaStreamArrayModel = ArrayModel(MediaStreamModel)
 
@@ -105,5 +132,6 @@ const MediaSourceModel = ObjectModel({
 })
 
 module.exports = {
-  MediaSourceModel
+  MediaSourceModel,
+  MediaStreamTypeModel
 }
