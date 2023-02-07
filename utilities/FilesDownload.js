@@ -17,9 +17,9 @@ class FilesDownload extends Utility {
     return {
       concerns: [Client, Logger, ExistObjOrVer],
       options: [
-        NewOpt('files', {
+        NewOpt('filePaths', {
           demand: true,
-          descTemplate: 'File path(s) to download',
+          descTemplate: 'File path(s) within object to download',
           string: true,
           type: 'array'
         }),
@@ -34,7 +34,7 @@ class FilesDownload extends Utility {
 
   async body() {
     const logger = this.logger
-    const {files, targetDir} = this.args
+    const {filePaths, targetDir} = this.args
 
     const {libraryId, objectId} = await this.concerns.ExistObjOrVer.argsProc()
     const client = await this.concerns.Client.get()
@@ -51,18 +51,18 @@ class FilesDownload extends Utility {
 
     const downloads = []
     const promises = []
-    for(const file of files) {
-      const destPath = path.resolve(path.join(targetDir, file))
+    for(const filePath of filePaths) {
+      const destPath = path.resolve(path.join(targetDir, filePath))
       if(fs.existsSync(destPath)) throw Error(`'${destPath}' already exists.`)
       if(!Metadata.pathExists({
-        path: file.startsWith('/') ? file : '/' + file,
+        path: filePath.startsWith('/') ? filePath : '/' + filePath,
         metadata:filesMetadata
-      })) throw Error(`File '${file}' not found in object.`)
+      })) throw Error(`File '${filePath}' not found in object.`)
       const callback = ({bytesFinished,  bytesTotal, chunk}) => {
-        logger.log(`${file}: ${Math.round(100 * bytesFinished/(bytesTotal || 1))}%`)
+        logger.log(`${filePath}: ${Math.round(100 * bytesFinished/(bytesTotal || 1))}%`)
         promises.push(fs.promises.appendFile(destPath, chunk))
       }
-      downloads.push({file, destPath, callback})
+      downloads.push({file: filePath, destPath, callback})
     }
 
     for(const dl of downloads) {

@@ -20,7 +20,7 @@ const LibraryIdModel = NonBlankStrModel.extend()
   ).assert(
     ...assertAfterCheck(
       s => passesModelCheck(NonBlankStrModel, s) && s.startsWith('ilib') && isBase58String(s.slice(4)),
-      s => base58Decode(s.slice(4)).length === 40,
+      s => base58Decode(s.slice(4)).length === 20,
       'is not a valid Library ID (does not encode a 20-byte address)'
     )
   )

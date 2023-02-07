@@ -13,7 +13,6 @@ const yargsTerminalWidth = require('yargs').terminalWidth
 
 const {loadConcerns} = require('./concerns')
 const {callContext, cmdLineContext} = require('./context')
-const {ChainOutArgModel} = require('./models/ChainOutArg')
 const {BuildWidget} = require('./options')
 
 const Logger = require('./concerns/Logger')
@@ -25,16 +24,6 @@ const addNameAndLogger = (blueprint) => {
     name: 'Utility',
     options: blueprint.options ? R.clone(blueprint.options) : []
   }
-}
-
-const chainOutArgValidate = arg => {
-  if(arg === undefined) return
-  try {
-    ChainOutArgModel(arg)
-  } catch(e) {
-    throw Error(`--chainOut value(s) invalid: ${e.message}`)
-  }
-  return arg
 }
 
 const checkFunctionFactory = checksMap => {
@@ -78,13 +67,6 @@ module.exports = class Utility {
 
     let yargsParser = yargs()
       .option('debugArgs', {hidden: true, type: 'boolean'})
-      .option('chainOut', {
-        coerce: chainOutArgValidate,
-        hidden: true,
-        requiresArg: true,
-        string: true,
-        type: 'array'
-      })
       .option('help', {
         desc: 'Show help for command line options',
         group: 'General',
@@ -102,11 +84,6 @@ module.exports = class Utility {
         if(!this.context.env.ELV_SUPPRESS_USAGE) console.error(yargs.help())
         throw Error(msg)
       })
-
-    if(this.context.env.ELV_CHAIN_IN) {
-
-      yargsParser = yargsParser.config(JSON.parse(this.context.env.ELV_CHAIN_IN))
-    }
 
     this.context.args = yargsParser.parse(this.context.argList)
 

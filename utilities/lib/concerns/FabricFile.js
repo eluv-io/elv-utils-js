@@ -54,15 +54,15 @@ const New = context => {
 
   const _existsArgs = defObjectModel('exists()', {
     filePath: FabricFilePathModel,
-    libraryId: LibraryIdModel,
-    objectId: ObjectIdModel,
-    versionHash: VersionHashModel
+    libraryId: [LibraryIdModel],
+    objectId: [ObjectIdModel],
+    versionHash: [VersionHashModel]
   })
 
   const exists = async ({filePath, libraryId, objectId, versionHash}) => {
     throwIfArgsBad(_existsArgs,{filePath, libraryId, objectId, versionHash})
 
-    const client = context.concerns.Client.get()
+    const client = await context.concerns.Client.get()
     let filesMap = await client.ListFiles({
       libraryId,
       objectId,

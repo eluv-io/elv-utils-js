@@ -13,6 +13,31 @@ const blueprint = {
 const New = context => {
   const logger = context.concerns.Logger
 
+  const deleteMetadata =  async ({commitMessage,libraryId, metadataSubtree, noWait, objectId, writeToken}) => {
+    const writeTokenSupplied = kindOf(writeToken) === 'string'
+    if(!writeTokenSupplied ) writeToken = await getWriteToken({libraryId, objectId})
+
+    logger.log('Deleting metadata from object...')
+    const client = await context.concerns.Client.get()
+    await client.DeleteMetadata({
+      libraryId,
+      metadataSubtree,
+      objectId,
+      writeToken
+    })
+
+    if(!writeTokenSupplied) {
+      // return latest version hash
+      return await finalize({
+        commitMessage,
+        libraryId,
+        noWait,
+        objectId,
+        writeToken
+      })
+    }
+  }
+
   const finalize = async ({commitMessage,libraryId, noWait, objectId, writeToken}) => {
     return await context.concerns.Finalize.finalize({
       commitMessage,
@@ -65,6 +90,7 @@ const New = context => {
   }
 
   return {
+    deleteMetadata,
     finalize,
     getWriteToken,
     writeMetadata

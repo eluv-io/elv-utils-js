@@ -16,6 +16,9 @@ const unsetProp = require('crocks/helpers/unsetProp')
 const kindOf = require('kind-of')
 const objectPath = require('object-path')
 
+const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')
+const isModel = require('@eluvio/elv-js-helpers/Boolean/isModel')
+
 const {CheckedNonBlankString, CheckedAbsentPropName, CheckedPresentPropName} = require('./models/Models')
 const {CheckedWidgetData, EmptyWidgetData} = require('./models/WidgetData')
 const {CheckedOptDef, CheckedOptDefMap, CheckedOptDefOverride, yargsOptFields} = require('./models/OptDef')
@@ -38,8 +41,8 @@ const {
 const assignWithNull = curry(
   (overrides, base) => {
     const result = assign(overrides, base)
-    for(const [k, v] of Object.entries(overrides)) {
-      if(v === null) {
+    for (const [k, v] of Object.entries(overrides)) {
+      if (v === null) {
         result[k] = undefined
       }
     }
@@ -151,6 +154,13 @@ const mergedAliases = curry((aliasToAdd, optDef) => {
   return R.uniq([oldAliases, aliasToAdd].flat())
 })
 
+const wrapCoerceModel = (optName, optDef) => isModel(optDef.coerce)
+  ? x => {
+    defObjectModel(optName, {[`--${optName}`]: optDef.coerce})({[`--${optName}`]: x})
+    return x
+  }
+  : optDef.coerce
+
 const optDef2YargsOpt = (kvPair) => {
   const [optName, optDef] = kvPair
 
@@ -164,12 +174,12 @@ const optDef2YargsOpt = (kvPair) => {
 
   // add alias if option is camel-cased
   const kebabCase = camel2kebab(optName)
-  if(kebabCase !== optName) {
+  if (kebabCase !== optName) {
     itemsToMerge.alias = join(rOptDef.map(mergedAliases(kebabCase)))
   }
 
   // add string: true if type == "string"
-  if(join(rOptDef.map(getPropOr('', 'type'))) === 'string') {
+  if (join(rOptDef.map(getPropOr('', 'type'))) === 'string') {
     itemsToMerge.string = true
   }
 
@@ -178,9 +188,13 @@ const optDef2YargsOpt = (kvPair) => {
 
   // set requiresArg if not boolean
   const type = join(rOptDef.map(getPropOr(false, 'type')))
-  if(type !== 'boolean') {
+  if (type !== 'boolean') {
     itemsToMerge.requiresArg = true
   }
+
+  // convert coerce if it is a model
+  itemsToMerge.coerce = wrapCoerceModel(optName, optDef)
+
   const rMergedOptDef = rOptDef.map(assign(itemsToMerge))
   // remove props that don't belong in a YargsOpt
   const rYargsOpt = rMergedOptDef.map(R.pick(R.keys(yargsOptFields)))
@@ -269,8 +283,8 @@ const BuildWidget = (blueprint) => {
 
 const objectPathList = (obj, parentKeys = []) => {
   let ret = []
-  for(const [k, v] of R.toPairs(obj)) {
-    switch(kindOf(v)) {
+  for (const [k, v] of R.toPairs(obj)) {
+    switch (kindOf(v)) {
       case 'object':
         ret.concat(objectPathList(v, [...parentKeys, k]))
         break
@@ -287,16 +301,16 @@ const objectPathList = (obj, parentKeys = []) => {
 // convert an args object back into a command line arguments list
 const argsMapToArgList = (argsMap) => {
   let list = []
-  for(const [k, v] of R.toPairs(argsMap)) {
-    if(v !== undefined && v !== null) { // omit any options without values
-      if(v !== true) { // skip value for boolean flag values
-        switch(kindOf(v)) {
+  for (const [k, v] of R.toPairs(argsMap)) {
+    if (v !== undefined && v !== null) { // omit any options without values
+      if (v !== true) { // skip value for boolean flag values
+        switch (kindOf(v)) {
           case 'array':
             list.push(`--${k}`)
             list = list.concat(v.map(x => x.toString()))
             break
           case 'object':
-            for(const onePathArray of objectPathList(v)) {
+            for (const onePathArray of objectPathList(v)) {
               list.push(`--${k}.${onePathArray.join('.')}`)
               list.push(objectPath.get(v, `${onePathArray}`))
             }

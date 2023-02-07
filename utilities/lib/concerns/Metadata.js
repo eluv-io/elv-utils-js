@@ -142,6 +142,17 @@ const New = context => {
     })
   }
 
+  const del = async({commitMessage, libraryId, subtree, objectId, writeToken}) => {
+    logger.log(`Deleting metadata ${pathDesc(subtree)}from ${fabricItemDesc({objectId, writeToken})}...`)
+    return await context.concerns.Edit.deleteMetadata({
+      commitMessage,
+      libraryId,
+      metadataSubtree: subtree,
+      objectId,
+      writeToken
+    })
+  }
+
   const get = async ({libraryId, subtree, objectId, versionHash, writeToken}) => {
     const client = await context.concerns.Client.get()
     logger.log(`Retrieving metadata ${pathDesc(subtree)}from ${fabricItemDesc({objectId, versionHash, writeToken})}...`)
@@ -169,6 +180,7 @@ const New = context => {
   return {
     checkTargetPath,
     commitInfo,
+    del,
     get,
     write
   }

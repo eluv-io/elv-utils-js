@@ -19,6 +19,5 @@ const FabricFilePathModel = NonBlankStrModel.extend()
   )
   .as('FabricFilePath')
 
-module.exports = {
-  FabricFilePathModel
-}
+module.exports = FabricFilePathModel
+
