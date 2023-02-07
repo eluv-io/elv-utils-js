@@ -1,25 +1,19 @@
 // List access groups visible to private key
-const sortBy = require('@eluvio/elv-js-helpers/Functional/sortBy')
-
 const Utility = require('./lib/Utility')
 
-const Client = require('./lib/concerns/Client')
+const AccessGroup = require('./lib/concerns/AccessGroup')
 const Logger = require('./lib/concerns/Logger')
 
 class ListAccessGroups extends Utility {
   blueprint() {
     return {
-      concerns: [Logger, Client]
+      concerns: [Logger, AccessGroup]
     }
   }
 
   async body() {
     const logger = this.concerns.Logger
-    const client = await this.concerns.Client.get()
-
-    const response = await client.ListAccessGroups()
-    const nameSort = sortBy(x => x.name?.toLowerCase())
-    const list = nameSort(response.map(g=> new Object({address: g.address, name: g.meta?.public?.name})))
+    const list = await this.concerns.AccessGroup.list()
     logger.logTable({list})
   }
 

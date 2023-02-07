@@ -21,7 +21,10 @@ const New = context => {
     ? context.concerns.JSON.parseStringOrFile({strOrPath: argMetadata})
     : null
 
-  return {asObject}
+  // instance interface
+  return {
+    asObject
+  }
 }
 
 module.exports = {

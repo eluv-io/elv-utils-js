@@ -71,7 +71,6 @@ const New = context => {
   const exists = async ({filePath, libraryId, objectId, versionHash}) => {
     throwIfArgsBad(READ_FILE_PATH_ARGS_MODEL,{filePath, libraryId, objectId, versionHash})
 
-    const client = await context.concerns.Client.get()
     let filesMap = await filesMap({
       libraryId,
       objectId,

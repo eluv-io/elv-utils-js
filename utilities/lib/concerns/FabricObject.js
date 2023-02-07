@@ -35,6 +35,12 @@ const New = context => {
     })
   }
 
+  const groupPerms = async ({objectId}) => {
+    if(!objectId) throw Error('FabricObject.groupPerms() - missing objectId')
+    const client = await context.concerns.Client.get()
+    return await client.ContentObjectGroupPermissions({objectId})
+  }
+
   const latestVersionHash = async ({libraryId, objectId}) => {
     if(!objectId) throw Error('FabricObject.latestVersionHash() - missing objectId')
     const client = await context.concerns.Client.get()
@@ -84,6 +90,7 @@ const New = context => {
   return {
     create,
     del,
+    groupPerms,
     latestVersionHash,
     libraryId,
     metadata,

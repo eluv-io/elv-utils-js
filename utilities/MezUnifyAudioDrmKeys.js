@@ -1,6 +1,6 @@
 // go through offerings and set all audio streams to use same encryption keys
-
-const R = require('@eluvio/ramda-fork')
+const clone = require('@eluvio/elv-js-helpers/Functional/clone')
+const isEmpty = require('@eluvio/elv-js-helpers/Boolean/isEmpty')
 
 const Utility = require('./lib/Utility')
 
@@ -26,11 +26,11 @@ class MezUnifyAudioDrmKeys extends Utility {
     logger.log('Retrieving existing metadata from object...')
     const metadata = await this.concerns.ExistObj.metadata()
 
-    if(!metadata.offerings || R.isEmpty(metadata.offerings)) throw Error('no offerings found in metadata')
+    if(!metadata.offerings || isEmpty(metadata.offerings)) throw Error('no offerings found in metadata')
 
     // loop through offerings
     for(const [offeringKey, offering] of Object.entries(metadata.offerings)) {
-      logger.log(`  Checking offering ${offeringKey}...`)
+      logger.log(`  Checking offering '${offeringKey}'...`)
       offering.audio_individual_drm_keys = false
       // loop through playout streams, saving first audio stream's keys
       let keyIds
@@ -38,9 +38,9 @@ class MezUnifyAudioDrmKeys extends Utility {
         if(stream.representations && Object.entries(stream.representations)[0][1].type === 'RepAudio') {
           if(keyIds) {
             logger.log(`    Setting keys for stream '${streamKey}'...`)
-            stream.encryption_schemes = R.clone(keyIds)
+            stream.encryption_schemes = clone(keyIds)
           } else {
-            if(!stream.encryption_schemes || R.isEmpty(stream.encryption_schemes)) throw Error(`Audio stream ${streamKey} has no encryption scheme info`)
+            if(!stream.encryption_schemes || isEmpty(stream.encryption_schemes)) throw Error(`Audio stream ${streamKey} has no encryption scheme info`)
             logger.log(`    Using keys from stream '${streamKey}'...`)
             keyIds = stream.encryption_schemes
           }
@@ -59,7 +59,7 @@ class MezUnifyAudioDrmKeys extends Utility {
   }
 
   header() {
-    return `Make all audio streams use same DRM keys in object ${this.args.objectId}`
+    return `Edit Mezzanine ${this.args.objectId} to use 1 shared set of audio DRM keys per Offering`
   }
 }
 

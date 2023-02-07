@@ -45,7 +45,7 @@ class ObjectRemoveGroupPerm extends Utility {
   }
 
   header() {
-    return `Remove '${this.args.permission}' permission to ${this.args.objectId} for group ${this.args.groupAddress}`
+    return `Remove '${this.args.permission}' permission for ${this.args.objectId} from group ${this.args.groupAddress}`
   }
 }
 
