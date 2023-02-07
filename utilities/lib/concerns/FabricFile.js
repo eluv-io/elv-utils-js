@@ -20,7 +20,22 @@ const blueprint = {
   concerns: [Client, Logger, Metadata]
 }
 
-const fileEntry = (listFilesResult, filePath) => {
+const READ_FILE_PATH_ARGS_MODEL = defObjectModel('exists()', {
+  filePath: FabricFilePathModel,
+  libraryId: [LibraryIdModel],
+  objectId: [ObjectIdModel],
+  versionHash: [VersionHashModel]
+})
+
+const isDir = fileMapEntry => fileMapEntry['.']?.type === 'directory'
+
+const isEncrypted = fileMapEntry => fileMapEntry['.']?.encryption?.scheme === 'cgck'
+
+const isFile = fileMapEntry => !isDir(fileMapEntry) && !isLink(fileMapEntry)
+
+const isLink = fileMapEntry => fileMapEntry['.']?.reference?.path !== undefined
+
+const mapEntry = (listFilesResult, filePath) => {
   const pathArray = pathToArray(filePath)
   return getPath(pathArray, listFilesResult)
 }
@@ -33,7 +48,7 @@ const mapToList = (obj, currentPath = '/') => {
         result.push({
           path:`${currentPath}${k}`,
           size: v['.'].reference?.size || v['.'].size,
-          encrypted: v['.'].encryption?.scheme === 'cgck',
+          encrypted: isEncrypted(v),
           link_remote_path: v['.'].reference?.path
         })
       } else {
@@ -52,29 +67,25 @@ const pathToArray = filePath => {
 const New = context => {
   // const logger = context.concerns.Logger;
 
-  const _existsArgs = defObjectModel('exists()', {
-    filePath: FabricFilePathModel,
-    libraryId: [LibraryIdModel],
-    objectId: [ObjectIdModel],
-    versionHash: [VersionHashModel]
-  })
-
+  // checks if a file exists
   const exists = async ({filePath, libraryId, objectId, versionHash}) => {
-    throwIfArgsBad(_existsArgs,{filePath, libraryId, objectId, versionHash})
+    throwIfArgsBad(READ_FILE_PATH_ARGS_MODEL,{filePath, libraryId, objectId, versionHash})
 
     const client = await context.concerns.Client.get()
-    let filesMap = await client.ListFiles({
+    let filesMap = await filesMap({
       libraryId,
       objectId,
       versionHash
     })
 
-    return fileEntry(filesMap, filePath) !== undefined
+    const entry = mapEntry(filesMap, filePath)
+
+    return entry !== undefined
   }
 
   const fileList = async ({libraryId, objectId, versionHash}) => {
-    const fmap = await filesMap({libraryId, objectId, versionHash})
-    return mapToList(fmap)
+    const fMap = await filesMap({libraryId, objectId, versionHash})
+    return mapToList(fMap)
   }
 
   const filesMap = async ({libraryId, objectId, versionHash}) => {
@@ -98,17 +109,28 @@ const New = context => {
     }
   }
 
+  const pathInfo = async ({filePath, libraryId, objectId, versionHash}) => {
+    throwIfArgsBad(READ_FILE_PATH_ARGS_MODEL,{filePath, libraryId, objectId, versionHash})
+    const fMap = await filesMap({libraryId, objectId, versionHash})
+    return mapEntry(fMap, filePath)
+  }
+
   // instance interface
   return {
     exists,
     fileList,
-    filesMap
+    filesMap,
+    pathInfo
   }
 }
 
 module.exports = {
   blueprint,
-  fileEntry,
+  isDir,
+  isEncrypted,
+  isFile,
+  isLink,
+  mapEntry,
   mapToList,
   New,
   pathToArray

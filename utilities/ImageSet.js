@@ -54,12 +54,18 @@ class ImageSet extends Utility {
       })
     } else {
       logger.log('Checking that file exists...')
-      const exists = await this.concerns.FabricFile.exists({
+      const pathInfo = await this.concerns.FabricFile.pathInfo({
         filePath,
         libraryId,
         objectId
       })
-      if (!exists) throw Error(`File '${filePath}' not found in object`)
+
+      if (!pathInfo) throw Error(`File '${filePath}' not found in object`)
+      if (FabricFile.isLink(pathInfo)) throw Error(`File '${filePath}' is a remote link`)
+      if (FabricFile.isDir(pathInfo)) throw Error(`'${filePath}' is a directory`)
+      if (!FabricFile.isFile(pathInfo)) throw Error(`'${filePath}' is not a file`)
+      if (!pathInfo['.']?.size ) throw Error(`'${filePath}' has no size`)
+
       newHash = await this.concerns.Metadata.write({
         commitMessage: `Set display image to '${filePath}'`,
         libraryId,
