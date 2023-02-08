@@ -1,3 +1,6 @@
+const isEmpty = require('@eluvio/elv-js-helpers/Boolean/isEmpty')
+const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
+
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
@@ -46,6 +49,8 @@ class OfferingSetFormats extends Utility {
       objectId,
       subtree: `/offerings/${offeringKey}`
     })
+
+    if (isNil(offeringMetadata) || isEmpty(offeringMetadata)) throw Error(`Offering '${offeringKey}' not found.`)
 
     PlayoutFormats.set(offeringMetadata, formats, elvCryptDrmKids)
 

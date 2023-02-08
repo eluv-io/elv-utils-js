@@ -31,7 +31,7 @@ class MezRegenDrmKeys extends Utility {
     if(!metadata.offerings || R.isEmpty(metadata.offerings)) throw Error('no offerings found in metadata')
 
     // get write token
-    const writeToken = await this.concerns.Edit.getWriteToken({libraryId, objectId})
+    const {writeToken} = await this.concerns.Edit.getWriteToken({libraryId, objectId})
 
     const client = await this.concerns.Client.get()
 

@@ -39,7 +39,7 @@ class FilesAdd extends Utility {
 
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
 
-    const writeToken = await this.concerns.Edit.getWriteToken({
+    const {writeToken} = await this.concerns.Edit.getWriteToken({
       libraryId,
       objectId
     })

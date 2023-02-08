@@ -15,7 +15,7 @@ const New = context => {
 
   const deleteMetadata =  async ({commitMessage,libraryId, metadataSubtree, noWait, objectId, writeToken}) => {
     const writeTokenSupplied = kindOf(writeToken) === 'string'
-    if(!writeTokenSupplied ) writeToken = await getWriteToken({libraryId, objectId})
+    if(!writeTokenSupplied ) writeToken = (await getWriteToken({libraryId, objectId})).writeToken
 
     logger.log('Deleting metadata from object...')
     const client = await context.concerns.Client.get()
@@ -57,14 +57,14 @@ const New = context => {
     })
     logger.log(`New write token: ${editResponse.write_token}`)
     logger.log(`       node URL: ${editResponse.nodeUrl}`)
-    return editResponse.write_token
+    return {writeToken: editResponse.write_token, nodeUrl: editResponse.nodeUrl}
   }
 
   // if writeToken passed in, don't finalize
   // if writeToken not passed in, get one and finalize after
   const writeMetadata =  async ({commitMessage,libraryId, metadata, metadataSubtree, noWait, objectId, writeToken}) => {
     const writeTokenSupplied = kindOf(writeToken) === 'string'
-    if(!writeTokenSupplied ) writeToken = await getWriteToken({libraryId, objectId})
+    if(!writeTokenSupplied ) writeToken = (await getWriteToken({libraryId, objectId})).writeToken
 
     logger.log('Writing metadata to object...')
     const client = await context.concerns.Client.get()

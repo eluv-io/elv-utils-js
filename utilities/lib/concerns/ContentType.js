@@ -23,36 +23,60 @@ const New = context => {
     return response.type
   }
 
-  const list = async () => {
-    const client = await context.concerns.Client.get()
-    const response = await client.ContentTypes()
-    return Object.values(response).map(pick(['id','name'])).sort((a,b) => compare(a.name.toLowerCase(),b.name.toLowerCase()))
-  }
-
-  // look up a content type by name, id, or hash and return hash
-  const refToVersionHash = async ({typeRef}) => {
+  const get = async ({typeRef}) => {
     const client = await context.concerns.Client.get()
 
-    if(!typeRef) throw Error('ContentType.refToVersionHash() - typeRef missing')
+    if (!typeRef) throw Error('ContentType.get() - typeRef missing')
 
     let fieldName = 'name'
-    if(typeRef.startsWith('iq__')) {
+    if (typeRef.startsWith('iq__')) {
       fieldName = 'typeId'
-    } else if(typeRef.startsWith('hq__')) {
+    } else if (typeRef.startsWith('hq__')) {
       fieldName = 'versionHash'
     }
     logger.log(`Looking up content type: ${typeRef}...`)
     const contentType = await client.ContentType({[fieldName]: typeRef})
-    if(!contentType) throw Error(`Unable to find content type "${typeRef}"`)
+    if (!contentType) throw Error(`Unable to find content type "${typeRef}"`)
 
+    return contentType
+  }
+
+  const list = async () => {
+    const client = await context.concerns.Client.get()
+    const response = await client.ContentTypes()
+    return Object.values(response).map(pick(['id', 'name'])).sort((a, b) => compare(a.name.toLowerCase(), b.name.toLowerCase()))
+  }
+
+  // look up a content type by name, id, or hash and return hash
+  const refToVersionHash = async ({typeRef}) => {
+    const contentType = await get({typeRef})
     return contentType.hash
+  }
+
+  const set = async ({libraryId, objectId, typeRef}) => {
+    const contentType = await get({typeRef})
+
+    const typeHash = contentType.hash
+
+    const commitMessage = `Set Content Type to '${contentType.name}' (${typeHash})`
+
+    const client = await context.concerns.Client.get()
+    return await client.EditAndFinalizeContentObject(
+      {
+        commitMessage,
+        libraryId,
+        objectId,
+        options: {type: typeHash}
+      }
+    )
   }
 
   // instance interface
   return {
     forItem,
     list,
-    refToVersionHash
+    refToVersionHash,
+    set
   }
 }
 

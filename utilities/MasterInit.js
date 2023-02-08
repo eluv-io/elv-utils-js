@@ -30,13 +30,13 @@ class MasterInit extends Utility {
     await this.concerns.ArgObjectId.argsProc()
     const {objectId, libraryId} = this.args
 
-    const writeToken = await this.concerns.Edit.getWriteToken({
+    const {writeToken} = await this.concerns.Edit.getWriteToken({
       libraryId,
       objectId
     })
 
     const client = await this.concerns.Client.get()
-    const {data, errors, warnings, logs} = await client.CallBitcodeMethod({
+    const {errors, warnings, logs} = await client.CallBitcodeMethod({
       objectId,
       libraryId,
       method: '/media/production_master/init',
