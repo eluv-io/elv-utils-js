@@ -14,6 +14,7 @@ class ListAccessGroups extends Utility {
   async body() {
     const logger = this.concerns.Logger
     const list = await this.concerns.AccessGroup.list()
+    logger.data('access_groups', list)
     logger.logTable({list})
   }
 

@@ -32,7 +32,7 @@ class ListLibraries extends Utility {
       formattedLibList.push(formattedLib)
     }
 
-    logger.data('library_list', formattedLibList)
+    logger.data('libraries', formattedLibList)
 
     logger.logTable({list: formattedLibList})
     if(libList.length === 0) logger.warn('No visible libraries found using supplied private key.')

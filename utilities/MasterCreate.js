@@ -1,4 +1,4 @@
-// Create new production master from specified file(s)
+// Create new master from specified file(s)
 const R = require('@eluvio/ramda-fork')
 
 const {ModOpt, NewOpt, StdOpt} = require('./lib/options')
@@ -22,24 +22,24 @@ class MasterCreate extends Utility {
       concerns: [Client, CloudFile, JSON, LocalFile, AssetMetadata, ArgMetadata, ContentType, ArgType],
       options: [
         StdOpt('libraryId', {
-          alias: ['masterLibId', 'master-lib-id'],
+          alias: ['masterLib', 'master-lib'],
           demand: true,
-          forX: 'new production master'
+          forX: 'new master'
         }),
         ModOpt('type', {
           alias: ['masterType', 'master-type'],
           demand: true,
-          forX: 'new production master'
+          forX: 'new master'
         }),
-        ModOpt('metadata', {ofX: 'production master object'}),
+        ModOpt('metadata', {ofX: 'master object'}),
         ModOpt('title', {demand: true}),
-        ModOpt('files', {forX: 'for new production master'}),
+        ModOpt('files', {forX: 'for new master'}),
         NewOpt('storeClear', {
           descTemplate: 'Store uploaded/copied files unencrypted',
           type: 'boolean'
         }),
         NewOpt('streams', {
-          descTemplate: 'JSON string or path to JSON file containing stream specifications for variant in new production master',
+          descTemplate: 'JSON string or path to JSON file containing stream specifications for variant in new master',
           type: 'string'
         })
       ]
@@ -91,7 +91,7 @@ class MasterCreate extends Utility {
       libraryId,
       type,
       name: metadata.public.name,
-      description: 'Production Master for ' + metadata.public.asset_metadata.title,
+      description: 'Master for ' + metadata.public.asset_metadata.title,
       metadata,
       fileInfo,
       encrypt: !storeClear,
@@ -142,7 +142,7 @@ class MasterCreate extends Utility {
 
     logger.logList(
       '',
-      'Production master object created:',
+      'Master object created:',
       `  Object ID: ${id}`,
       `  Version Hash: ${hash}`,
       ''
@@ -192,7 +192,7 @@ class MasterCreate extends Utility {
   }
 
   header() {
-    return 'Create production master'
+    return 'Create master'
   }
 }
 

@@ -102,6 +102,9 @@ const contextMerge = ({
     varSetSubstituted
   )
 
+  console.log('possibleArgVars')
+  console.log(JSON.stringify(possibleArgVars,null,2))
+
   // get command line options supported by the utility being run
   const utilityArgNames = flatten(Object.keys(utilityArgsMap).map(k => [k, utilityArgsMap[k].alias])).filter(k => k && /^[a-z]+[a-zA-Z]*$/.test(k))
 

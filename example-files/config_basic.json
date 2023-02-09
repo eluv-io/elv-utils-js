@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "abrProfile":       "$_ElvUtilsDir_/example-files/abr_profile_both.json",
+    "FABRIC_CONFIG_URL":"https://... (Your Fabric configuration URL)",
+    "groupAddress":     "0x... (your Content Admins group address)",
+    "masterLib":        "ilib... (your Master library ID)",
+    "masterType":       "iq__... (your Master content type ID)",
+    "mezLib":           "ilib... (your Mezzanine library ID)",
+    "mezType":          "iq__... (your Mezzanine content type ID)",
+    "PRIVATE_KEY":      "0x... (your private key)"
+  }
+}

@@ -21,7 +21,7 @@ const blueprint = {
       type: 'boolean'
     }),
     NewOpt('ethContractTimeout', {
-      default: 10,
+      default: 20,
       descTemplate: 'Number of seconds to wait for ethereum contract calls',
       group: 'API',
       type: 'number'

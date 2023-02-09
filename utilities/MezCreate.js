@@ -56,7 +56,7 @@ class MezCreate extends Utility {
       ],
       options: [
         ModOpt('libraryId', {
-          alias: ['mezLibId', 'mez-lib-id'],
+          alias: ['mezLib', 'mez-lib'],
           forX: 'mezzanine'
         }),
         ModOpt('objectId', {
