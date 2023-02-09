@@ -23,7 +23,7 @@ const Part = require('./lib/concerns/Part')
 const Subtitle = require('./lib/concerns/Subtitle')
 
 class OfferingAddSubtitles extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [
         ExistObj, Metadata, Subtitle, Edit, Part,

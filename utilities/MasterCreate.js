@@ -17,12 +17,20 @@ const JSON = require('./lib/concerns/JSON')
 const LocalFile = require('./lib/concerns/LocalFile')
 
 class MasterCreate extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Client, CloudFile, JSON, LocalFile, AssetMetadata, ArgMetadata, ContentType, ArgType],
       options: [
-        StdOpt('libraryId', {demand: true, forX: 'new production master'}),
-        ModOpt('type', {demand: true, forX: 'new production master'}),
+        StdOpt('libraryId', {
+          alias: ['masterLibId', 'master-lib-id'],
+          demand: true,
+          forX: 'new production master'
+        }),
+        ModOpt('type', {
+          alias: ['masterType', 'master-type'],
+          demand: true,
+          forX: 'new production master'
+        }),
         ModOpt('metadata', {ofX: 'production master object'}),
         ModOpt('title', {demand: true}),
         ModOpt('files', {forX: 'for new production master'}),

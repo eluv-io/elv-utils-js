@@ -11,7 +11,7 @@ const Logger = require('./lib/concerns/Logger')
 const LRO = require('./lib/concerns/LRO')
 
 class MezzanineJobStatus extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Logger, ArgObjectId, Client, LRO, ArgNoWait],
       options: [

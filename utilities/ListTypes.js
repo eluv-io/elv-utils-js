@@ -6,7 +6,7 @@ const ContentType = require('./lib/concerns/ContentType')
 const Logger = require('./lib/concerns/Logger')
 
 class ListTypes extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Logger, ContentType],
       options: []

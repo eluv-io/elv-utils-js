@@ -9,7 +9,7 @@ const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
 const ArgOfferingKey = require('./lib/concerns/ArgOfferingKey')
 
 class OfferingDeleteStream extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ExistObj, ArgOfferingKey, ArgStreamKey],
       options: [

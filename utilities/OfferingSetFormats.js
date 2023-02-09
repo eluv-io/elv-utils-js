@@ -9,7 +9,7 @@ const Metadata = require('./lib/concerns/Metadata')
 const PlayoutFormats = require('./lib/concerns/PlayoutFormats')
 
 class OfferingSetFormats extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [
         ExistObj, Metadata

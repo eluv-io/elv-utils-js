@@ -10,7 +10,7 @@ const ExistObj = require('./lib/concerns/ExistObj')
 const setCodecDescs = require('./lib/misc/setCodecDescs')
 
 class MezSetCodecDescs extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [
         Client, ExistObj, Edit

@@ -9,7 +9,7 @@ const FabricObject = require('./lib/concerns/FabricObject')
 const Logger = require('./lib/concerns/Logger')
 
 class ObjectListGroupPerms extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Logger, ArgObjectId, AccessGroup, FabricObject],
       options: [

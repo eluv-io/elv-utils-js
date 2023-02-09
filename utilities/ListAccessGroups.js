@@ -5,7 +5,7 @@ const AccessGroup = require('./lib/concerns/AccessGroup')
 const Logger = require('./lib/concerns/Logger')
 
 class ListAccessGroups extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Logger, AccessGroup]
     }

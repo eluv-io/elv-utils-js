@@ -9,7 +9,7 @@ const CloudAccess = require('./lib/concerns/CloudAccess')
 const ExistObjOrVer = require('./lib/concerns/ExistObjOrVer')
 
 class FilesProbe extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Client, ExistObjOrVer, ArgOutfile, CloudAccess],
       options: [

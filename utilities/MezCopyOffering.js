@@ -6,7 +6,7 @@ const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/ExistObj')
 
 class MezCopyOffering extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ArgOfferingKey, ExistObj, Edit],
       options: [

@@ -9,7 +9,7 @@ const Version = require('./lib/concerns/Version')
 
 
 class ListVersions extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ArgOutfile, ExistObj],
       options: [

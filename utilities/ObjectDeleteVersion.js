@@ -4,7 +4,7 @@ const Utility = require('./lib/Utility')
 const ExistVer = require('./lib/concerns/ExistVer')
 
 class ObjectDeleteVersion extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ExistVer]
     }

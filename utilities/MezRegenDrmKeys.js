@@ -10,7 +10,7 @@ const ExistObj = require('./lib/concerns/ExistObj')
 const Metadata = require('./lib/concerns/Metadata')
 
 class MezRegenDrmKeys extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [
         Client, ExistObj, Metadata, Edit

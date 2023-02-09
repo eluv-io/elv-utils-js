@@ -8,7 +8,7 @@ const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/ExistObj')
 
 class MasterDeleteVariant extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ArgVariantKey, ExistObj, Edit],
       options: [

@@ -16,7 +16,7 @@ const chkNoClearOrFilePath = (argv) => {
 }
 
 class ImageSet extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [
         ExistObj,

@@ -10,7 +10,7 @@ const ExistObjOrVer = require('./lib/concerns/ExistObjOrVer')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
 
 class MetaGet extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [JPath, ExistObjOrVer, ArgOutfile],
       options: [

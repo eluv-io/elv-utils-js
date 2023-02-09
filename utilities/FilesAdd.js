@@ -12,7 +12,7 @@ const LocalFile = require('./lib/concerns/LocalFile')
 const Logger = require('./lib/concerns/Logger')
 
 class FilesAdd extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Logger, ExistObj, Edit, ArgNoWait, LocalFile, CloudFile],
       options: [

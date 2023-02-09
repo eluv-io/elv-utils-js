@@ -20,7 +20,7 @@ const chkNoClearOrWatermark = (argv) => {
 
 
 class OfferingSetImageWatermark extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [
         ExistObj,

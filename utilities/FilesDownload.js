@@ -13,7 +13,7 @@ const Logger = require('./lib/concerns/Logger')
 const Metadata = require('./lib/concerns/Metadata')
 
 class FilesDownload extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Client, Logger, ExistObjOrVer],
       options: [

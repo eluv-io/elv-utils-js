@@ -1,0 +1,72 @@
+{
+  "defaults": {
+    "presets_add": [
+      "client",
+      "tenant",
+      "ingest"
+    ]
+  },
+
+  "presets": {
+
+    "client": {
+      "ethContractTimeout": "30"
+    },
+
+    "tenant": {
+      "FABRIC_CONFIG_URL": "https://demov3.net955210.contentfabric.io/config",
+      "PRIVATE_KEY": "your-private-key",
+      "groupAddress": "0x.. your-content-admins-group-contract-address",
+      "masterLib": "ilib... your-master-library-id",
+      "masterType": "iq__... your-master-content-type-id",
+      "mezLib": "ilib... your-mezzanine-library-id",
+      "mezType": "iq__... your-channel-content-type-id"
+    },
+
+    "s3": {
+      "AWS_BUCKET": "your-bucket-name",
+      "AWS_KEY": "your-aws-key",
+      "AWS_REGION": "your-aws-region",
+      "AWS_SECRET": "your-aws-secret"
+    },
+
+    "abr_profiles": {
+      "abr_profile_directory": "$_ElvUtilsDir_/example-files",
+      "abrp_both": "$abr_profile_directory/abr_profile_both.json",
+      "abrp_clear_store_encrypted": "$abr_profile_directory/abr_profile_clear_store_encrypted.json",
+      "abrp_clear_store_unencrypted": "$abr_profile_directory/abr_profile_clear_store_unencrypted.json",
+      "abrp_drm_all": "$abr_profile_directory/abr_profile_drm.json",
+      "abrp_drm_strict": "$abr_profile_directory/abr_profile_drm_strict.json"
+    },
+
+    "ingest": {
+      "presets_add": ["abr_profiles"],
+      "abrProfile": "$abrp_both"
+    },
+
+    "ingest_s3": {
+      "presets_add": ["ingest","s3"],
+      "ingest_files_dir": "s3://$AWS_BUCKET"
+    },
+
+    "ingest_s3_reference": {
+      "presets_add": ["ingest_s3"],
+      "s3Reference": "true"
+    },
+
+    "use_example_video_file": {
+      "ingest_files_dir": "$_ElvUtilsDir_/example-files",
+      "files": "$ingest_files_dir/video.mp4"
+    },
+
+    "airtable" : {
+      "AIRTABLE_API_KEY": "your-airtable-access-token",
+      "baseId": "your-airtable-base-ID"
+    },
+
+    "debug": {
+      "ELVUTILS_THROW": "1",
+      "debug": "true"
+    }
+  }
+}

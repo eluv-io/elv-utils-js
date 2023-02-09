@@ -18,7 +18,8 @@ const callContext = params => {
     args: {},
     concerns: {},
     cwd: params.cwd || process.cwd(),
-    env: R.clone(process.env)
+    env: R.clone(process.env),
+    mode: 'call'
   }
 
   if(Object.keys(params).includes('env')) {
@@ -37,7 +38,8 @@ const cmdLineContext = () => {
     args: {},
     concerns: {},
     cwd: process.cwd(),
-    env: R.clone(process.env)
+    env: R.clone(process.env),
+    mode: 'cmd'
   }
 }
 
@@ -47,8 +49,13 @@ const emptyContext = () => {
     args: {},
     concerns: {},
     cwd: '',
-    env: {}
+    env: {},
+    mode: ''
   }
 }
 
-module.exports = {callContext, cmdLineContext, emptyContext}
+module.exports = {
+  callContext,
+  cmdLineContext,
+  emptyContext
+}

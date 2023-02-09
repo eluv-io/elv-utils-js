@@ -6,7 +6,7 @@ const FabricFile = require('./lib/concerns/FabricFile')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
 
 class ListFiles extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ExistObjOrVer, FabricFile, ArgOutfile]
     }

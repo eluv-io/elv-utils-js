@@ -9,7 +9,7 @@ const ExistObj = require('./lib/concerns/ExistObj')
 const Metadata = require('./lib/concerns/Metadata')
 
 class MetaCopy extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ExistObj, Metadata],
       options: [

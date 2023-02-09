@@ -8,7 +8,7 @@ const ExistObj = require('./lib/concerns/ExistObj')
 const Logger = require('./lib/concerns/Logger')
 
 class ObjectSetType extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [Logger, ExistObj, ContentType],
       options: [

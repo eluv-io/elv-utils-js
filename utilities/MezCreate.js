@@ -39,7 +39,7 @@ const chkTitlePresent = (argv) => {
 }
 
 class MezCreate extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [
         AssetMetadata,
@@ -55,13 +55,19 @@ class MezCreate extends Utility {
         LRO
       ],
       options: [
-        ModOpt('libraryId', {forX: 'mezzanine'}),
+        ModOpt('libraryId', {
+          alias: ['mezLibId', 'mez-lib-id'],
+          forX: 'mezzanine'
+        }),
         ModOpt('objectId', {
           alias: ['existingMezId','existing-mez-id'],
           demand: false,
           descTemplate: 'Create the offering in existing mezzanine object with specified ID',
         }),
-        ModOpt('type', {forX: 'mezzanine'}),
+        ModOpt('type', {
+          alias: ['mezType','mez-type'],
+          forX: 'mezzanine'
+        }),
         ModOpt('metadata', {ofX: 'mezzanine object'}),
         ModOpt('name', {ofX: 'mezzanine object (set to title + \' MEZ\' if not supplied and --existingMezId and --metadata not specified)'}),
         NewOpt('masterHash', {

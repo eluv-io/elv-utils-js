@@ -9,7 +9,7 @@ const ArgNodeUrl = require('./lib/concerns/ArgNodeUrl')
 const ArgWriteToken = require('./lib/concerns/ArgWriteToken')
 
 class LROStop extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ArgLroId, ArgNodeUrl, ArgWriteToken, Client],
       options: [
@@ -30,7 +30,7 @@ class LROStop extends Utility {
 
     // TODO: check first whether LRO is already terminated
 
-    const {data, errors, warnings, logs} = await client.CallBitcodeMethod({
+    const {errors, warnings, logs} = await client.CallBitcodeMethod({
       objectId,
       libraryId,
       method: '/lro/stop',

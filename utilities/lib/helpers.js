@@ -123,11 +123,15 @@ const absPath = (pathStr, workingDir) => path.isAbsolute(pathStr)
     ? path.resolve(workingDir, pathStr)
     : path.resolve(path.resolve(workingDir), pathStr)
 
+const ELV_UTILS_DIR = path.resolve(path.join(__dirname, '..', '..'))
+
 const readFile = (filePath, cwd = '.', logger) => {
   const fullPath = absPath(filePath, cwd)
   if(logger) logger.log(`Reading file ${fullPath}...`)
   return fs.readFileSync(fullPath)
 }
+
+const readFileJSON = (filePath, cwd = '.', logger) => JSON.parse(readFile(filePath, cwd, logger))
 
 // Try interpreting the string as a file path. If that fails, return string
 const stringOrFileContents = (str, cwd = '.', logger) => {
@@ -216,6 +220,7 @@ module.exports = {
   dumpKeys,
   dumpResult,
   ellipsize,
+  ELV_UTILS_DIR,
   etaString,
   fabricItemDesc,
   formattedInspect,
@@ -226,6 +231,7 @@ module.exports = {
   objUnwrapValues,
   padStart,
   readFile,
+  readFileJSON,
   removeLeadingSlash,
   removeTrailingSlash,
   seconds,

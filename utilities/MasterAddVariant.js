@@ -11,7 +11,7 @@ const ExistObj = require('./lib/concerns/ExistObj')
 const JSON = require('./lib/concerns/JSON')
 
 class MasterAddVariant extends Utility {
-  blueprint() {
+  static blueprint() {
     return {
       concerns: [ArgVariantKey, ExistObj, Edit, JSON],
       options: [
