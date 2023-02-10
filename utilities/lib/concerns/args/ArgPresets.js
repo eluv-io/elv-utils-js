@@ -6,9 +6,8 @@ const blueprint = {
   name: 'ArgPresets',
   options: [
     NewOpt('presets', {
-      descTemplate: 'Name(s) of presets to merge on top of defaults from files specified with --conf.',
+      descTemplate: 'Name(s) of additional preset(s) to merge on top of defaults from configuration file(s) (specified with --conf and/or $ELVUTILS_CONF).',
       group: 'Automation',
-      implies: 'conf',
       string: true,
       type: 'array'
     })

@@ -15,7 +15,8 @@ const blueprint = {
 
 const New = context => {
 
-  const libCreateObject = async ({metadata, noWait, type}) => await context.concerns.FabricObject.create({
+  const libCreateObject = async ({commitMessage, metadata, noWait, type}) => await context.concerns.FabricObject.create({
+    commitMessage,
     libraryId: context.args.libraryId,
     metadata,
     noWait,

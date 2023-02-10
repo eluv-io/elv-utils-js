@@ -67,6 +67,22 @@
     "debug": {
       "ELVUTILS_THROW": "1",
       "debug": "true"
+    },
+
+    "lib_master": {
+      "libraryId": "$masterLib"
+    },
+
+    "lib_mez": {
+      "libraryId": "$mezLib"
+    },
+
+    "type_master": {
+      "type": "$masterType"
+    },
+
+    "type_mez": {
+      "type": "$mezType"
     }
   }
 }

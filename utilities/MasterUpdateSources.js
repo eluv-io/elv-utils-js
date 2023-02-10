@@ -1,5 +1,7 @@
 // Probe file in object for media structure
-const R = require('@eluvio/ramda-fork')
+const clone = require('@eluvio/elv-js-helpers/Functional/clone')
+const isEquivalent = require('@eluvio/elv-js-helpers/Boolean/isEquivalent')
+const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
 
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
@@ -31,8 +33,9 @@ class MasterUpdateSources extends Utility {
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
 
     // get production_master metadata
-    const master = await this.concerns.ExistObj.metadata({subtree: '/production_master'})
-    const originalMaster = R.clone(master)
+    const masterMetadata = await this.concerns.ExistObj.metadata({subtree: '/production_master'}) || {}
+    const master = mergeRight({variants:{},sources:{}}, masterMetadata)
+    const originalMaster = clone(master)
 
     // get list of files
     const client = await this.concerns.Client.get()
@@ -62,7 +65,7 @@ class MasterUpdateSources extends Utility {
       })
       this.logger.errorsAndWarnings({errors, warnings})
       if(Object.keys(data).includes(file)) successfulFiles.push(file)
-      master.sources = R.mergeRight(master.sources, data)
+      master.sources = mergeRight(master.sources, data)
     }
 
     // remove missing sources
@@ -106,7 +109,7 @@ class MasterUpdateSources extends Utility {
     for(const revisedSourceKey of revisedSourceKeys) {
       if(!originalSourceKeys.includes(revisedSourceKey)) {
         newSources.push(revisedSourceKey)
-      } else if(!R.equals(
+      } else if(!isEquivalent(
         originalMaster.sources[revisedSourceKey],
         master.sources[revisedSourceKey]
       )) {

@@ -33,15 +33,16 @@ class ObjectCreate extends Utility {
     const metadata = R.mergeDeepRight(metadataFromArg, {'public':{name}})
 
     const {objectId, versionHash} = await this.concerns.ArgLibraryId.libCreateObject({
+      commitMessage: 'create object',
       metadata,
       noWait,
       type
     })
 
     logger.log(`New object ID: ${objectId}`)
-    logger.data('object_id', objectId)
-    logger.log(`version_hash: ${versionHash}`)
-    logger.data('version_hash', versionHash)
+    logger.data('objectId', objectId)
+    logger.log(`version hash: ${versionHash}`)
+    logger.data('versionHash', versionHash)
   }
 
   header() {

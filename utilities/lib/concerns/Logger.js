@@ -115,6 +115,16 @@ const New = (context) => {
   // interface: console
   // -------------------------------------
 
+  const debug = (...args) => {
+    args = argsWithPrefix(args)
+    if (json) {
+      jsonConsole('debug', ...args)
+    } else {
+      // eslint-disable-next-line no-console
+      if (!silent) console.debug(...args)
+    }
+  }
+
   // log error and send to node.js Console or json output object
   const error = (...args) => {
     args = argsWithPrefix(args)
@@ -224,6 +234,7 @@ const New = (context) => {
     data,
     dataConcat,
     dataGet,
+    debug,
     error,
     errorList,
     errorsAndWarnings,
