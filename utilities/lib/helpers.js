@@ -43,13 +43,15 @@ const camel2kebab = s => {
 }
 
 // construct a descriptor to use in log messages
-const fabricItemDesc = ({objectId, versionHash, writeToken}) => writeToken
+const fabricItemDesc = ({libraryId, objectId, versionHash, writeToken}) => writeToken
   ? `draft ${writeToken}`
   : versionHash
     ? `version ${versionHash}`
     : objectId
       ? `object ${objectId}`
-      : throwError('fabricItemDesc(): no objectId, versionHash, or writeToken')
+      : libraryId
+        ? `library ${libraryId}`
+        : throwError('fabricItemDesc(): no libraryId, objectId, versionHash, or writeToken')
 
 const padStart = width => str => str.padStart(width)
 
