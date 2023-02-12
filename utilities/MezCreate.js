@@ -275,7 +275,7 @@ class MezCreate extends Utility {
   }
 
   header() {
-    return `Create Mezzanine offering '${this.args.offeringKey}' for master ${this.args.masterHash}`
+    return `Create Mezzanine offering '${this.args.offeringKey}' from Variant '${this.args.variantKey}' in Master version ${this.args.masterHash}`
   }
 }
 

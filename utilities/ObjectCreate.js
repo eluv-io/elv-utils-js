@@ -5,13 +5,12 @@ const Utility = require('./lib/Utility')
 
 const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
-const ArgNoWait = require('./lib/concerns/ArgNoWait')
 const ArgType = require('./lib/concerns/ArgType')
 
 class ObjectCreate extends Utility {
   static blueprint() {
     return {
-      concerns: [ArgLibraryId, ArgType, ArgNoWait, ArgMetadata],
+      concerns: [ArgLibraryId, ArgType, ArgMetadata],
       options: [
         ModOpt('libraryId', {demand: true}),
         StdOpt('name',
@@ -25,7 +24,7 @@ class ObjectCreate extends Utility {
 
   async body() {
     const logger = this.logger
-    const {name, noWait} = this.args
+    const {name} = this.args
     const type = this.args.type
       ? await this.concerns.ArgType.typVersionHash()
       : undefined
@@ -35,7 +34,6 @@ class ObjectCreate extends Utility {
     const {objectId, versionHash} = await this.concerns.ArgLibraryId.libCreateObject({
       commitMessage: 'create object',
       metadata,
-      noWait,
       type
     })
 
