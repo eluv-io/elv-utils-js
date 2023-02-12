@@ -1,14 +1,14 @@
 /*
-Models used for validation while processing --conf arguments.
+Models used for validation while processing --confs arguments.
 
-Each file listed after --conf contains a Configuration
+Each file listed after --confs contains a Configuration
 
 A Configuration has 2 top level keys:
 
    'defaults' - contains the default VarSet supplied to all utility scripts.
    'presets'  - object with preset names as keys and VarSets as values
 
-The first file listed after --conf must have both top level keys. Subsequent files (which get merged into the first
+The first file listed after --confs must have both top level keys. Subsequent files (which get merged into the first
 file's Configuration) are allowed to omit one of the keys.
 
 A VarSet contains key/value pairs, where the key is either a variable name or one of the 'presets_*' directives -
@@ -79,7 +79,7 @@ const ENV_VAR_REGEX = /[A-Z]+(_+[A-Z]+)+/
 // 2 dollar signs in a row indicate escaped dollar sign to include in final output, they will be ignored
 const FIND_SUBST_VAR_REGEX = /(?<=[^$]|(\$\$)+|^)\$[A-Z0-9_]+([A-Z0-9_-]*[A-Z0-9_]+)*/gmi
 
-// The command line option `--conf` and the env var `ELVUTILS_CONFIG` control which Configurations are used.
+// The command line option `--confs` and the env var `ELVUTILS_CONFIG` control which Configurations are used.
 // The command line option `--presets` allows run-time overrides of Configuration defaults.
 // These must not get set/changed by the Configurations themselves.
 const ALWAYS_FORBIDDEN_KEYS = [

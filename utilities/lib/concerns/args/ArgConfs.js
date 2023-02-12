@@ -3,9 +3,9 @@
 const {NewOpt} = require('../../options')
 
 const blueprint = {
-  name: 'ArgConf',
+  name: 'ArgConfs',
   options: [
-    NewOpt('conf', {
+    NewOpt('confs', {
       descTemplate: 'Path(s) to configuration JSON file(s) containing values to supply missing command line options.',
       group: 'Automation',
       string: true,

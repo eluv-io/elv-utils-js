@@ -20,7 +20,7 @@ const {callContext, cmdLineContext} = require('./context')
 const {BuildWidget, DelOpt, ModOpt, NewOpt} = require('./options')
 
 const ArgPresets = require('./concerns/args/ArgPresets')
-const ArgConf = require('./concerns/args/ArgConf')
+const ArgConfs = require('./concerns/args/ArgConfs')
 const Configs = require('./configs')
 
 const Logger = require('./concerns/Logger')
@@ -28,7 +28,7 @@ const Logger = require('./concerns/Logger')
 const addUniversalItems = (blueprint) => {
   return {
     checksMap: blueprint.checksMap ? clone(blueprint.checksMap) : undefined,
-    concerns: flatten([ArgConf, ArgPresets, Logger, clone(blueprint.concerns) || []]),
+    concerns: flatten([ArgConfs, ArgPresets, Logger, clone(blueprint.concerns) || []]),
     name: 'Utility',
     options: blueprint.options
       ? clone(blueprint.options)
@@ -123,7 +123,7 @@ module.exports = class Utility {
       ? cmdLineContext() // invoked at command line
       : callContext(params) // module call
 
-    // process --conf if present (and ELVUTILS_CONFIG env var)
+    // process --confs if present (and ELVUTILS_CONFIG env var)
     const prelimParsedArgs = getPrelimParseArgs(this.context.argList, this.widget.data().yargsOptMap)
     const {conf, presets} = prelimParsedArgs
     if(this.context.env.ELVUTILS_CONFIG || (isArray(conf) && conf.length > 0)) {
@@ -134,7 +134,7 @@ module.exports = class Utility {
         confFilePaths.push(this.context.env.ELVUTILS_CONFIG)
       }
       if(isArray(conf) && conf.length > 0) {
-        if (this.context.mode === 'cmd') console.warn(`--conf option specified, loading config(s) from: ${conf.join(', ')}`)
+        if (this.context.mode === 'cmd') console.warn(`--confs option specified, loading config(s) from: ${conf.join(', ')}`)
         confFilePaths = confFilePaths.concat(conf)
       }
       if (this.context.mode === 'cmd') console.warn()

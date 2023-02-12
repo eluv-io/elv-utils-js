@@ -1,4 +1,4 @@
-// code related to working with Configurations (specified with --conf)
+// code related to working with Configurations (specified with --confs)
 
 // TODO: make function inputs/outputs compatible for chaining
 // TODO: use optional chaining operator to shorten debug statements
