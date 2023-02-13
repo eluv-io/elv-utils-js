@@ -33,6 +33,8 @@ const New = context => {
       fieldName = 'typeId'
     } else if (typeRef.startsWith('hq__')) {
       fieldName = 'versionHash'
+    } else if (typeRef.startsWith('tqw__')) {
+      fieldName = 'writeToken'
     }
     logger.log(`Looking up content type: ${typeRef}...`)
     const contentType = await client.ContentType({[fieldName]: typeRef})
@@ -74,6 +76,7 @@ const New = context => {
   // instance interface
   return {
     forItem,
+    get,
     list,
     refToVersionHash,
     set

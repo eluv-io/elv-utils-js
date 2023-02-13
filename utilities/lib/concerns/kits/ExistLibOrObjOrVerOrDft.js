@@ -44,14 +44,20 @@ const New = context => {
   // fill in implied missing args
   const argsProc = async () => await relevantConcern.argsProc()
 
+  const info = async () => await relevantConcern.info()
+
   const metadata = async ({subtree} = {}) => await relevantConcern.metadata({subtree})
 
   const partList = async () => await relevantConcern.partList()
 
+  const typeHash = async () => await relevantConcern.typeHash()
+
   return {
     argsProc,
+    info,
     metadata,
-    partList
+    partList,
+    typeHash
   }
 }
 

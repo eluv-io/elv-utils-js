@@ -22,6 +22,8 @@ const New = context => {
   // Function is async for consistency with other Exist* concerns
   const argsProc = async () => context.args
 
+  const info = async () => await context.concerns.Library.info(await relevantArgs())
+
   const metadata = async ({subtree} = {}) => await context.concerns.Library.metadata(
     mergeRight({subtree}, await relevantArgs())
   )
@@ -31,10 +33,14 @@ const New = context => {
   // Extract out just the (processed) args needed to specify draft in ElvClient calls
   const relevantArgs = async () => (pick(['libraryId'], await argsProc()))
 
+  const typeHash = async () => await context.concerns.Library.typeHash(await relevantArgs())
+
   return {
     argsProc,
+    info,
     metadata,
-    partList
+    partList,
+    typeHash
   }
 }
 

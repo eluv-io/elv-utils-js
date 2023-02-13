@@ -21,6 +21,8 @@ const New = context => {
   // fill in implied missing args
   const argsProc = async () => await context.concerns.ArgVersionHash.argsProc()
 
+  const info = async() => await context.concerns.Version.info(await relevantArgs())
+
   const metadata = async ({subtree} = {}) => await context.concerns.Version.metadata(
     mergeRight({subtree}, await relevantArgs())
   )
@@ -30,10 +32,14 @@ const New = context => {
   // extract out just the (processed) args needed to specify version in ElvClient calls
   const relevantArgs = async () => (pick(['libraryId', 'objectId', 'versionHash'], await argsProc()))
 
+  const typeHash = async() => await context.concerns.Version.typeHash(await relevantArgs())
+
   return {
     argsProc,
+    info,
     metadata,
-    partList
+    partList,
+    typeHash
   }
 }
 

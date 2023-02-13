@@ -29,6 +29,16 @@ const New = context => {
     await client.DeleteContentVersion({versionHash})
   }
 
+  const info = async ({libraryId, objectId, versionHash}) => {
+    if(!versionHash) throw Error('Version.info() - missing versionHash')
+    const client = await context.concerns.Client.get()
+    return await client.ContentObject({
+      libraryId,
+      objectId,
+      versionHash
+    })
+  }
+
   const list = async ({libraryId, objectId}) => {
     if(!objectId) throw Error('Version.list() - missing objectId')
     const client = await context.concerns.Client.get()
@@ -63,13 +73,24 @@ const New = context => {
     return await context.concerns.Part.list({libraryId, objectId, versionHash})
   }
 
+  const typeHash = async ({libraryId, objectId, versionHash}) => {
+    if(!versionHash) throw Error('Version.typeHash() - missing versionHash')
+    return (await info({
+      libraryId,
+      objectId,
+      versionHash
+    })).type
+  }
+
   return {
     decode,
     del,
+    info,
     list,
     metadata,
     objectId,
-    partList
+    partList,
+    typeHash
   }
 }
 

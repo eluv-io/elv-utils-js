@@ -43,14 +43,21 @@ const New = context => {
     })
   }
 
-  const latestVersionHash = async ({libraryId, objectId}) => {
-    if(!objectId) throw Error('FabricObject.latestVersionHash() - missing objectId')
+  const info = async ({libraryId, objectId}) => {
+    if(!objectId) throw Error('FabricObject.info() - missing objectId')
     const client = await context.concerns.Client.get()
-    const response = await client.ContentObject({
+    return await client.ContentObject({
       libraryId,
       objectId
     })
-    return response.hash
+  }
+
+  const latestVersionHash = async ({libraryId, objectId}) => {
+    if(!objectId) throw Error('FabricObject.latestVersionHash() - missing objectId')
+    return (await info({
+      libraryId,
+      objectId
+    })).hash
   }
 
   const libraryId = async ({objectId}) => {
@@ -72,6 +79,15 @@ const New = context => {
     return await context.concerns.Part.list({libraryId, objectId})
   }
 
+  const permission = async ({objectId}) => {
+    if(!objectId) throw Error('FabricObject.permission() - missing objectId')
+    const client = await context.concerns.Client.get()
+    return await client.Permission({
+      objectId,
+      clearCache: true
+    })
+  }
+
   const size = async ({libraryId, objectId}) => {
     if(!objectId) throw Error('FabricObject.size() - missing objectId')
     logger.log('Calculating size of object...')
@@ -83,6 +99,14 @@ const New = context => {
     return dedupedVal
   }
 
+  const typeHash = async ({libraryId, objectId}) => {
+    if(!objectId) throw Error('FabricObject.typeHash() - missing objectId')
+    return (await info({
+      libraryId,
+      objectId
+    })).type
+  }
+
   const versionList = async ({libraryId, objectId}) => {
     if(!objectId) throw Error('FabricObject.versionList() - missing objectId')
     return await context.concerns.Version.list({libraryId, objectId})
@@ -92,11 +116,14 @@ const New = context => {
   return {
     create,
     del,
+    info,
     latestVersionHash,
     libraryId,
     metadata,
     partList,
+    permission,
     size,
+    typeHash,
     versionList
   }
 }

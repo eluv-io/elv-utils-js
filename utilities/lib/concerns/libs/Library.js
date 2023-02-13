@@ -113,6 +113,10 @@ const New = context => {
 
   const partList = async ({libraryId, objectId}) => await context.concerns.Part.list({libraryId, objectId})
 
+  const typeHash = async ({libraryId}) => {
+    if(!libraryId) throw Error('Library.typeHash() - missing libraryId')
+    return (await info({libraryId})).type
+  }
 
   return {
     create,
@@ -122,7 +126,8 @@ const New = context => {
     list,
     metadata,
     objectList,
-    partList
+    partList,
+    typeHash
   }
 }
 

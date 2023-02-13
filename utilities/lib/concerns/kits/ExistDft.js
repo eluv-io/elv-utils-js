@@ -22,6 +22,8 @@ const New = context => {
   // fill in implied missing args
   const argsProc = async () => await context.concerns.ArgWriteToken.argsProc()
 
+  const info = async() => await context.concerns.Draft.info(await relevantArgs())
+
   const metadata = async ({subtree} = {}) => await context.concerns.Draft.metadata(
     mergeRight({subtree}, await relevantArgs())
   )
@@ -31,10 +33,14 @@ const New = context => {
   // extract out just the (processed) args needed to specify draft in ElvClient calls
   const relevantArgs = async () => (pick(['libraryId', 'objectId', 'writeToken'], await argsProc()))
 
+  const typeHash = async() => await context.concerns.Draft.typeHash(await relevantArgs())
+
   return {
     argsProc,
+    info,
     metadata,
-    partList
+    partList,
+    typeHash
   }
 }
 

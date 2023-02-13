@@ -56,6 +56,16 @@ const New = context => {
     return Utils.DecodeWriteToken(writeToken)
   }
 
+  const info = async ({libraryId, objectId, writeToken}) => {
+    if(!writeToken) throw Error('Draft.info() - missing writeToken')
+    const client = await context.concerns.Client.get()
+    return await client.ContentObject({
+      libraryId,
+      objectId,
+      writeToken
+    })
+  }
+
   const metadata = async ({libraryId, objectId, subtree, writeToken}) => {
     if(!writeToken) throw Error('Draft.metadata() - missing writeToken')
     return await context.concerns.Metadata.get({
@@ -144,17 +154,28 @@ const New = context => {
     client.HttpClient.RecordWriteToken(writeToken, nodeUrl)
   }
 
+  const typeHash = async ({libraryId, objectId, writeToken}) => {
+    if(!writeToken) throw Error('Draft.typeHash() - missing writeToken')
+    return (await info({
+      libraryId,
+      objectId,
+      writeToken
+    })).type
+  }
+
   // instance interface
   return {
     create,
     decode,
+    info,
     metadata,
     nodeInfo,
     nodeURL,
     nodeURLValidate,
     objectId,
     partList,
-    recordWriteTokenNodeURL
+    recordWriteTokenNodeURL,
+    typeHash
   }
 }
 
