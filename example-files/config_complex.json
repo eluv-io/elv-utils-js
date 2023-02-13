@@ -27,12 +27,12 @@
     },
 
     "abr_profiles": {
-      "abr_profile_dir":              "$_ElvUtilsDir_/example-files",
-      "abrp_both":                    "$abr_profile_dir/abr_profile_both.json",
-      "abrp_clear_store_encrypted":   "$abr_profile_dir/abr_profile_clear_store_encrypted.json",
-      "abrp_clear_store_unencrypted": "$abr_profile_dir/abr_profile_clear_store_unencrypted.json",
-      "abrp_drm_all":                 "$abr_profile_dir/abr_profile_drm.json",
-      "abrp_drm_strict":              "$abr_profile_dir/abr_profile_drm_strict.json"
+      "abr_profile_dir":               "$_ElvUtilsDir_/example-files",
+      "abrp_both":                     "$abr_profile_dir/abr_profile_both.json",
+      "abrp_no_drm_store_encrypted":   "$abr_profile_dir/abr_profile_no_drm_store_encrypted.json",
+      "abrp_no_drm_store_unencrypted": "$abr_profile_dir/abr_profile_no_drm_store_unencrypted.json",
+      "abrp_drm_all":                  "$abr_profile_dir/abr_profile_drm.json",
+      "abrp_drm_strict":               "$abr_profile_dir/abr_profile_drm_strict.json"
     },
 
     "ingest": {
