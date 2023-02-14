@@ -52,13 +52,13 @@ class OfferingSetFormats extends Utility {
 
     if (isNil(offeringMetadata) || isEmpty(offeringMetadata)) throw Error(`Offering '${offeringKey}' not found.`)
 
-    PlayoutFormats.set(offeringMetadata, formats, elvCryptDrmKids)
+    const modifiedOffering = PlayoutFormats.modifiedOffering(offeringMetadata, formats, elvCryptDrmKids)
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({
       commitMessage: `Set playout formats for offering '${offeringKey}' to: ${formats.join(', ')}`,
       libraryId,
-      metadata: offeringMetadata,
+      metadata: modifiedOffering,
       objectId,
       subtree: `/offerings/${offeringKey}`
     })

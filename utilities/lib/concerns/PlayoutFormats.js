@@ -65,7 +65,8 @@ const FORMATS = Object.keys(FORMAT_DEFS)
 
 const formatsIncludeDrm = formats => formats.find(f => FORMAT_DEFS[f].drm !== null) !== undefined
 
-const set = (offering, formats, elvCryptDrmKids) => {
+// return a copy of offering with playout_formats changed
+const modifiedOffering = (offering, formats, elvCryptDrmKids) => {
   const result = R.clone(offering)
   // clear existing formats
   result.playout.playout_formats = {}
@@ -73,6 +74,7 @@ const set = (offering, formats, elvCryptDrmKids) => {
     verifyCompatibility(result, formatKey, elvCryptDrmKids)
     result.playout.playout_formats[formatKey] = FORMAT_DEFS[formatKey]
   }
+  return result
 }
 
 const verifyCompatibility = (offering, formatKey, elvCryptDrmKids = {}) => {
@@ -102,7 +104,7 @@ const verifyCompatibility = (offering, formatKey, elvCryptDrmKids = {}) => {
 }
 
 
-const New = context => {
+const New = () => {
 
   // instance interface
   return {}
@@ -114,6 +116,6 @@ module.exports = {
   FORMATS,
   formatsIncludeDrm,
   New,
-  set,
+  modifiedOffering,
   verifyCompatibility
 }
