@@ -106,19 +106,19 @@ const MediaStreamModel = ObjectModel({}).extend().assert(i => {
   switch (i.type) {
     case MEDIA_STREAM_TYPE_AUDIO:
       MediaStreamAudioModel(i)
-      break
+      return true
     case MEDIA_STREAM_TYPE_DATA:
       MediaStreamDataModel(i)
-      break
+      return true
     case MEDIA_STREAM_TYPE_IMAGE:
       MediaStreamImageModel(i)
-      break
+      return true
     case MEDIA_STREAM_TYPE_SUBTITLE:
       MediaStreamSubtitleModel(i)
-      break
+      return true
     case MEDIA_STREAM_TYPE_VIDEO:
       MediaStreamVideoModel(i)
-      break
+      return true
     default:
       throw Error(`Unrecognized stream type: ${i.type}`)
   }
@@ -132,6 +132,18 @@ const MediaSourceModel = ObjectModel({
 })
 
 module.exports = {
+  HDRFieldsModel,
+  MediaContainerFormatModel,
   MediaSourceModel,
-  MediaStreamTypeModel
+  MediaStreamArrayModel,
+  MediaStreamCommonFieldsModel,
+  MediaStreamDimensionFieldsModel,
+  MediaStreamDurationFieldsModel,
+  MediaStreamAudioModel,
+  MediaStreamDataModel,
+  MediaStreamImageModel,
+  MediaStreamModel,
+  MediaStreamSubtitleModel,
+  MediaStreamTypeModel,
+  MediaStreamVideoModel
 }

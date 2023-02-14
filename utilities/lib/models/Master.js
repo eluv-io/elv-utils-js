@@ -11,7 +11,9 @@ const MasterModel = ObjectModel({
 })
 
 module.exports = {
-  MasterModel
+  MasterModel,
+  MasterSourcesModel,
+  MasterVariantsModel
 }
 
 
