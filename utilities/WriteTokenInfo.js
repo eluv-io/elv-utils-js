@@ -1,7 +1,7 @@
 // Retrieve part list from object
 const Utility = require('./lib/Utility')
 
-const Draft = require('./lib/concerns/Draft')
+const Draft = require('./lib/concerns/libs/Draft')
 const {NewOpt} = require('./lib/options')
 
 class WriteTokenInfo extends Utility {

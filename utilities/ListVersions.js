@@ -4,8 +4,8 @@ const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
-const ExistObj = require('./lib/concerns/ExistObj')
-const Version = require('./lib/concerns/Version')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
+const Version = require('./lib/concerns/libs/Version')
 
 
 class ListVersions extends Utility {

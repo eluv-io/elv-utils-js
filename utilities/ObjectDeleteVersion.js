@@ -1,7 +1,7 @@
 // Retrieve part list from object
 const Utility = require('./lib/Utility')
 
-const ExistVer = require('./lib/concerns/ExistVer')
+const ExistVer = require('./lib/concerns/kits/ExistVer')
 
 class ObjectDeleteVersion extends Utility {
   static blueprint() {

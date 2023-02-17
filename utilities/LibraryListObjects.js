@@ -11,7 +11,7 @@ const {PublicMetadataPathArrayModel} = require('./lib/models/PublicMetadataPath'
 const JSON = require('./lib/concerns/JSON')
 const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
 const Metadata = require('./lib/concerns/Metadata')
-const FabricObject = require('./lib/concerns/FabricObject')
+const FabricObject = require('./lib/concerns/libs/FabricObject')
 
 class LibraryListObjects extends Utility {
   static blueprint() {

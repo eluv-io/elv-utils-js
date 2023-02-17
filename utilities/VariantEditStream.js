@@ -9,7 +9,7 @@ const {ModOpt, NewOpt} = require('./lib/options')
 
 const VariantStreamArgs = require('./lib/concerns/VariantStreamArgs')
 const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class VariantEditStream extends Utility {
   static blueprint() {

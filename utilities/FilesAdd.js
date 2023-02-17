@@ -5,7 +5,7 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ArgNoWait = require('./lib/concerns/ArgNoWait')
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 const CloudFile = require('./lib/concerns/CloudFile')
 const Edit = require('./lib/concerns/Edit')
 const LocalFile = require('./lib/concerns/LocalFile')

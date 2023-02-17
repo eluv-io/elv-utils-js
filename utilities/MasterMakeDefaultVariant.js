@@ -8,7 +8,7 @@ const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
 const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class MasterMakeDefaultVariant extends Utility {
   static blueprint() {

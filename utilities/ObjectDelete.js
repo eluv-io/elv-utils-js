@@ -2,7 +2,7 @@
 
 const Utility = require('./lib/Utility')
 
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class ObjectDelete extends Utility {
   static blueprint() {

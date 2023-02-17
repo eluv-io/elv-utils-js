@@ -4,7 +4,7 @@ const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 const Metadata = require('./lib/concerns/Metadata')
 const PlayoutFormats = require('./lib/concerns/PlayoutFormats')
 

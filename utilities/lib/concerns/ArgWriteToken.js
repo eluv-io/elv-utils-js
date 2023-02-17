@@ -5,8 +5,8 @@ const {NewOpt} = require('../options')
 
 const ArgLibraryId = require('./ArgLibraryId')
 const ArgObjectId = require('./ArgObjectId')
-const Draft = require('./Draft')
-const FabricObject = require('./FabricObject')
+const Draft = require('./libs/Draft')
+const FabricObject = require('./libs/FabricObject')
 const Logger = require('./Logger')
 
 const blueprint = {

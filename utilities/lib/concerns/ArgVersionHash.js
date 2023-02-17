@@ -3,7 +3,7 @@
 const {StdOpt} = require('../options')
 
 const ArgObjectId = require('./ArgObjectId')
-const Version = require('./Version')
+const Version = require('./libs/Version')
 
 const blueprint = {
   name: 'ArgVersionHash',

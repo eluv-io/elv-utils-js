@@ -7,7 +7,7 @@ const {fabricItemDesc} = require('./lib/helpers')
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ExistObjOrVer = require('./lib/concerns/ExistObjOrVer')
+const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
 const Client = require('./lib/concerns/Client')
 const Logger = require('./lib/concerns/Logger')
 const Metadata = require('./lib/concerns/Metadata')

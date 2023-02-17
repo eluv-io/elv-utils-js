@@ -5,7 +5,7 @@ const {ModOpt, NewOpt} = require('./lib/options')
 
 const ArgVariantKey = require('./lib/concerns/ArgVariantKey')
 const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class MasterCopyVariant extends Utility {
   static blueprint() {

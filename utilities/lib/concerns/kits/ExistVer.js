@@ -21,11 +21,17 @@ const New = context => {
   // fill in implied missing args
   const argsProc = async () => await context.concerns.ArgVersionHash.argsProc()
 
+  const del = async () => await context.concerns.Version.del(await relevantArgs())
+
   const info = async() => await context.concerns.Version.info(await relevantArgs())
+
+  const libraryId = async () => await relevantArgs().libraryId
 
   const metadata = async ({subtree} = {}) => await context.concerns.Version.metadata(
     mergeRight({subtree}, await relevantArgs())
   )
+
+  const objectId = async () => await relevantArgs().objectId
 
   const partList = async () => await context.concerns.Version.partList(await relevantArgs())
 
@@ -36,8 +42,11 @@ const New = context => {
 
   return {
     argsProc,
+    del,
     info,
+    libraryId,
     metadata,
+    objectId,
     partList,
     typeHash
   }

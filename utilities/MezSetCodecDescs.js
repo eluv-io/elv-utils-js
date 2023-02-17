@@ -6,7 +6,7 @@ const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
 const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 const setCodecDescs = require('./lib/misc/setCodecDescs')
 
 class MezSetCodecDescs extends Utility {
@@ -52,13 +52,13 @@ class MezSetCodecDescs extends Utility {
     }
 
     // write metadata back to draft
-    // await this.concerns.Edit.writeMetadata({
-    //   commitMessage: "Update codec descriptors for video rungs",
-    //   libraryId,
-    //   metadata: offerings,
-    //   metadataSubtree: "/offerings",
-    //   objectId
-    // });
+    await this.concerns.Edit.writeMetadata({
+      commitMessage: 'Update codec descriptors for video rungs',
+      libraryId,
+      metadata: offerings,
+      metadataSubtree: '/offerings',
+      objectId
+    })
   }
 
   header() {

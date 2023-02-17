@@ -6,7 +6,7 @@ const Utility = require('./lib/Utility')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
 const Client = require('./lib/concerns/Client')
 const CloudAccess = require('./lib/concerns/CloudAccess')
-const ExistObjOrVer = require('./lib/concerns/ExistObjOrVer')
+const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
 
 class FilesProbe extends Utility {
   static blueprint() {

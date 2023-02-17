@@ -1,7 +1,7 @@
 // Retrieve file list from object
 const Utility = require('./lib/Utility')
 
-const ExistObjOrVer = require('./lib/concerns/ExistObjOrVer')
+const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
 const FabricFile = require('./lib/concerns/FabricFile')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
 

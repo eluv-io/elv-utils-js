@@ -4,7 +4,7 @@ const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
 const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
 const ArgOfferingKey = require('./lib/concerns/ArgOfferingKey')
 

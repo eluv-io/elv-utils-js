@@ -3,7 +3,7 @@
 const {StdOpt} = require('../options')
 
 const ArgLibraryId = require('./ArgLibraryId')
-const FabricObject = require('./FabricObject')
+const FabricObject = require('./libs/FabricObject')
 
 const blueprint = {
   name: 'ArgObjectId',

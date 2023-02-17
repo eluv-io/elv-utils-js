@@ -5,8 +5,8 @@ const {NewOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
-const ExistObj = require('./lib/concerns/ExistObj')
-const Version = require('./lib/concerns/Version')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
+const Version = require('./lib/concerns/libs/Version')
 
 const chkKeepNewOrKeepOld = (argv) => {
   if(!argv.keepNew && !argv.keepOld) {

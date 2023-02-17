@@ -30,7 +30,11 @@ const New = context => {
 
   const argsProc = async () => await relevantConcern.argsProc()
 
+  const del = async () => await relevantConcern.del()
+
   const info = async () => await relevantConcern.info()
+
+  const libraryId = async () => await relevantConcern.libraryId()
 
   const metadata = async ({subtree} = {}) => await relevantConcern.metadata({subtree})
 
@@ -40,7 +44,9 @@ const New = context => {
 
   return {
     argsProc,
+    del,
     info,
+    libraryId,
     metadata,
     partList,
     typeHash

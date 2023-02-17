@@ -2,8 +2,8 @@
 
 const {StdOpt} = require('../options')
 
-const FabricObject = require('./FabricObject')
-const Library = require('./Library')
+const FabricObject = require('./libs/FabricObject')
+const Library = require('./libs/Library')
 
 const blueprint = {
   name: 'ArgLibraryId',

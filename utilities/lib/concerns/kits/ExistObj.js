@@ -21,7 +21,11 @@ const New = context => {
   // fill in any implied missing args
   const argsProc = async () => await context.concerns.ArgObjectId.argsProc()
 
+  const del = async () => await context.concerns.FabricObject.del(await relevantArgs())
+
   const info = async() => await context.concerns.FabricObject.info(await relevantArgs())
+
+  const libraryId = async () => await relevantArgs().libraryId
 
   const metadata = async ({subtree} = {}) => await context.concerns.FabricObject.metadata(
     mergeRight({subtree}, await relevantArgs())
@@ -40,7 +44,9 @@ const New = context => {
 
   return {
     argsProc,
+    del,
     info,
+    libraryId,
     metadata,
     partList,
     permission,

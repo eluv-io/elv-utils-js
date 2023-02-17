@@ -57,12 +57,12 @@ const setCodecDescs = async ({
           }
           if(player_profile) queryParams.player_profile = player_profile
 
-          console.log('===============================')
-          let curlURL = new URL(elvClient.HttpClient.BaseURI().href())
-          curlURL.pathname = path
-          curlURL.searchParams.append('authorization', authToken)
-          console.log(`curl "${curlURL.href}"`)
-          console.log('===============================')
+          // console.log('===============================')
+          // let curlURL = new URL(elvClient.HttpClient.BaseURI().href())
+          // curlURL.pathname = path
+          // curlURL.searchParams.append('authorization', authToken)
+          // console.log(`curl "${curlURL.href}"`)
+          // console.log('===============================')
 
           // get init segment
           const response = await elvClient.HttpClient.Request({

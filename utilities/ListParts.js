@@ -1,7 +1,7 @@
 // Retrieve part list from object
 const Utility = require('./lib/Utility')
 
-const ExistObjOrVer = require('./lib/concerns/ExistObjOrVer')
+const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
 
 class ListParts extends Utility {

@@ -1,5 +1,5 @@
 const Client = require('./Client')
-const FabricObject = require('./FabricObject')
+const FabricObject = require('./libs/FabricObject')
 const FinalizeAndWait = require('./FinalizeAndWait')
 const Logger = require('./Logger')
 

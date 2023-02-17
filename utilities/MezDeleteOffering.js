@@ -5,7 +5,7 @@ const {ModOpt} = require('./lib/options')
 
 const ArgOfferingKey = require('./lib/concerns/ArgOfferingKey')
 const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class MezDeleteOffering extends Utility {
   static blueprint() {

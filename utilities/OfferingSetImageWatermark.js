@@ -7,7 +7,7 @@ const ImageWatermarkModel = require('./lib/models/ImageWatermarkModel')
 const ArgClear = require('./lib/concerns/ArgClear')
 const ArgOfferingKey = require('./lib/concerns/ArgOfferingKey')
 const ArgWatermark = require('./lib/concerns/ArgWatermark')
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 const FabricFile = require('./lib/concerns/FabricFile')
 const Metadata = require('./lib/concerns/Metadata')
 

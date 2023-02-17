@@ -3,7 +3,7 @@
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ExistObj = require('./lib/concerns/ExistObj')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 const FabricFile = require('./lib/concerns/FabricFile')
 const Metadata = require('./lib/concerns/Metadata')
 const ArgFilePath = require('./lib/concerns/ArgFilePath')

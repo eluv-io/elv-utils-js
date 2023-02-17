@@ -93,6 +93,11 @@ const New = context => {
     return await client.ContentObjectMetadata({libraryId, objectId})
   }
 
+  const name = async({libraryId}) => {
+    const libInfo = await info({libraryId})
+    return libInfo.metadata?.public?.name || libInfo.metadata?.name
+  }
+
   // list of objects within a library
   const objectList = async ({filterOptions, libraryId}) => {
 
@@ -125,6 +130,7 @@ const New = context => {
     libObjectId,
     list,
     metadata,
+    name,
     objectList,
     partList,
     typeHash

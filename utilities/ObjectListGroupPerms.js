@@ -5,7 +5,7 @@ const Utility = require('./lib/Utility')
 
 const AccessGroup = require('./lib/concerns/AccessGroup')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
-const FabricObject = require('./lib/concerns/FabricObject')
+const FabricObject = require('./lib/concerns/libs/FabricObject')
 const Logger = require('./lib/concerns/Logger')
 
 class ObjectListGroupPerms extends Utility {
