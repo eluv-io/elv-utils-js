@@ -14,6 +14,7 @@ const ArgIsDefault = require('./lib/concerns/ArgIsDefault')
 const ArgLabel = require('./lib/concerns/ArgLabel')
 const ArgLanguage = require('./lib/concerns/ArgLanguage')
 const ArgOfferingKey = require('./lib/concerns/ArgOfferingKey')
+const ArgStoreClear = require('./lib/concerns/args/ArgStoreClear')
 const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
 const ArgTimeShift = require('./lib/concerns/ArgTimeShift')
 const Edit = require('./lib/concerns/Edit')
@@ -27,7 +28,7 @@ class OfferingAddSubtitles extends Utility {
     return {
       concerns: [
         ExistObj, Metadata, Subtitle, Edit, Part,
-        ArgFile, ArgForced, ArgIsDefault, ArgLabel, ArgLanguage, ArgOfferingKey, ArgStreamKey, ArgTimeShift
+        ArgFile, ArgForced, ArgIsDefault, ArgLabel, ArgLanguage, ArgOfferingKey, ArgStoreClear, ArgStreamKey, ArgTimeShift
       ],
       options: [
         ModOpt('file', {
@@ -36,6 +37,9 @@ class OfferingAddSubtitles extends Utility {
         }),
         ModOpt('offeringKey', {
           X: 'to add subtitle stream to'
+        }),
+        ModOpt('storeClear', {
+          X: 'to store subtitle data'
         }),
         ModOpt('streamKey', {
           descTemplate: 'Key for new subtitle stream',
@@ -67,6 +71,7 @@ class OfferingAddSubtitles extends Utility {
       label,
       language,
       offeringKey,
+      storeClear,
       streamKey,
       timeShift
     } = this.args
@@ -84,7 +89,7 @@ class OfferingAddSubtitles extends Utility {
 
     if (isNil(offering) || isEmpty(offering)) throw Error(`Offering '${offeringKey}' not found.`)
 
-    const storeClear = offering.store_clear
+    const useClearStorage = storeClear || offering.store_clear
 
     // read captions file and apply any time shift
     let originalData = fs.readFileSync(filePath)
@@ -94,7 +99,13 @@ class OfferingAddSubtitles extends Utility {
 
     const {writeToken} = await this.concerns.Edit.getWriteToken({libraryId, objectId})
     // upload part
-    const partUploadResult = await this.concerns.Part.upload({libraryId, objectId, writeToken, storeClear, partData})
+    const partUploadResult = await this.concerns.Part.upload({
+      libraryId,
+      objectId,
+      writeToken,
+      storeClear: useClearStorage,
+      partData
+    })
     const partHash = partUploadResult.partHash
     console.log(`Subtitles uploaded as new part: ${partHash}`)
 
