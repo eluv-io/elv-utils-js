@@ -20,7 +20,7 @@
     "@eluvio/elv-abr-profile": "^1.0.0",
     "@eluvio/elv-client-js": "git+ssh://git@github.com:eluv-io/elv-client-js.git#58625548e3746abab267eb8a47591d515a82b73a",
     "@eluvio/elv-js-helpers": "^5.3.0",
-    "@eluvio/elv-lro-status": "^3.0.6",
+    "@eluvio/elv-lro-status": "^3.0.7",
     "@eluvio/ramda-fork": "^0.28.1",
     "airtable": "^0.11.6",
     "cbor": "^8.1.0",

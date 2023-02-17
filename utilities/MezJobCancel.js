@@ -60,7 +60,7 @@ class MezzanineJobStatus extends Utility {
     if(cancellableLROs.length === 0) throw Error('No cancellable LROs found.')
     logger.log(`Found ${cancellableLROs.length} cancellable transcode(s), sending cancel request to each of the following:`)
 
-    const lroDraftInfo = await this.concerns.LRO.mezLRODraftInfo({libraryId, objectId})
+    const lroDraftInfo = await this.concerns.LRO.draftInfo({libraryId, objectId})
 
     const promises = {}
     for(const lroKey of cancellableLROs) {
