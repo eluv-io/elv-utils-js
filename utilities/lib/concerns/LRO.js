@@ -1,7 +1,8 @@
-const kindOf = require('kind-of')
+const isUndefined = require('@eluvio/elv-js-helpers/Boolean/isUndefined')
 
 const enhanceLROStatus = require('@eluvio/elv-lro-status/enhanceLROStatus')
 const defaultOptions = require('@eluvio/elv-lro-status/defaultOptions')
+
 const {
   STATE_UNKNOWN,
   STATE_FINISHED,
@@ -57,7 +58,7 @@ const New = context => {
         writeToken
       })
     } catch(e) {
-      throw Error(`Failed to find write token ${writeToken}, has draft already been finalized? (${kindOf(e)})`)
+      throw Error(`Failed to find write token ${writeToken}, has draft already been finalized? (${e})`)
     }
 
     return await client.CallBitcodeMethod({
@@ -75,7 +76,7 @@ const New = context => {
     const client = await context.concerns.Client.get()
     const statusResponse = await client.LROStatus({libraryId, objectId})
 
-    if(kindOf(statusResponse) === 'undefined') throw Error('Received no job status information from server - object already finalized?')
+    if(isUndefined(statusResponse)) throw Error('Received no job status information from server - object already finalized?')
 
     const options = Object.assign(defaultOptions(), {currentTime: new Date})
     const enhanced = enhanceLROStatus(options, statusResponse)

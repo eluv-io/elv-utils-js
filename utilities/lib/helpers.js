@@ -138,7 +138,7 @@ const readFileJSON = (filePath, cwd = '.', logger) => JSON.parse(readFile(filePa
 // Try interpreting the string as a file path. If that fails, return string
 const stringOrFileContents = (str, cwd = '.', logger) => {
   try {
-    const exists = fs.existsSync(path.join(cwd,str))
+    const exists = fs.existsSync(path.resolve(cwd,str))
     return exists ? readFile(str, cwd, logger) : str
   } catch (e) {
     return str
