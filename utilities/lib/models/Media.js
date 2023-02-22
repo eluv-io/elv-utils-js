@@ -1,25 +1,29 @@
-const {
-  ArrayModel,
-  BasicModel,
-  NonNegativeNumber,
-  ObjectModel,
-  PositiveInteger,
-  PositiveNumber,
-  NonNegativeInteger
-} = require('./Models')
+const util = require('util')
 
-const HDRFieldsModel = ObjectModel({
+const defBasicModel = require('@eluvio/elv-js-helpers/ModelFactory/defBasicModel')
+const defNonEmptyArrModel = require('@eluvio/elv-js-helpers/ModelFactory/defNonEmptyArrModel')
+const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')
+const defSealedObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defSealedObjModel')
+const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
+const NonNegativeIntModel = require('@eluvio/elv-js-helpers/Model/NonNegativeIntModel')
+const NonNegativeNumModel = require('@eluvio/elv-js-helpers/Model/NonNegativeNumModel')
+const PositiveIntModel = require('@eluvio/elv-js-helpers/Model/PositiveIntModel')
+const PositiveNumModel = require('@eluvio/elv-js-helpers/Model/PositiveNumModel')
+const reduce = require('@eluvio/elv-js-helpers/Functional/reduce')
+
+const HDRFieldsModel = defSealedObjModel('HDRFields',{
   master_display: String,
   max_cll: String
 })
 
-const MediaContainerFormatModel = ObjectModel({
-  duration: NonNegativeNumber,
+const HDRFieldsOptionalModel = defBasicModel('HDRFieldsOptional', [null, undefined, HDRFieldsModel])
+
+const MediaContainerFormatModel = defSealedObjModel('MediaContainerFormat', {
+  duration: NonNegativeNumModel,
   filename: String,
   format_name: String,
   start_time: 0
 })
-
 
 const MEDIA_STREAM_TYPE_AUDIO = 'StreamAudio'
 const MEDIA_STREAM_TYPE_DATA = 'StreamData'
@@ -27,7 +31,7 @@ const MEDIA_STREAM_TYPE_IMAGE = 'StreamImage'
 const MEDIA_STREAM_TYPE_SUBTITLE = 'StreamSubtitle'
 const MEDIA_STREAM_TYPE_VIDEO = 'StreamVideo'
 
-const MediaStreamTypeModel = BasicModel([
+const MediaStreamTypeModel = defBasicModel('MediaStreamType', [
   MEDIA_STREAM_TYPE_AUDIO,
   MEDIA_STREAM_TYPE_DATA,
   MEDIA_STREAM_TYPE_IMAGE,
@@ -35,98 +39,143 @@ const MediaStreamTypeModel = BasicModel([
   MEDIA_STREAM_TYPE_VIDEO
 ])
 
-// common fields, dimension fields, duration fields
-const MediaStreamCommonFieldsModel = ObjectModel({
+const MS_STREAM_COMMON_FIELDS = ({
   codec_name: String,
   language: String,
   side_data_list: [null, Array],
   tags: [null, Object]
 })
 
-const MediaStreamDimensionFieldsModel = ObjectModel({
+const MS_STREAM_DIMENSION_FIELDS = ({
   display_aspect_ratio: String,
-  height: PositiveInteger,
+  height: PositiveIntModel,
   sample_aspect_ratio: String,
-  width: PositiveInteger
+  width: PositiveIntModel
 })
 
-const MediaStreamDurationFieldsModel = ObjectModel({
-  bit_rate: PositiveInteger,
-  duration: PositiveNumber,
-  duration_ts: PositiveInteger,
-  frame_count: PositiveInteger,
-  max_bit_rate: NonNegativeInteger,
-  start_pts: NonNegativeInteger,
-  start_time: NonNegativeNumber,
+const MS_STREAM_DURATION_FIELDS = ({
+  bit_rate: PositiveIntModel,
+  duration: PositiveNumModel,
+  duration_ts: PositiveIntModel,
+  frame_count: PositiveIntModel,
+  max_bit_rate: NonNegativeIntModel,
+  start_pts: NonNegativeIntModel,
+  start_time: NonNegativeNumModel,
   time_base: String
 })
 
-const MediaStreamAudioModel = MediaStreamCommonFieldsModel.extend(
-  MediaStreamDurationFieldsModel,
-  {
-    channel_layout: String,
-    channels: PositiveInteger,
-    sample_rate: PositiveInteger,
-    type: MEDIA_STREAM_TYPE_AUDIO
-  }
-).as('MediaStreamAudio')
+const MS_STREAM_AUDIO_FIELDS = reduce(
+  mergeRight,
+  {},
+  [
+    MS_STREAM_COMMON_FIELDS,
+    MS_STREAM_DURATION_FIELDS,
+    {
+      channel_layout: String,
+      channels: PositiveIntModel,
+      sample_rate: PositiveIntModel,
+      type: MEDIA_STREAM_TYPE_AUDIO
+    }
+  ]
+)
 
-const MediaStreamDataModel = MediaStreamCommonFieldsModel.extend(
-  MediaStreamDurationFieldsModel,
-  {
-    type: MEDIA_STREAM_TYPE_DATA
-  }
-).as('MediaStreamData')
+const MediaStreamAudioModel = defSealedObjModel(
+  'MediaStreamAudio',
+  MS_STREAM_AUDIO_FIELDS
+)
 
-const MediaStreamImageModel = MediaStreamCommonFieldsModel.extend(
-  MediaStreamDimensionFieldsModel,
-  {
-    type: MEDIA_STREAM_TYPE_IMAGE
-  }
-).as('MediaStreamImage')
+const MS_STREAM_DATA_FIELDS = reduce(
+  mergeRight,
+  {},
+  [
+    MS_STREAM_COMMON_FIELDS,
+    MS_STREAM_DURATION_FIELDS,
+    {
+      type: MEDIA_STREAM_TYPE_DATA
+    }
+  ]
+)
 
-const MediaStreamSubtitleModel = MediaStreamCommonFieldsModel.extend(
-  {
-    type: MEDIA_STREAM_TYPE_SUBTITLE
-  }
-).as('MediaStreamSubtitle')
+const MediaStreamDataModel = defSealedObjModel(
+  'MediaStreamData',
+  MS_STREAM_DATA_FIELDS
+)
 
-const MediaStreamVideoModel = MediaStreamCommonFieldsModel.extend(
-  MediaStreamDimensionFieldsModel,
-  MediaStreamDurationFieldsModel,
-  {
-    field_order: String,
-    frame_rate: String,
-    hdr: [HDRFieldsModel],
-    type: MEDIA_STREAM_TYPE_VIDEO
-  }
-).as('MediaStreamVideo')
+const MS_STREAM_IMAGE_FIELDS = reduce(
+  mergeRight,
+  {},
+  [
+    MS_STREAM_COMMON_FIELDS,
+    MS_STREAM_DIMENSION_FIELDS,
+    {
+      type: MEDIA_STREAM_TYPE_IMAGE
+    }
+  ]
+)
 
-const MediaStreamModel = ObjectModel({}).extend().assert(i => {
+const MediaStreamImageModel = defSealedObjModel(
+  'MediaStreamImage',
+  MS_STREAM_IMAGE_FIELDS
+)
+
+const MS_STREAM_SUBTITLE_FIELDS = reduce(
+  mergeRight,
+  {},
+  [
+    MS_STREAM_COMMON_FIELDS,
+    {
+      type: MEDIA_STREAM_TYPE_SUBTITLE
+    }
+  ]
+)
+
+const MediaStreamSubtitleModel = defSealedObjModel(
+  'MediaStreamSubtitle',
+  MS_STREAM_SUBTITLE_FIELDS
+)
+
+const MS_STREAM_VIDEO_FIELDS = reduce(
+  mergeRight,
+  {},
+  [
+    MS_STREAM_COMMON_FIELDS,
+    MS_STREAM_DIMENSION_FIELDS,
+    MS_STREAM_DURATION_FIELDS,
+    {
+      field_order: String,
+      frame_rate: String,
+      hdr: HDRFieldsOptionalModel,
+      type: MEDIA_STREAM_TYPE_VIDEO
+    }
+  ]
+)
+
+const MediaStreamVideoModel = defSealedObjModel(
+  'MediaStreamVideo',
+  MS_STREAM_VIDEO_FIELDS
+)
+
+const MediaStreamModel = defObjectModel('MediaStream', MS_STREAM_COMMON_FIELDS).assert(function checkSourceStream(i) {
+  if (util.types.isProxy(i)) return true
   switch (i.type) {
     case MEDIA_STREAM_TYPE_AUDIO:
-      MediaStreamAudioModel(i)
-      return true
+      return MediaStreamAudioModel.test(i, MediaStreamModel.errorCollector)
     case MEDIA_STREAM_TYPE_DATA:
-      MediaStreamDataModel(i)
-      return true
+      return MediaStreamDataModel.test(i, MediaStreamModel.errorCollector)
     case MEDIA_STREAM_TYPE_IMAGE:
-      MediaStreamImageModel(i)
-      return true
+      return MediaStreamImageModel.test(i, MediaStreamModel.errorCollector)
     case MEDIA_STREAM_TYPE_SUBTITLE:
-      MediaStreamSubtitleModel(i)
-      return true
+      return MediaStreamSubtitleModel.test(i, MediaStreamModel.errorCollector)
     case MEDIA_STREAM_TYPE_VIDEO:
-      MediaStreamVideoModel(i)
-      return true
+      return MediaStreamVideoModel.test(i, MediaStreamModel.errorCollector)
     default:
       throw Error(`Unrecognized stream type: ${i.type}`)
   }
 })
 
-const MediaStreamArrayModel = ArrayModel(MediaStreamModel)
+const MediaStreamArrayModel = defNonEmptyArrModel('MediaStreamArray', MediaStreamModel)
 
-const MediaSourceModel = ObjectModel({
+const MediaSourceModel = defSealedObjModel('MediaSource', {
   container_format: MediaContainerFormatModel,
   streams: MediaStreamArrayModel
 })
@@ -136,9 +185,6 @@ module.exports = {
   MediaContainerFormatModel,
   MediaSourceModel,
   MediaStreamArrayModel,
-  MediaStreamCommonFieldsModel,
-  MediaStreamDimensionFieldsModel,
-  MediaStreamDurationFieldsModel,
   MediaStreamAudioModel,
   MediaStreamDataModel,
   MediaStreamImageModel,
