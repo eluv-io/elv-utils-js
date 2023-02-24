@@ -60,7 +60,7 @@ class FilesDownload extends Utility {
       })) throw Error(`File '${filePath}' not found in object.`)
       const callback = ({bytesFinished,  bytesTotal, chunk}) => {
         logger.log(`${filePath}: ${Math.round(100 * bytesFinished/(bytesTotal || 1))}%`)
-        promises.push(fs.promises.appendFile(destPath, chunk))
+        fs.appendFileSync(destPath, chunk)
       }
       downloads.push({file: filePath, destPath, callback})
     }
