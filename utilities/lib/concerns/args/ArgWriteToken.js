@@ -45,7 +45,7 @@ const New = context => {
       }
 
       if(context.args.nodeUrl) {
-        await context.concerns.Draft.recordWriteTokenURI({
+        await context.concerns.Draft.recordWriteTokenNodeURL({
           writeToken: context.args.writeToken,
           nodeUrl: context.args.nodeUrl
         })
