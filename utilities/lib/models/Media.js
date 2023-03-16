@@ -54,7 +54,7 @@ const MS_STREAM_DIMENSION_FIELDS = ({
 })
 
 const MS_STREAM_DURATION_FIELDS = ({
-  bit_rate: PositiveIntModel,
+  bit_rate: NonNegativeIntModel,
   duration: PositiveNumModel,
   duration_ts: PositiveIntModel,
   frame_count: PositiveIntModel,
