@@ -31,8 +31,8 @@ class WriteTokenInfo extends Utility {
     } catch (e) {
       this.logger.warn(`Could not determine node URL for write token: ${e}`)
     }
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify(result, null, 2))
+    this.logger.data('writeTokenInfo', result)
+    this.logger.log(JSON.stringify(result, null, 2))
   }
 
   header() {

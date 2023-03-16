@@ -22,8 +22,7 @@ class VersionHashInfo extends Utility {
     const {versionHash} = this.args
     const result = this.concerns.Version.decode({versionHash})
     this.logger.data('versionHashInfo', result)
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify(result, null, 2))
+    this.logger.log(JSON.stringify(result, null, 2))
   }
 
   header() {
