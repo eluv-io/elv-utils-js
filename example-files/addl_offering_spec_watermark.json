@@ -1,5 +1,5 @@
 {
-  "watermark-large": [
+  "watermark": [
     {
       "op": "replace",
       "path": "/simple_watermark",

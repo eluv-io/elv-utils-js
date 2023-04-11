@@ -3,7 +3,7 @@ const defSealedObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defSealed
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 
 const TextWatermarkModel = defSealedObjModel(
-  'ImageWatermark',
+  'TextWatermark',
   {
     font_color: NonBlankStrModel,
     font_relative_height: defBoundedNumModel('FontRelativeHeight', 0, 1, false, true),

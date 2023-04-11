@@ -20,7 +20,7 @@ class VariantEditStream extends Utility {
           demand: true,
         }),
         NewOpt('clearMapping', {
-          descTemplate: 'Clear stream\'s mapping_info field',
+          descTemplate: 'Blank out the stream\'s mapping_info field',
           type: 'boolean',
           conflicts: 'mapping'
         }),

@@ -7,7 +7,7 @@ const blueprint = {
   concerns: [JSON],
   options: [
     NewOpt('metadata', {
-      descTemplate: 'JSON string for metadata or path to JSON file containing the metadata{X}',
+      descTemplate: 'Either a JSON string for metadata, or the path to a JSON file containing the metadata{X}',
       type: 'string'
     })
   ]

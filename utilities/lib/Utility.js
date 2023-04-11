@@ -1,4 +1,7 @@
 // base class for utility scripts
+
+// ==================================
+// Check node.js version
 let nodeMajorVersion
 try {
   nodeMajorVersion = parseInt(process.version.match(/^v(\d+)\.\d+/)[1])
@@ -6,6 +9,24 @@ try {
   throw Error(`Error while checking version of Node.js: ${e}`)
 }
 if (nodeMajorVersion < 14) throw Error(`Node.js version at least 14 required (found: ${process.version})`)
+// ==================================
+
+// ==================================
+// Suppress Node.js warning about experimental fetch API
+// Ref: https://github.com/nodejs/node/issues/30810#issuecomment-1383184769
+const originalEmit = process.emit
+process.emit = function (event, error) {
+  if (
+    event === 'warning' &&
+    error.name === 'ExperimentalWarning' &&
+    error.message.includes('The Fetch API is an experimental feature.')
+  ) {
+    return false
+  }
+
+  return originalEmit.apply(process, arguments)
+}
+// ==================================
 
 const yargs = require('yargs/yargs')
 const yargsTerminalWidth = require('yargs').terminalWidth

@@ -7,7 +7,7 @@ const blueprint = {
   concerns: [JSON],
   options: [
     NewOpt('watermark', {
-      descTemplate: 'JSON string for watermark settings or path to JSON file containing the watermark settings',
+      descTemplate: 'Either a JSON string for watermark settings, or the path to JSON file containing the watermark settings',
       conflicts: ['clear'],
       type: 'string'
     })
