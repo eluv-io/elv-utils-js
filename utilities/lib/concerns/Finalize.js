@@ -47,7 +47,10 @@ const New = context => {
     }
   }
 
-  return {finalize, waitForPublish}
+  return {
+    finalize,
+    waitForPublish
+  }
 }
 
 module.exports = {

@@ -22,6 +22,17 @@ const New = context => {
   // fill in implied missing args
   const argsProc = async () => await context.concerns.ArgWriteToken.argsProc()
 
+  const finalize = async ({commitMessage, noWait}) => {
+    const params = mergeRight(
+      await relevantArgs(),
+      {
+        commitMessage,
+        noWait
+      }
+    )
+    return await context.concerns.Draft.finalize(params)
+  }
+
   const info = async() => await context.concerns.Draft.info(await relevantArgs())
 
   const metadata = async ({subtree} = {}) => await context.concerns.Draft.metadata(
@@ -37,6 +48,7 @@ const New = context => {
 
   return {
     argsProc,
+    finalize,
     info,
     metadata,
     partList,

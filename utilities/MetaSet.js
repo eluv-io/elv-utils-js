@@ -5,7 +5,7 @@ const R = require('@eluvio/ramda-fork')
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
 const Metadata = require('./lib/concerns/Metadata')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
 
@@ -13,7 +13,7 @@ class MetaSet extends Utility {
   static blueprint() {
     return {
       concerns: [
-        ExistObj,
+        ExistObjOrDft,
         Metadata,
         ArgMetadata
       ],
@@ -43,10 +43,10 @@ class MetaSet extends Utility {
 
     // operations that may need to wait on network access
     // ----------------------------------------------------
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    const {libraryId, objectId, writeToken} = await this.concerns.ExistObjOrDft.argsProc()
 
     logger.log('Retrieving existing metadata from object...')
-    const currentMetadata = await this.concerns.ExistObj.metadata()
+    const currentMetadata = await this.concerns.ExistObjOrDft.metadata()
 
     // check that targetPath can be set
     Metadata.validateTargetPath({
@@ -68,7 +68,8 @@ class MetaSet extends Utility {
     const newHash = await this.concerns.Metadata.write({
       libraryId,
       metadata: revisedMetadata,
-      objectId
+      objectId,
+      writeToken
     })
     this.logger.data('version_hash', newHash)
   }

@@ -8,10 +8,11 @@ const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
 
 const Client = require('../Client')
 const Logger = require('../Logger')
+const Finalize = require('../Finalize')
 
 const blueprint = {
   name: 'Draft',
-  concerns: [Client, Logger]
+  concerns: [Client, Logger, Finalize]
 }
 
 const New = context => {
@@ -47,13 +48,25 @@ const New = context => {
     logger.log(`New write token: ${response.writeToken}`)
     return {
       objectId: response.objectId,
-      writeToken: response.writeToken
+      writeToken: response.writeToken,
+      nodeUrl: response.nodeUrl
     }
   }
 
   const decode = ({writeToken}) => {
     if(!writeToken) throw Error('Draft.decode() - missing writeToken')
     return Utils.DecodeWriteToken(writeToken)
+  }
+
+  const finalize = async ({commitMessage, libraryId, objectId, writeToken, noWait}) => {
+    if(!writeToken) throw Error('Draft.info() - missing writeToken')
+    return await context.concerns.Finalize.finalize({
+      commitMessage,
+      libraryId,
+      objectId,
+      writeToken,
+      noWait
+    })
   }
 
   const info = async ({libraryId, objectId, writeToken}) => {
@@ -167,6 +180,7 @@ const New = context => {
   return {
     create,
     decode,
+    finalize,
     info,
     metadata,
     nodeInfo,
