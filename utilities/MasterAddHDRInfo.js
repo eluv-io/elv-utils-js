@@ -20,7 +20,8 @@ class MasterAddHDRInfo extends Utility {
       options: [
         NewOpt('file', {
           descTemplate: 'File within master object that contains HDR video stream',
-          type: 'string'
+          type: 'string',
+          demand: true
         }),
         NewOpt('info', {
           descTemplate: 'Either a JSON string for HDR info, or the path to a JSON file containing the info',

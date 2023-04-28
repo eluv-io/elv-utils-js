@@ -57,7 +57,7 @@ const MS_STREAM_DURATION_FIELDS = ({
   bit_rate: NonNegativeIntModel,
   duration: PositiveNumModel,
   duration_ts: PositiveIntModel,
-  frame_count: PositiveIntModel,
+  frame_count: NonNegativeIntModel, // jpeg2000 master returns frame count zero - so can't use PositiveIntModel,
   max_bit_rate: NonNegativeIntModel,
   start_pts: NonNegativeIntModel,
   start_time: NonNegativeNumModel,
