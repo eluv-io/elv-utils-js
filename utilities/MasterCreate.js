@@ -13,13 +13,14 @@ const ArgType = require('./lib/concerns/ArgType')
 const Client = require('./lib/concerns/Client')
 const CloudFile = require('./lib/concerns/CloudFile')
 const ContentType = require('./lib/concerns/ContentType')
+const Finalize = require('./lib/concerns/Finalize')
 const JSON = require('./lib/concerns/JSON')
 const LocalFile = require('./lib/concerns/LocalFile')
 
 class MasterCreate extends Utility {
   static blueprint() {
     return {
-      concerns: [Client, CloudFile, JSON, LocalFile, AssetMetadata, ArgMetadata, ContentType, ArgType],
+      concerns: [Client, CloudFile, JSON, LocalFile, AssetMetadata, ArgMetadata, ContentType, ArgType, Finalize],
       options: [
         StdOpt('libraryId', {
           alias: ['masterLib', 'master-lib'],
@@ -110,9 +111,15 @@ class MasterCreate extends Utility {
     // Close file handles (if any)
     this.concerns.LocalFile.closeFileHandles(fileHandles)
 
-    await client.SetVisibility({id, visibility: 0})
+    await this.concerns.Finalize.waitForPublish({
+      latestHash: hash,
+      objectId: id,
+      libraryId
+    })
 
     logger.errorsAndWarnings({errors, warnings})
+
+    await client.SetVisibility({id, visibility: 0})
 
     // was stream info supplied at command line?
     if(streams) {

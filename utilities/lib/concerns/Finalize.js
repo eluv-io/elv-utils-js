@@ -36,7 +36,11 @@ const New = context => {
     let publishFinished = false
     let latestObjectData = {}
     while(!publishFinished) {
-      latestObjectData = await client.ContentObject({libraryId, objectId})
+      try {
+        latestObjectData = await client.ContentObject({libraryId, objectId})
+      } catch (e) {
+        if(e.message!=='Not Found') throw e
+      }
       if(latestObjectData.hash === latestHash) {
         logger.log('New object version now available')
         publishFinished = true
