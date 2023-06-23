@@ -113,14 +113,23 @@ const New = context => {
     result.type = source.streams[streamIndex[0]].type
       .replace('Stream','').toLowerCase()
 
-    for(const [arrayIndex, sIndex] of streamIndex.entries()) {
-      const streamSource = {
-        channel_index: channelIndex ? channelIndex[arrayIndex]: undefined,
-        files_api_path: file,
-        multiplier: multipliers ? multipliers[arrayIndex] : undefined,
-        stream_index: sIndex,
+    for(const [streamArgNum, sIndex] of streamIndex.entries()) {
+      if(channelIndex) {
+        for(const [channelArgNum, cIndex] of channelIndex.entries()) {
+          result.sources.push( {
+            channel_index: cIndex,
+            files_api_path: file,
+            multiplier: multipliers ? multipliers[channelArgNum] : undefined,
+            stream_index: sIndex,
+          })
+        }
+      } else {
+        result.sources.push( {
+          files_api_path: file,
+          multiplier: multipliers ? multipliers[streamArgNum] : undefined,
+          stream_index: sIndex,
+        })
       }
-      result.sources.push(streamSource)
     }
     return result
   }
