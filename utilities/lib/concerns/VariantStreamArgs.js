@@ -3,11 +3,13 @@ const R = require('@eluvio/ramda-fork')
 
 const {NewOpt} = require('../options')
 
+const ArgAlternateFor = require('./args/ArgAlternateFor')
+const ArgRole = require('./args/ArgRole')
 const ArgStreamKey = require('./ArgStreamKey')
 const ArgVariantKey = require('./ArgVariantKey')
 const blueprint = {
   name: 'VariantStreamArgs',
-  concerns: [ArgVariantKey, ArgStreamKey],
+  concerns: [ArgAlternateFor, ArgRole, ArgStreamKey, ArgVariantKey],
   options: [
     NewOpt('label', {
       descTemplate: 'Stream label to show in UI',
@@ -58,7 +60,8 @@ const New = context => {
 
   const optsFromStream = stream => {
 
-    const {label, language} = stream
+    const {label, language, role} = stream
+    const alternateFor = stream.alternate_for
     const isDefault = stream.default_for_media_type
     const mapping = stream.mapping_info
 
@@ -76,6 +79,7 @@ const New = context => {
       : foundMultipliers
 
     return {
+      alternateFor,
       channelIndex,
       file,
       label,
@@ -83,12 +87,14 @@ const New = context => {
       isDefault,
       mapping,
       multipliers,
+      role,
       streamIndex
     }
   }
 
   const streamFromOpts = (sources, opts) => {
     const {
+      alternateFor,
       channelIndex,
       file,
       label,
@@ -96,16 +102,19 @@ const New = context => {
       isDefault,
       mapping,
       multipliers,
+      role,
       streamIndex
     } = opts
 
     if(!sources[file]) throw Error(`Source '${file}' not found in master. If the file exists in the object, run utilities/MasterUpdateSources.js first.`)
 
     const result = {
+      alternate_for: alternateFor,
       default_for_media_type: isDefault,
       label,
       language,
       mapping_info: mapping,
+      role,
       sources: []
     }
 

@@ -13,6 +13,7 @@ const defNonEmptyArrModel = require('@eluvio/elv-js-helpers/ModelFactory/defNonE
 const defNonEmptyTypedKVObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defNonEmptyTypedKVObjModel')
 const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')
 // const defTypedKVObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defTypedKVObjModel')
+const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 const NonNegativeIntModel = require('@eluvio/elv-js-helpers/Model/NonNegativeIntModel')
 const PositiveNumModel = require('@eluvio/elv-js-helpers/Model/PositiveNumModel')
@@ -62,6 +63,10 @@ const filesApiPathAllSame = R.pipe(
   R.equals(1)
 )
 
+const alternateForAndRole = stream => isNil(stream.alternate_for) === isNil( stream.role)
+
+const alternateForIsVideo = stream => isNil(stream.alternate_for) || stream.type === TYPE_VIDEO
+
 const channelsAllOrNone = R.pipe(
   R.map(R.pipe(R.prop('channel_index'), R.isNil)),
   R.uniq,
@@ -84,17 +89,22 @@ const VariantStreamSourceArrayModel = defNonEmptyArrModel('VariantStreamSourceAr
   .assert(filesApiPathAllSame, 'a single output stream cannot mix sources from multiple files')
   .assert(channelsAllOrNone, 'a single output stream cannot mix sources with null and non-null channelIndexes')
   .assert(channelsAllSameStreamIndex, 'a single output stream cannot mix channels from more than one input stream')
+
 const VariantStreamModel = defObjectModel(
   'VariantStream',
   {
+    alternate_for: [NonBlankStrModel],
     default_for_media_type: [Boolean],
     label: [String],
     language: [String],
     mapping_info: [MappingInfoModel],
+    role: [NonBlankStrModel],
     sources: VariantStreamSourceArrayModel,
     type: [StreamTypeModel] // older objects may not have a type field
   }
 )
+  .assert(alternateForAndRole, '\'alternate_for\' and \'role\' must both be set or both blank')
+  .assert(alternateForIsVideo, 'only video streams can have \'alternate_for\' set')
 
 const VariantModel = defObjectModel(
   'Variant',

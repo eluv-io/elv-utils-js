@@ -37,6 +37,7 @@ class VariantAddStream extends Utility {
 
     const streamOpts = R.pick(
       [
+        'alternateFor',
         'channelIndex',
         'file',
         'label',
@@ -44,6 +45,7 @@ class VariantAddStream extends Utility {
         'isDefault',
         'mapping',
         'multipliers',
+        'role',
         'streamIndex'
       ],
       this.args
