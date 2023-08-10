@@ -64,6 +64,18 @@ const MS_STREAM_DURATION_FIELDS = ({
   time_base: String
 })
 
+// some files contain data stream with zero duration
+const MS_DATA_STREAM_DURATION_FIELDS = ({
+  bit_rate: NonNegativeIntModel,
+  duration: NonNegativeIntModel,
+  duration_ts: NonNegativeIntModel,
+  frame_count: NonNegativeIntModel,
+  max_bit_rate: NonNegativeIntModel,
+  start_pts: NonNegativeIntModel,
+  start_time: NonNegativeNumModel,
+  time_base: String
+})
+
 const MS_STREAM_AUDIO_FIELDS = reduce(
   mergeRight,
   {},
@@ -89,7 +101,7 @@ const MS_STREAM_DATA_FIELDS = reduce(
   {},
   [
     MS_STREAM_COMMON_FIELDS,
-    MS_STREAM_DURATION_FIELDS,
+    MS_DATA_STREAM_DURATION_FIELDS,
     {
       type: MEDIA_STREAM_TYPE_DATA
     }
