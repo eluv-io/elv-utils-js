@@ -67,7 +67,7 @@ const MS_STREAM_DURATION_FIELDS = ({
 // some files contain data stream with zero duration
 const MS_DATA_STREAM_DURATION_FIELDS = ({
   bit_rate: NonNegativeIntModel,
-  duration: NonNegativeIntModel,
+  duration: NonNegativeNumModel,
   duration_ts: NonNegativeIntModel,
   frame_count: NonNegativeIntModel,
   max_bit_rate: NonNegativeIntModel,
