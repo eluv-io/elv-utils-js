@@ -37,8 +37,8 @@ class SimpleIngest extends Utility {
   async body() {
     const logger = this.logger
 
-    let fileHandles = []
-    const fileInfo = this.concerns.LocalFile.fileInfo(fileHandles)
+    const fileInfo = this.concerns.LocalFile.fileInfo()
+    const fileHandles = fileInfo.map(x => x.data)
 
     // delay getting elvClient until this point so script exits faster
     // if there is a validation error above

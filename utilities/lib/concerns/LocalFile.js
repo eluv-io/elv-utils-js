@@ -1,17 +1,15 @@
 // code related to opening local files (generally for upload to fabric)
 const fs = require('fs')
-const path = require('path')
-const mime = require('mime-types')
 
-const {absPath} = require('../helpers')
 const {StdOpt} = require('../options')
 
 const Client = require('./Client')
 const Logger = require('./Logger')
+const FileInfo = require('./libs/FileInfo')
 
 const blueprint = {
   name: 'LocalFile',
-  concerns: [Logger, Client],
+  concerns: [Logger, Client, FileInfo],
   options: [
     StdOpt('files', {demand: true}),
   ]
@@ -41,22 +39,8 @@ const New = context => {
 
   const closeFileHandles = fileHandles => fileHandles.forEach(descriptor => fs.closeSync(descriptor))
 
-  const fileInfo = fileHandles => {
-    return context.args.files.map(filePath => {
-      const fullPath = absPath(filePath, context.cwd)
-      const fileDescriptor = fs.openSync(fullPath, 'r')
-      fileHandles.push(fileDescriptor)
-      const size = fs.fstatSync(fileDescriptor).size
-      const mimeType = mime.lookup(fullPath) || 'video/mp4'
-
-      return {
-        path: path.basename(fullPath),
-        type: 'file',
-        mime_type: mimeType,
-        size: size,
-        data: fileDescriptor
-      }
-    })
+  const fileInfo = () => {
+    return context.concerns.FileInfo.get(context.args.files)
   }
 
   return {add, callback, closeFileHandles, fileInfo}

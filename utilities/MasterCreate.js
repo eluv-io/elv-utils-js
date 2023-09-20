@@ -76,10 +76,13 @@ class MasterCreate extends Utility {
     })
     const metadata = R.mergeRight(metadataFromArg, {public: newPublicMetadata})
 
-    let fileHandles = []
     const fileInfo = access
       ? this.concerns.CloudFile.fileInfo()
-      : this.concerns.LocalFile.fileInfo(fileHandles)
+      : this.concerns.LocalFile.fileInfo()
+
+    const fileHandles = access
+      ? []
+      : fileInfo.map(x => x.data)
 
     // delay getting elvClient until this point so script exits faster
     // if there is a validation error above
