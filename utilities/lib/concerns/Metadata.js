@@ -153,13 +153,14 @@ const New = context => {
     })
   }
 
-  const get = async ({libraryId, subtree, objectId, versionHash, writeToken}) => {
+  const get = async ({libraryId, subtree, objectId, resolve, versionHash, writeToken}) => {
     const client = await context.concerns.Client.get()
     logger.log(`Retrieving metadata ${pathDesc(subtree)}from ${fabricItemDesc({objectId, versionHash, writeToken})}...`)
     return await client.ContentObjectMetadata({
       libraryId,
       metadataSubtree: subtree,
       objectId,
+      resolveLinks: resolve,
       versionHash,
       writeToken
     })

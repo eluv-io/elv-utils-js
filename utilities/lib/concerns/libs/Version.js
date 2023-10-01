@@ -50,14 +50,10 @@ const New = context => {
     return response.versions.map(pick(['hash', 'type']))
   }
 
-  const metadata = async ({libraryId, objectId, subtree, versionHash}) => {
-    if(!versionHash) throw Error('Version.metadata() - missing versionHash')
-    return await context.concerns.Metadata.get({
-      libraryId,
-      objectId,
-      subtree,
-      versionHash
-    })
+  const metadata = async (params) => {
+    // TODO: additional params validation
+    if(!params.versionHash) throw Error('Version.metadata() - missing versionHash')
+    return await context.concerns.Metadata.get(params)
   }
 
   const objectId = ({versionHash}) => {

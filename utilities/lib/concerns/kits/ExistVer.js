@@ -27,8 +27,8 @@ const New = context => {
 
   const libraryId = async () => await relevantArgs().libraryId
 
-  const metadata = async ({subtree} = {}) => await context.concerns.Version.metadata(
-    mergeRight({subtree}, await relevantArgs())
+  const metadata = async (params = {}) => await context.concerns.Version.metadata(
+    mergeRight(params, await relevantArgs())
   )
 
   const objectId = async () => await relevantArgs().objectId

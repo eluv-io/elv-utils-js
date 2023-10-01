@@ -16,20 +16,20 @@ class ListFiles extends Utility {
     const {outfile} = this.args
     const {libraryId, objectId, versionHash} = await this.concerns.ExistObjOrVer.argsProc()
 
-    const fileList = await this.concerns.FabricFile.fileList({libraryId, objectId, versionHash})
-    this.logger.data('files', fileList)
+    const itemList = await this.concerns.FabricFile.itemList({libraryId, objectId, versionHash})
+    this.logger.data('files', itemList)
 
     if(outfile) {
-      this.concerns.ArgOutfile.writeJson(fileList)
+      this.concerns.ArgOutfile.writeJson(itemList)
     } else {
-      this.logger.logTable({list: fileList})
+      this.logger.logTable({list: itemList})
     }
 
-    if(fileList.length === 0) this.logger.warn('No files found.')
+    if(itemList.length === 0) this.logger.warn('No files or directories found.')
   }
 
   header() {
-    return `Get file list for ${this.args.versionHash || this.args.objectId}`
+    return `Get file/directory list for ${this.args.versionHash || this.args.objectId}`
   }
 }
 

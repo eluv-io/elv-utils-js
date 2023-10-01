@@ -22,7 +22,7 @@ const VersionHashModel = NonBlankStrModel.extend()
   ).assert(
     ...assertAfterCheck(
       s => passesModelCheck(NonBlankStrModel, s) && s.startsWith('hq__') && isBase58String(s.slice(4)),
-      s => !throwsException(() => Utils.DecodeVersionHash(s.slice(4))),
+      s => !throwsException(() => Utils.DecodeVersionHash(s)),
       'is not a valid Version Hash (decode failed)'
     )
   )

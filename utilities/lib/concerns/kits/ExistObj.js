@@ -27,8 +27,8 @@ const New = context => {
 
   const libraryId = async () => await relevantArgs().libraryId
 
-  const metadata = async ({subtree} = {}) => await context.concerns.FabricObject.metadata(
-    mergeRight({subtree}, await relevantArgs())
+  const metadata = async (params = {}) => await context.concerns.FabricObject.metadata(
+    mergeRight(params, await relevantArgs())
   )
 
   const partList = async () => await context.concerns.FabricObject.partList(await relevantArgs())

@@ -1,4 +1,4 @@
-// Create new production master from specified file(s)
+// Upload specified file(s) to a fabric object
 const path = require('path')
 
 const {ModOpt, NewOpt} = require('./lib/options')
@@ -19,6 +19,10 @@ class FilesAdd extends Utility {
       options: [
         ModOpt('files', {X: 'and/or directories to add'}),
         NewOpt('storeClear', {
+          descTemplate: 'If specified, files will use unencrypted storage',
+          type: 'boolean'
+        }),
+        NewOpt('destDir', {
           descTemplate: 'If specified, files will use unencrypted storage',
           type: 'boolean'
         })

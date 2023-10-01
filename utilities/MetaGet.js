@@ -9,11 +9,12 @@ const JPath = require('./lib/concerns/JPath')
 const Metadata = require('./lib/concerns/Metadata')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const ArgResolve = require('./lib/concerns/args/ArgResolve')
 
 class MetaGet extends Utility {
   static blueprint() {
     return {
-      concerns: [JPath, ExistLibOrObjOrVerOrDft, ArgOutfile],
+      concerns: [JPath, ExistLibOrObjOrVerOrDft, ArgOutfile, ArgResolve],
       options: [
         ModOpt('jpath', {X: 'to extract'}),
         NewOpt('path', {
@@ -25,14 +26,17 @@ class MetaGet extends Utility {
   }
 
   async body() {
-    const {path, outfile} = this.args
+    const {path, outfile, resolve} = this.args
 
     // Check that keys are valid path strings
     if (path) Metadata.validatePathFormat({path})
 
     await this.concerns.ExistLibOrObjOrVerOrDft.argsProc()
 
-    const metadata = await this.concerns.ExistLibOrObjOrVerOrDft.metadata({subtree: path})
+    const metadata = await this.concerns.ExistLibOrObjOrVerOrDft.metadata({
+      subtree: path,
+      resolve
+    })
     if (isUndefined(metadata)) throw Error('no metadata found')
     const filteredMetadata = this.args.jpath
       ? this.concerns.JPath.match({metadata})

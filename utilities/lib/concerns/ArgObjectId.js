@@ -47,12 +47,12 @@ const New = context => {
     })
   }
 
-  const objMetadata = async ({subtree} = {}) => {
+  const objMetadata = async (params = {}) => {
     const {libraryId, objectId} = await argsProc()
     return await context.concerns.FabricObject.metadata({
+      ...params,
       libraryId,
-      objectId,
-      subtree
+      objectId
     })
   }
 

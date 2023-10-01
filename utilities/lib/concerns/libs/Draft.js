@@ -79,14 +79,10 @@ const New = context => {
     })
   }
 
-  const metadata = async ({libraryId, objectId, subtree, writeToken}) => {
-    if(!writeToken) throw Error('Draft.metadata() - missing writeToken')
-    return await context.concerns.Metadata.get({
-      libraryId,
-      objectId,
-      subtree,
-      writeToken
-    })
+  const metadata = async (params) => {
+    // TODO: additional params validation
+    if(!params.writeToken) throw Error('Draft.metadata() - missing writeToken')
+    return await context.concerns.Metadata.get(params)
   }
 
   const nodeInfo = async ({writeToken}) => {

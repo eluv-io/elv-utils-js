@@ -1,5 +1,6 @@
 // code related to libraries / library IDs
 const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
+const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
 
 const Client = require('../Client')
 const Logger = require('../Logger')
@@ -87,10 +88,12 @@ const New = context => {
 
   }
 
-  const metadata = async({libraryId}) => {
-    const objectId = await libObjectId({libraryId})
+  const metadata = async(params) => {
+    // TODO: additional params validation
+    if(!params.libraryId) throw Error('Library.metadata() - missing libraryId')
+    const objectId = await libObjectId({libraryId: params.libraryId})
     const client = await context.concerns.Client.get()
-    return await client.ContentObjectMetadata({libraryId, objectId})
+    return await client.ContentObjectMetadata(mergeRight(params, {objectId}))
   }
 
   const name = async({libraryId}) => {

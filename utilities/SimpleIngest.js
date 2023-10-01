@@ -18,7 +18,10 @@ class SimpleIngest extends Utility {
     return {
       concerns: [Client, Finalize, LocalFile, ArgLibraryId, LRO],
       options: [
-        ModOpt('libraryId', {demand: true, forX: 'new media object'}),
+        ModOpt('libraryId', {
+          alias: ['mezLib', 'mez-lib'],
+          forX: 'new media object'
+        }),
         NewOpt('title', {
           demand: true,
           descTemplate: 'Title for new media object',

@@ -71,13 +71,10 @@ const New = context => {
     return await context.concerns.Library.forObject({objectId})
   }
 
-  const metadata = async ({libraryId, objectId, subtree}) => {
-    if(!objectId) throw Error('FabricObject.metadata() - missing objectId')
-    return await context.concerns.Metadata.get({
-      libraryId,
-      objectId,
-      subtree
-    })
+  const metadata = async (params) => {
+    // TODO: additional params validation
+    if(!params.objectId) throw Error('FabricObject.metadata() - missing objectId')
+    return await context.concerns.Metadata.get(params)
   }
 
   const partList = async ({libraryId, objectId}) => {

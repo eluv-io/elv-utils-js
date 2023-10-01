@@ -2,6 +2,7 @@
 const objectPath = require('object-path')
 const R = require('@eluvio/ramda-fork')
 
+const {fabricItemDesc} = require('./lib/helpers')
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
@@ -19,8 +20,7 @@ class MetaSet extends Utility {
       ],
       options: [
         NewOpt('path', {
-          demand: true,
-          descTemplate: 'Path within metadata to set (start with \'/\').',
+          descTemplate: 'Path within metadata to set (include leading \'/\'). If omitted, all metadata is replaced.',
           type: 'string'
         }),
         NewOpt('force', {
@@ -37,7 +37,12 @@ class MetaSet extends Utility {
     const {path, force} = this.args
 
     // Check that path is a valid path string
-    Metadata.validatePathFormat({path})
+    if (path) Metadata.validatePathFormat({path})
+
+    // If --path not specified, make sure --force was
+    if (!path && !force) {
+      throw Error('If you wish to replace all metadata by omitting --path, you must use --force')
+    }
 
     const metadataFromArg = this.concerns.ArgMetadata.asObject()
 
@@ -49,20 +54,25 @@ class MetaSet extends Utility {
     const currentMetadata = await this.concerns.ExistObjOrDft.metadata()
 
     // check that targetPath can be set
-    Metadata.validateTargetPath({
+    if (path) Metadata.validateTargetPath({
       metadata: currentMetadata,
       path
     })
 
     // make sure targetPath does NOT exist, or --force specified
-    this.concerns.Metadata.checkTargetPath({
+    if (path) this.concerns.Metadata.checkTargetPath({
       force,
       metadata: currentMetadata,
       targetPath: path
     })
 
-    const revisedMetadata = R.clone(currentMetadata)
-    objectPath.set(revisedMetadata, Metadata.pathToArray({path}), metadataFromArg)
+    const revisedMetadata = path
+      ? R.clone(currentMetadata)
+      : metadataFromArg
+
+    if (path) {
+      objectPath.set(revisedMetadata, Metadata.pathToArray({path}), metadataFromArg)
+    }
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({
@@ -75,7 +85,7 @@ class MetaSet extends Utility {
   }
 
   header() {
-    return `Set metadata ${this.args.path ? `at ${this.args.path} ` : ''}for object ${this.args.objectId}`
+    return `Set metadata ${this.args.path ? `at ${this.args.path} ` : ''}for ${fabricItemDesc(this.args)}`
   }
 }
 

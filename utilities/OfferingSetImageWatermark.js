@@ -5,7 +5,7 @@ const Utility = require('./lib/Utility')
 const ImageWatermarkModel = require('./lib/models/ImageWatermarkModel')
 
 const ArgClear = require('./lib/concerns/ArgClear')
-const ArgOfferingKey = require('./lib/concerns/ArgOfferingKey')
+const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
 const ArgWatermark = require('./lib/concerns/ArgWatermark')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const FabricFile = require('./lib/concerns/FabricFile')
