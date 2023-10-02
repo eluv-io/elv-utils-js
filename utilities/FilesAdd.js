@@ -21,10 +21,6 @@ class FilesAdd extends Utility {
         NewOpt('storeClear', {
           descTemplate: 'If specified, files will use unencrypted storage',
           type: 'boolean'
-        }),
-        NewOpt('destDir', {
-          descTemplate: 'If specified, files will use unencrypted storage',
-          type: 'boolean'
         })
       ]
     }
