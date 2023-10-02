@@ -72,23 +72,8 @@ class FilesAdd extends Utility {
   }
 }
 
-//
-// if (require.main === module) {
-//   Utility.cmdLineInvoke(FilesAdd)
-// } else {
-//   module.exports = FilesAdd
-// }
-
-
-const script = new FilesAdd({
-  argList: [
-    '--sources', '/dist/temp.json',
-    '--dest', '/temp2.json',
-    '--configUrl', 'http://localhost:8008/config?qspace=dev&self',
-    '--objectId', 'iq__3iZT9igGZxjmnnRHt216PpMXBHC5'
-  ],
-  env: {
-    'PRIVATE_KEY': '0x45e758fd007d151b4eef4d0b6e6791f83bea3d6e2ad21aee61001034eed58be5'
-  }
-})
-script.run()
+if (require.main === module) {
+  Utility.cmdLineInvoke(FilesAdd)
+} else {
+  module.exports = FilesAdd
+}
