@@ -45,7 +45,7 @@ class FilesAdd extends Utility {
       objectId
     })).writeToken
 
-    this.concerns.FabricFile.move({
+    await this.concerns.FabricFile.move({
       dest,
       libraryId,
       objectId,
