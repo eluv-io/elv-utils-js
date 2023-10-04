@@ -34,7 +34,7 @@ const setCodecDescs = async ({
           libraryId,
           objectId,
           writeToken,
-          update: true // <-- auth oddity
+          makeAccessRequest: true // needed in case parts are stored encrypted
         })
 
         // get bitrate ladder

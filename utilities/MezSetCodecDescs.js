@@ -6,14 +6,14 @@ const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
 const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
 const setCodecDescs = require('./lib/misc/setCodecDescs')
 
 class MezSetCodecDescs extends Utility {
   static blueprint() {
     return {
       concerns: [
-        Client, ExistObj, Edit
+        Client, ExistObjOrDft, Edit
       ],
       options: [
         NewOpt('offeringKey', {
@@ -26,19 +26,19 @@ class MezSetCodecDescs extends Utility {
 
   async body() {
     const {offeringKey} = this.args
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    const {libraryId, objectId, writeToken} = await this.concerns.ExistObjOrDft.argsProc()
 
-    const offerings = await this.concerns.ExistObj.metadata({subtree: '/offerings'})
+    const offerings = await this.concerns.ExistObjOrDft.metadata({subtree: '/offerings'})
 
-    if(!offerings) throw Error('No offerings found in object')
+    if (!offerings) throw Error('No offerings found in object')
     const metadataOffKeys = Object.keys(offerings)
-    if(metadataOffKeys.length === 0) throw Error('No offerings found in object')
-    if(offeringKey && !metadataOffKeys.includes(offeringKey)) throw Error(`Offering '${offeringKey}' not found in object`)
+    if (metadataOffKeys.length === 0) throw Error('No offerings found in object')
+    if (offeringKey && !metadataOffKeys.includes(offeringKey)) throw Error(`Offering '${offeringKey}' not found in object`)
 
     const abrMezOffKeys = offeringKey ? [offeringKey] : Object.keys(offerings)
     const elvClient = await this.concerns.Client.get()
 
-    for(const key of abrMezOffKeys) {
+    for (const key of abrMezOffKeys) {
       this.logger.log(`Processing offering '${key}'...`)
       const offeringMetadata = offerings[key]
       offerings[key] = await setCodecDescs({
@@ -47,17 +47,21 @@ class MezSetCodecDescs extends Utility {
         logger: this.logger,
         objectId,
         offeringKey: key,
-        offeringMetadata
+        offeringMetadata,
+        writeToken
       })
     }
 
     // write metadata back to draft
     await this.concerns.Edit.writeMetadata({
-      commitMessage: 'Update codec descriptors for video rungs',
+      commitMessage: writeToken
+        ? null
+        : 'Update codec descriptors for video rungs',
       libraryId,
       metadata: offerings,
       metadataSubtree: '/offerings',
-      objectId
+      objectId,
+      writeToken
     })
   }
 
@@ -66,7 +70,7 @@ class MezSetCodecDescs extends Utility {
   }
 }
 
-if(require.main === module) {
+if (require.main === module) {
   Utility.cmdLineInvoke(MezSetCodecDescs)
 } else {
   module.exports = MezSetCodecDescs

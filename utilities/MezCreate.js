@@ -85,6 +85,10 @@ class MezCreate extends Utility {
           implies: 'existingMezId',
           type: 'boolean'
         }),
+        NewOpt('noStart', {
+          descTemplate: 'Do not start transcoding LROs',
+          type: 'boolean'
+        }),
         NewOpt('offeringKey', {
           default: 'default',
           descTemplate: 'Key to assign to new offering',
@@ -122,6 +126,7 @@ class MezCreate extends Utility {
       existingMezId,
       keepOtherStreams,
       masterHash,
+      noStart,
       offeringKey,
       streamKeys
     } = this.args
@@ -203,6 +208,15 @@ class MezCreate extends Utility {
 
     const objectId = createResponse.id
 
+    logger.data('library_id', libraryId)
+    logger.data('object_id', objectId)
+    logger.data('offering_key', offeringKey)
+
+    if (noStart) {
+      logger.log('--noStart specified. NOT starting Mezzanine Job(s)')
+      return
+    }
+
     logger.log('Starting Mezzanine Job(s)')
 
     const startResponse = await client.StartABRMezzanineJobs({
@@ -217,9 +231,6 @@ class MezCreate extends Utility {
     const lroWriteToken = R.path(['lro_draft', 'write_token'], startResponse)
     const lroNode = R.path(['lro_draft', 'node'], startResponse)
 
-    logger.data('library_id', libraryId)
-    logger.data('object_id', objectId)
-    logger.data('offering_key', offeringKey)
     logger.data('write_token', lroWriteToken)
     logger.data('write_node', lroNode)
 
