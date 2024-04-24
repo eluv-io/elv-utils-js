@@ -125,6 +125,16 @@ const absPath = (pathStr, workingDir) => path.isAbsolute(pathStr)
     ? path.resolve(workingDir, pathStr)
     : path.resolve(path.resolve(workingDir), pathStr)
 
+const dirListRecursive = pathStr => fs.readdirSync(pathStr).map(
+  f => {
+    let combinedPath = path.join(pathStr, f)
+    let isDirectory = fs.statSync(combinedPath).isDirectory()
+    return isDirectory
+      ? dirListRecursive(combinedPath)
+      : combinedPath
+  }
+).flat()
+
 const ELV_UTILS_DIR = path.resolve(path.join(__dirname, '..', '..'))
 
 const readFile = (filePath, cwd = '.', logger) => {
@@ -218,6 +228,7 @@ module.exports = {
   absPath,
   camel2kebab,
   compare,
+  dirListRecursive,
   dumpJson,
   dumpKeys,
   dumpResult,

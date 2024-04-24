@@ -4,7 +4,8 @@
   "description": "Command line utilities for the Eluvio Content Fabric",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "check-dependency-updates": "echo 'Checking dependencies in package.json for updates...' && npx npm-check-updates",
+    "test": "mocha --recursive \"./test/**/*.test.js\""
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,8 @@
   "homepage": "https://github.com/eluv-io/elv-utils-js#readme",
   "dependencies": {
     "@eluvio/elv-abr-profile": "^1.0.1",
-    "@eluvio/elv-client-js": "^4.0.28",
-    "@eluvio/elv-js-helpers": "^6.1.0",
+    "@eluvio/elv-client-js": "^4.0.83",
+    "@eluvio/elv-js-helpers": "^6.3.0",
     "@eluvio/elv-lro-status": "^3.0.7",
     "@eluvio/ramda-fork": "^0.28.1",
     "airtable": "^0.11.6",
@@ -27,14 +28,14 @@
     "columnify": "^1.6.0",
     "crocks": "^0.12.4",
     "ellipsize": "^0.5.1",
-    "fraction.js": "^4.2.0",
+    "fraction.js": "^4.3.7",
     "jsonpath-plus": "^7.2.0",
     "kind-of": "^6.0.3",
     "mime-types": "^2.1.35",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "node-fetch": "^2.6.7",
     "object-path": "^0.11.8",
-    "objectmodel": "^4.4.4",
+    "objectmodel": "^4.4.5",
     "shell-escape": "^0.2.0",
     "urijs": "^1.19.11",
     "yargs": "^16.2.0"
@@ -42,8 +43,9 @@
   "devDependencies": {
     "chai": "^4.3.7",
     "eslint": "^8.32.0",
-    "mocha": "^10.2.0",
+    "mocha": "^10.4.0",
     "np": "^7.6.3",
+    "npm-check-updates": "^16.14.18",
     "prompt": "^1.3.0",
     "rimraf": "^3.0.2",
     "sinon": "^15.0.1"

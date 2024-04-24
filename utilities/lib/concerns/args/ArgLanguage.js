@@ -1,6 +1,6 @@
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 
-const {NewOpt} = require('../options')
+const {NewOpt} = require('../../options')
 
 const blueprint = {
   name: 'ArgLanguage',

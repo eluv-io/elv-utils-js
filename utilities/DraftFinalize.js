@@ -1,4 +1,4 @@
-// Start a draft on an existing object
+// Finalize an existing draft
 
 const Utility = require('./lib/Utility')
 

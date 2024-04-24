@@ -2,6 +2,7 @@
 const R = require('@eluvio/ramda-fork')
 
 const blueprint = {
+  name: 'PlayoutFormats',
   concerns: []
 }
 
@@ -104,7 +105,7 @@ const verifyCompatibility = (offering, formatKey, elvCryptDrmKids = {}) => {
 }
 
 
-const New = () => {
+const New = context => {
 
   // instance interface
   return {}

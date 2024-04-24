@@ -2,22 +2,28 @@
 const objectPath = require('object-path')
 const R = require('@eluvio/ramda-fork')
 
+const {fabricItemDesc} = require('./lib/helpers')
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
+const ExistLibOrObjOrDft = require('./lib/concerns/kits/ExistLibOrObjOrDft')
 const Metadata = require('./lib/concerns/Metadata')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
+const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
 
 class MetaSet extends Utility {
   static blueprint() {
     return {
       concerns: [
-        ExistObjOrDft,
+        ExistLibOrObjOrDft,
         Metadata,
-        ArgMetadata
+        ArgMetadata,
+        ArgCommitMsg
       ],
       options: [
+        ModOpt('writeToken', {ofX: ' item to modify'}),
+        ModOpt('objectId', {ofX: ' item to modify'}),
+        ModOpt('libraryId', {ofX: ' item to modify'}),
         NewOpt('path', {
           demand: true,
           descTemplate: 'Path within metadata to set (start with \'/\').',
@@ -27,7 +33,8 @@ class MetaSet extends Utility {
           descTemplate: 'If target metadata path within object exists, overwrite and replace',
           type: 'boolean'
         }),
-        ModOpt('metadata', {demand:true})
+        ModOpt('metadata', {demand:true}),
+        ModOpt('commitMsg', {conflicts: 'writeToken'}),
       ]
     }
   }
@@ -36,6 +43,11 @@ class MetaSet extends Utility {
     const logger = this.logger
     const {path, force} = this.args
 
+    const commitMessage = this.args.commitMsg || (
+      this.args.writeToken
+        ? undefined
+        : `Set metadata path: '${path}'`
+    )
     // Check that path is a valid path string
     Metadata.validatePathFormat({path})
 
@@ -43,10 +55,10 @@ class MetaSet extends Utility {
 
     // operations that may need to wait on network access
     // ----------------------------------------------------
-    const {libraryId, objectId, writeToken} = await this.concerns.ExistObjOrDft.argsProc()
+    const {libraryId, objectId, writeToken} = await this.concerns.ExistLibOrObjOrDft.argsProc()
 
     logger.log('Retrieving existing metadata from object...')
-    const currentMetadata = await this.concerns.ExistObjOrDft.metadata()
+    const currentMetadata = await this.concerns.ExistLibOrObjOrDft.metadata()
 
     // check that targetPath can be set
     Metadata.validateTargetPath({
@@ -66,16 +78,18 @@ class MetaSet extends Utility {
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({
+      commitMessage,
       libraryId,
       metadata: revisedMetadata,
       objectId,
       writeToken
     })
-    this.logger.data('version_hash', newHash)
+
+    if (!writeToken) this.logger.data('version_hash', newHash)
   }
 
   header() {
-    return `Set metadata ${this.args.path ? `at ${this.args.path} ` : ''}for object ${this.args.objectId}`
+    return `Set metadata ${this.args.path ? `at ${this.args.path} ` : ''}for ${fabricItemDesc(this.args)}`
   }
 }
 

@@ -1,4 +1,4 @@
-const {NewOpt} = require('../options')
+const {NewOpt} = require('../../options')
 
 const blueprint = {
   name: 'ArgForced',

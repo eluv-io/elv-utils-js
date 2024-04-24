@@ -1,12 +1,12 @@
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 
-const {NewOpt} = require('../options')
+const {NewOpt} = require('../../options')
 
 const blueprint = {
-  name: 'ArgFile',
+  name: 'ArgLabel',
   options: [
-    NewOpt('file', {
-      descTemplate: 'Path to{X} file',
+    NewOpt('label', {
+      descTemplate: 'Label{X}',
       coerce: NonBlankStrModel,
       type: 'string'
     })

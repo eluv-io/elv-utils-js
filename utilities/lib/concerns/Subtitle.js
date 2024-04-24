@@ -2,7 +2,7 @@
 const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 
 const Logger = require('./Logger')
-const Offering = require('./Offering')
+const Offering = require('./libs/Offering')
 
 const blueprint = {
   name: 'Subtitle',

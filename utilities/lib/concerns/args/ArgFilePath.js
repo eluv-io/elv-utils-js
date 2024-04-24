@@ -1,6 +1,6 @@
-const FabricFilePathModel = require('../models/FabricFilePathModel')
+const FabricFilePathModel = require('../../models/FabricFilePathModel')
 
-const {NewOpt} = require('../options')
+const {NewOpt} = require('../../options')
 
 const blueprint = {
   name: 'ArgFilePath',

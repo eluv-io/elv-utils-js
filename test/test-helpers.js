@@ -1,11 +1,20 @@
-// helper to reduce boilerplate in tests
+// helpers to reduce boilerplate in tests
+
+const fs = require('fs')
 const path = require('path')
 
 const chai = require('chai')
 const sinon = require('sinon')
+
 const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
 
-const Utility = require('../lib/Utility')
+
+// Utilities that do not use framework
+const NONSTANDARD_UTILITIES = ['TextConvertForCmd.js', 'TextDecodeBase58.js']
+
+const {dirListRecursive} = require('../utilities/lib/helpers')
+
+const Utility = require('../utilities/lib/Utility')
 
 chai.should()
 const expect = chai.expect
@@ -19,14 +28,20 @@ const testEnv = {
 const argList2Params = (...argList) => {
   argList = argList || []
   argList = argList.concat('--silent')
-  argList = argList.concat('-v')
   return {
     argList,
     ...testEnv
   }
 }
 
-const concern2utility = (concernObject, argList) => {
+const concernList = () => dirListRecursive(
+  path.join(__dirname, '../utilities/lib/concerns')
+).filter(
+  f => path.extname(f) === '.js'
+)
+
+
+const concern2utility = concernObject => {
 
   class TestUtility extends Utility {
     static blueprint() {
@@ -44,7 +59,7 @@ const concern2utility = (concernObject, argList) => {
     }
   }
 
-  return new TestUtility(argList2Params(...argList))
+  return TestUtility
 }
 
 const params = testParams => mergeDeepRight(
@@ -58,13 +73,18 @@ const removeElvEnvVars = () => {
   delete process.env.PRIVATE_KEY
 }
 
-const requireConcern = subDirAndFilename => require(path.join(__dirname, '../lib/concerns', subDirAndFilename))
+const requireConcern = subDirAndFilename => path.isAbsolute(subDirAndFilename)
+  ? require(subDirAndFilename)
+  : require(path.join(__dirname, '../utilities/lib/concerns', subDirAndFilename))
 
-const requireUtility = subDirAndFilename => require(path.join(__dirname, '../', subDirAndFilename))
+const requireUtility = subDirAndFilename => require(path.join(__dirname, '../utilities', subDirAndFilename))
+
+const utilityFileList = () => fs.readdirSync(path.join(__dirname, '../utilities')).filter(f => path.extname(f) === '.js' && !NONSTANDARD_UTILITIES.includes(f))
 
 module.exports = {
   argList2Params,
   chai,
+  concernList,
   concern2utility,
   expect,
   params,
@@ -72,5 +92,6 @@ module.exports = {
   requireConcern,
   requireUtility,
   sinon,
-  testEnv
+  testEnv,
+  utilityFileList
 }

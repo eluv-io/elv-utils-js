@@ -2,20 +2,24 @@
 const objectPath = require('object-path')
 const R = require('@eluvio/ramda-fork')
 
+const {fabricItemDesc} = require('./lib/helpers')
 const {ModOpt, NewOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
+const ExistLibOrObjOrDft = require('./lib/concerns/kits/ExistLibOrObjOrDft')
 const Metadata = require('./lib/concerns/Metadata')
 
 class MetaDelete extends Utility {
   static blueprint() {
     return {
-      concerns: [ExistObj, Metadata],
+      concerns: [ArgCommitMsg, ExistLibOrObjOrDft, Metadata],
       options: [
+        ModOpt('writeToken', {ofX: ' item to modify'}),
         ModOpt('objectId', {ofX: ' item to modify'}),
-        ModOpt('libraryId', {ofX: ' object to modify'}),
+        ModOpt('libraryId', {ofX: ' item to modify'}),
+        ModOpt('commitMsg', {conflicts: 'writeToken'}),
         NewOpt('path', {
           demand: true,
           descTemplate: 'Metadata path to delete (include leading \'/\')',
@@ -31,11 +35,16 @@ class MetaDelete extends Utility {
     // Check that paths are valid path strings
     Metadata.validatePathFormat({path})
 
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    const {libraryId, objectId, writeToken} = await this.concerns.ExistLibOrObjOrDft.argsProc()
+    const commitMessage = this.args.commitMsg || (
+      this.args.writeToken
+        ? undefined
+        : `Delete metadata path: '${path}'`
+    )
     const currentMetadata = await this.concerns.ExistObj.metadata()
 
     // check to make sure path exists
-    if(!Metadata.pathExists({
+    if (!Metadata.pathExists({
       metadata: currentMetadata,
       path
     })) throw new Error(`Metadata path '${path}' not found.`)
@@ -46,19 +55,22 @@ class MetaDelete extends Utility {
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({
+      commitMessage,
       libraryId,
       metadata: revisedMetadata,
-      objectId
+      objectId,
+      writeToken
     })
-    this.logger.data('version_hash', newHash)
+
+    if (!writeToken) this.logger.data('version_hash', newHash)
   }
 
   header() {
-    return `Delete metadata path '${this.args.path}' from object ${this.args.objectId}`
+    return `Delete metadata path '${this.args.path}' from ${fabricItemDesc(this.args)}`
   }
 }
 
-if(require.main === module) {
+if (require.main === module) {
   Utility.cmdLineInvoke(MetaDelete)
 } else {
   module.exports = MetaDelete

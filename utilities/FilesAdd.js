@@ -1,11 +1,14 @@
 // Create new production master from specified file(s)
 const path = require('path')
 
+const {fabricItemDesc} = require('./lib/helpers')
+
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
+const ArgDestDir = require('./lib/concerns/args/ArgDestDir')
 const ArgNoWait = require('./lib/concerns/ArgNoWait')
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
 const CloudFile = require('./lib/concerns/CloudFile')
 const Edit = require('./lib/concerns/Edit')
 const LocalFile = require('./lib/concerns/LocalFile')
@@ -14,8 +17,9 @@ const Logger = require('./lib/concerns/Logger')
 class FilesAdd extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ExistObj, Edit, ArgNoWait, LocalFile, CloudFile],
+      concerns: [Logger, ExistObjOrDft, Edit, ArgDestDir, ArgNoWait, LocalFile, CloudFile],
       options: [
+        ModOpt('destDir', {descTemplate: 'Destination directory within object (must start with \'/\'). Will be created if it does not exist.',}),
         ModOpt('files', {X: 'to add'}),
         NewOpt('storeClear', {
           descTemplate: 'If specified, files will use unencrypted storage',
@@ -27,7 +31,7 @@ class FilesAdd extends Utility {
 
   async body() {
     const logger = this.logger
-    const {storeClear, noWait} = this.args
+    const {storeClear, noWait, destDir} = this.args
 
     let access
     if(this.args.s3Reference || this.args.s3Copy) access = this.concerns.CloudFile.credentialSet()
@@ -37,9 +41,15 @@ class FilesAdd extends Utility {
       ? this.concerns.CloudFile.fileInfo()
       : this.concerns.LocalFile.fileInfo(fileHandles)
 
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    if (destDir) {
+      for (const f of fileInfo) {
+        f.path = path.join(destDir, f.path)
+      }
+    }
 
-    const {writeToken} = await this.concerns.Edit.getWriteToken({
+    const {libraryId, objectId, writeToken} = await this.concerns.ExistObjOrDft.argsProc()
+
+    const suppliedOrNewWriteToken = writeToken || await this.concerns.Edit.getWriteToken({
       libraryId,
       objectId
     })
@@ -48,7 +58,7 @@ class FilesAdd extends Utility {
       await this.concerns.CloudFile.add({
         libraryId,
         objectId,
-        writeToken,
+        writeToken: suppliedOrNewWriteToken,
         access,
         fileInfo,
         encrypt: !storeClear
@@ -57,7 +67,7 @@ class FilesAdd extends Utility {
       await this.concerns.LocalFile.add({
         libraryId,
         objectId,
-        writeToken,
+        writeToken: suppliedOrNewWriteToken,
         fileInfo,
         encrypt: !storeClear
       })
@@ -67,26 +77,27 @@ class FilesAdd extends Utility {
 
     const fileBasenamesList = this.args.files.map(x => path.basename(x))
 
-    const hash = await this.concerns.Edit.finalize({
-      commitMessage: `Add files ${fileBasenamesList.join(', ')}`,
-      libraryId,
-      noWait,
-      objectId,
-      writeToken
-    })
-
     logger.logList(
       '',
-      'File(s) added.',
-      `New version hash: ${hash}`,
-      ''
+      'File(s) added.'
     )
 
-    logger.data('version_hash', hash)
+    if (!writeToken) {
+      const hash = await this.concerns.Edit.finalize({
+        commitMessage: `Add files ${fileBasenamesList.join(', ')}${destDir ? ` to folder ${destDir}` : ''}`,
+        libraryId,
+        noWait,
+        objectId,
+        writeToken: suppliedOrNewWriteToken
+      })
+      logger.log(`New version hash: ${hash}`)
+      logger.data('version_hash', hash)
+    }
+    logger.log('')
   }
 
   header() {
-    return `Add file(s) to object ${this.args.objectId}`
+    return `Add file(s) to ${this.args.destDir ? `directory '${this.args.destDir}' in `: ''}${fabricItemDesc(this.args)}`
   }
 }
 
