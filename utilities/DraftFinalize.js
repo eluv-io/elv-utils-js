@@ -26,7 +26,7 @@ class DraftFinalize extends Utility {
 
     const result = await this.concerns.ExistDft.finalize(
       {
-        commitMsg,
+        commitMessage: commitMsg,
         libraryId,
         objectId,
         writeToken
