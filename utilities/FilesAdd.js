@@ -49,10 +49,10 @@ class FilesAdd extends Utility {
 
     const {libraryId, objectId, writeToken} = await this.concerns.ExistObjOrDft.argsProc()
 
-    const suppliedOrNewWriteToken = writeToken || await this.concerns.Edit.getWriteToken({
+    const suppliedOrNewWriteToken = writeToken || (await this.concerns.Edit.getWriteToken({
       libraryId,
       objectId
-    })
+    })).writeToken
 
     if(access) {
       await this.concerns.CloudFile.add({
