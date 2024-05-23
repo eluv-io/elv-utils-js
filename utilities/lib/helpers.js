@@ -121,7 +121,7 @@ const etaString = seconds => {
 
 const ELV_UTILS_DIR = path.resolve(path.join(__dirname, '..', '..'))
 const buildDir = path.join(ELV_UTILS_DIR, 'build')
-const utilitiesDir = path.join(ELV_UTILS_DIR, 'utilities')
+const utilitiesDir = path.join(__dirname, '..')
 const concernsDir = path.join(utilitiesDir, 'lib', 'concerns')
 
 const absPath = (pathStr, workingDir) => path.isAbsolute(pathStr)
@@ -246,6 +246,16 @@ const valOrThrow = result => result.either(throwError, identity)
 // using utilities as modules
 // --------------------------------------------
 
+const runUtility = async (utility, argList, env, throwOnError = true) => {
+  const script = new utility({
+    argList,
+    env
+  })
+
+  const result = await script.run()
+  if (throwOnError && result.exitCode !== 0) throw result.errors
+  return result
+}
 
 
 
@@ -276,6 +286,7 @@ module.exports = {
   readFileJSON,
   removeLeadingSlash,
   removeTrailingSlash,
+  runUtility,
   seconds,
   singleEntryMap,
   spaceAfter,
