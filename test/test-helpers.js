@@ -1,6 +1,5 @@
 // helpers to reduce boilerplate in tests
 
-const fs = require('fs')
 const path = require('path')
 
 const chai = require('chai')
@@ -8,11 +7,7 @@ const sinon = require('sinon')
 
 const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
 
-
-// Utilities that do not use framework
-const NONSTANDARD_UTILITIES = ['TextConvertForCmd.js', 'TextDecodeBase58.js']
-
-const {dirListRecursive} = require('../utilities/lib/helpers')
+const {concernList, concernsDir, utilitiesDir} = require('../utilities/lib/helpers')
 
 const Utility = require('../utilities/lib/Utility')
 
@@ -33,13 +28,6 @@ const argList2Params = (...argList) => {
     ...testEnv
   }
 }
-
-const concernList = () => dirListRecursive(
-  path.join(__dirname, '../utilities/lib/concerns')
-).filter(
-  f => path.extname(f) === '.js'
-)
-
 
 const concern2utility = concernObject => {
 
@@ -75,16 +63,17 @@ const removeElvEnvVars = () => {
 
 const requireConcern = subDirAndFilename => path.isAbsolute(subDirAndFilename)
   ? require(subDirAndFilename)
-  : require(path.join(__dirname, '../utilities/lib/concerns', subDirAndFilename))
+  : require(path.join(concernsDir, subDirAndFilename))
 
-const requireUtility = subDirAndFilename => require(path.join(__dirname, '../utilities', subDirAndFilename))
+const requireUtility = subDirAndFilename => require(path.join(utilitiesDir, subDirAndFilename))
 
-const utilityFileList = () => fs.readdirSync(path.join(__dirname, '../utilities')).filter(f => path.extname(f) === '.js' && !NONSTANDARD_UTILITIES.includes(f))
+const utilityPath = (utilFilename) => path.join(utilitiesDir, utilFilename)
 
 module.exports = {
   argList2Params,
   chai,
   concernList,
+  concernsDir,
   concern2utility,
   expect,
   params,
@@ -93,5 +82,6 @@ module.exports = {
   requireUtility,
   sinon,
   testEnv,
-  utilityFileList
+  utilitiesDir,
+  utilityPath
 }

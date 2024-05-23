@@ -38,7 +38,7 @@ class MasterMakeDefaultVariant extends Utility {
     })
 
     this.logger.errorsAndWarnings({errors, warnings})
-    if (logs && logs.length > 0) this.logger.logList('Log:', ...logs)
+    if (logs && logs.length > 0) this.logger.logList('Log:', logs)
 
     const versionHash = await this.concerns.Edit.finalize({
       commitMessage: 'Create default variant',

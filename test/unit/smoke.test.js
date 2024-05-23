@@ -1,7 +1,9 @@
+const {standardUtilityFilenames} = require('../../utilities/lib/helpers')
+
 const TH = require('../test-helpers')
 
 describe('utilities', () => {
-  for (const u of TH.utilityFileList()) {
+  for (const u of standardUtilityFilenames()) {
     it(`${u} should return argMap successfully`, () => {
       const klass = TH.requireUtility(u)
       klass.argMap()

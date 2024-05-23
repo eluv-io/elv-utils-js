@@ -199,9 +199,16 @@ const New = (context) => {
 
   const failureReason = val => output.failureReason = val
 
-  const logList = (...args) => map(setArity(1,log), args)
+  const logList = (...args) => {
+    // if there is more than one arg, and some are lists, unwrap them into top level of list
+    const list = [args].flat(1)
+    list.forEach(item => log(item))
+  }
 
-  const logObject = obj => logList(...(JSON.stringify(obj, null, 2).split('\n')))
+  const logObject = obj => {
+    const lines = JSON.stringify(obj, null, 2).split('\n')
+    lines.forEach(line => log(line))
+  }
 
   // formats a list of objects in tabular format
   const logTable = ({list, options = {}}) => {
@@ -209,9 +216,11 @@ const New = (context) => {
       {headingTransform: identity},
       options
     )
-    logList('',
+    logList(
+      '',
       ...columnify(list, mergedOptions).split('\n'),
-      '')
+      ''
+    )
   }
 
   // print out json output object (if configured)

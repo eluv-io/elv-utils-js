@@ -54,8 +54,7 @@ class MezJobStatus extends Utility {
 
     if(statusReport) {
       logger.logList(
-        ...JSON.stringify(statusReport, null, 2)
-          .split('\n')
+        JSON.stringify(statusReport, null, 2).split('\n')
       )
       logger.data('LROs', statusReport.LROs)
 

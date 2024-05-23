@@ -23,7 +23,8 @@
       "AWS_BUCKET": "your-bucket-name",
       "AWS_KEY":    "your-aws-key",
       "AWS_REGION": "your-aws-region",
-      "AWS_SECRET": "your-aws-secret"
+      "AWS_SECRET": "your-aws-secret",
+      "AWS_ENDPOINT": "your-aws-endpoint"
     },
 
     "abr_profiles": {

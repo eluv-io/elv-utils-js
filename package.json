@@ -1,10 +1,13 @@
 {
   "name": "@eluvio/elv-utils-js",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Command line utilities for the Eluvio Content Fabric",
   "main": "main.js",
   "scripts": {
+    "build": "echo 'Deleting and recreating ./build directory...' && rimraf build && bin/makeBuildDir.sh && npm run build-main-js",
+    "build-main-js": "echo 'Rebuilding main.js...' && node ./bin/buildMain.js",
     "check-dependency-updates": "echo 'Checking dependencies in package.json for updates...' && npx npm-check-updates",
+    "release": "echo 'Incrementing version and publishing to npmjs.com...' && cp package.json ./build/package.json && np",
     "test": "mocha --recursive \"./test/**/*.test.js\""
   },
   "repository": {
@@ -19,8 +22,8 @@
   "homepage": "https://github.com/eluv-io/elv-utils-js#readme",
   "dependencies": {
     "@eluvio/elv-abr-profile": "^1.0.1",
-    "@eluvio/elv-client-js": "^4.0.83",
-    "@eluvio/elv-js-helpers": "^6.3.0",
+    "@eluvio/elv-client-js": "^4.0.85",
+    "@eluvio/elv-js-helpers": "^6.3.1",
     "@eluvio/elv-lro-status": "^3.0.7",
     "@eluvio/ramda-fork": "^0.28.1",
     "airtable": "^0.11.6",
@@ -44,8 +47,8 @@
     "chai": "^4.3.7",
     "eslint": "^8.32.0",
     "mocha": "^10.4.0",
-    "np": "^7.6.3",
-    "npm-check-updates": "^16.14.18",
+    "np": "^10.0.5",
+    "npm-check-updates": "^16.14.20",
     "prompt": "^1.3.0",
     "rimraf": "^3.0.2",
     "sinon": "^15.0.1"

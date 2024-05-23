@@ -40,7 +40,7 @@ class LROStop extends Utility {
     })
 
     this.logger.errorsAndWarnings({errors, warnings})
-    if(logs && logs.length > 0) this.logger.logList('Log:', ...logs)
+    if(logs && logs.length > 0) this.logger.logList('Log:', logs)
   }
 
   header() {

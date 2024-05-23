@@ -29,7 +29,7 @@ class LROStatus extends Utility {
     const {data, errors, warnings, logs} = await this.concerns.LRO.singleLroStatus(this.args)
 
     this.logger.errorsAndWarnings({errors, warnings})
-    if(logs && logs.length > 0) this.logger.logList('Log:', ...logs)
+    if(logs && logs.length > 0) this.logger.logList('Log:', logs)
 
     this.logger.data('lroStatusInfo', data)
     this.logger.log(data)

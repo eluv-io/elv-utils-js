@@ -119,11 +119,20 @@ const etaString = seconds => {
 // path/file processing
 // --------------------------------------------
 
+const ELV_UTILS_DIR = path.resolve(path.join(__dirname, '..', '..'))
+const buildDir = path.join(ELV_UTILS_DIR, 'build')
+const utilitiesDir = path.join(ELV_UTILS_DIR, 'utilities')
+const concernsDir = path.join(utilitiesDir, 'lib', 'concerns')
+
 const absPath = (pathStr, workingDir) => path.isAbsolute(pathStr)
   ? pathStr
   : path.isAbsolute(workingDir)
     ? path.resolve(workingDir, pathStr)
     : path.resolve(path.resolve(workingDir), pathStr)
+
+const concernList = () => dirListRecursive(concernsDir).filter(
+  f => path.extname(f) === '.js'
+)
 
 const dirListRecursive = pathStr => fs.readdirSync(pathStr).map(
   f => {
@@ -135,7 +144,13 @@ const dirListRecursive = pathStr => fs.readdirSync(pathStr).map(
   }
 ).flat()
 
-const ELV_UTILS_DIR = path.resolve(path.join(__dirname, '..', '..'))
+
+const NONSTANDARD_UTILITIES = [
+  'TextConvertForCmd.js',
+  'TextDecodeBase58.js',
+  'TextUnix2UTC.js',
+  'TextUTC2Unix.js'
+]
 
 const readFile = (filePath, cwd = '.', logger) => {
   const fullPath = absPath(filePath, cwd)
@@ -144,6 +159,8 @@ const readFile = (filePath, cwd = '.', logger) => {
 }
 
 const readFileJSON = (filePath, cwd = '.', logger) => JSON.parse(readFile(filePath, cwd, logger))
+
+const standardUtilityFilenames = () => fs.readdirSync(utilitiesDir).filter(f => path.extname(f) === '.js' && !NONSTANDARD_UTILITIES.includes(f))
 
 // Try interpreting the string as a file path. If that fails, return string
 const stringOrFileContents = (str, cwd = '.', logger) => {
@@ -224,10 +241,21 @@ const unit = () => true
 // unwrap a Result object and throw an error if it contains Err object, else return an Ok object
 const valOrThrow = result => result.either(throwError, identity)
 
+
+// --------------------------------------------
+// using utilities as modules
+// --------------------------------------------
+
+
+
+
 module.exports = {
   absPath,
+  buildDir,
   camel2kebab,
   compare,
+  concernsDir,
+  concernList,
   dirListRecursive,
   dumpJson,
   dumpKeys,
@@ -241,6 +269,7 @@ module.exports = {
   join,
   jsonCurry,
   logLine,
+  NONSTANDARD_UTILITIES,
   objUnwrapValues,
   padStart,
   readFile,
@@ -250,6 +279,7 @@ module.exports = {
   seconds,
   singleEntryMap,
   spaceAfter,
+  standardUtilityFilenames,
   stringOrFileContents,
   subst,
   suppressNullLike,
@@ -257,6 +287,7 @@ module.exports = {
   throwError,
   trimSlashes,
   unit,
+  utilitiesDir,
   valOrThrow,
   widthForRatioAndHeight
 }
