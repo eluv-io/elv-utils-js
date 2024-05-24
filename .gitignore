@@ -1,6 +1,9 @@
 # any file can be ignored by naming it *.ignore.*, e.g. TempTest.ignore.js
 **.ignore.*
 
+# exclude /ignore directory
+ignore/
+
 # exclude build/publish directory
 build/
 
