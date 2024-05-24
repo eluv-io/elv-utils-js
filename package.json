@@ -1,13 +1,13 @@
 {
   "name": "@eluvio/elv-utils-js",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Command line utilities for the Eluvio Content Fabric",
   "main": "main.js",
   "scripts": {
     "build": "echo 'Deleting and recreating ./build directory...' && rimraf build && bin/makeBuildDir.sh && npm run build-main-js",
     "build-main-js": "echo 'Rebuilding main.js...' && node ./bin/buildMain.js",
     "check-dependency-updates": "echo 'Checking dependencies in package.json for updates...' && npx npm-check-updates",
-    "release": "echo 'Incrementing version and publishing to npmjs.com...' && cp package.json ./build/package.json && np",
+    "release": "echo 'Incrementing version and publishing to npmjs.com...' && cp package.json ./build/package.json && np --no-2fa",
     "test": "mocha --recursive \"./test/unit/**/*.test.js\""
   },
   "repository": {
