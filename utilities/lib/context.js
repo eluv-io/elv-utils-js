@@ -18,7 +18,7 @@ const callContext = params => {
     args: {},
     concerns: {},
     cwd: params.cwd || process.cwd(),
-    env: R.clone(process.env),
+    env: Object.assign(R.clone(process.env), (params.env || {})),
     mode: 'call'
   }
 

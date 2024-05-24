@@ -1,7 +1,8 @@
 {
   "defaults": {
     "abrProfile":       "$_ElvUtilsDir_/example-files/abr_profile_both.json",
-    "FABRIC_CONFIG_URL":"https://... (Your Fabric configuration URL)",
+    "FABRIC_CONFIG_URL":"https://... (Your Fabric configuration URL - will override FABRIC_NETWORK if present)",
+    "FABRIC_NETWORK":   "(main, demo, demov3, local, or test)(ignored if FABRIC_CONFIG_URL is present)",
     "groupAddress":     "0x... (your Content Admins group address)",
     "masterLib":        "ilib... (your Master library ID)",
     "masterType":       "iq__... (your Master content type ID)",

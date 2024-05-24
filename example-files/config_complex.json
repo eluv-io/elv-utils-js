@@ -11,6 +11,7 @@
 
     "tenant": {
       "FABRIC_CONFIG_URL": "https://demov3.net955210.contentfabric.io/config",
+      "FABRIC_NETWORK":    "(main, demo, demov3, test, or local)(ignored if FABRIC_CONFIG_URL is present)",
       "PRIVATE_KEY":       "your-private-key",
       "groupAddress":      "0x.. your-content-admins-group-contract-address",
       "masterLib":         "ilib... your-master-library-id",

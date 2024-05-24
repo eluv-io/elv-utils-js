@@ -119,8 +119,10 @@ const etaString = seconds => {
 // path/file processing
 // --------------------------------------------
 
-const ELV_UTILS_DIR = path.resolve(path.join(__dirname, '..', '..'))
-const buildDir = path.join(ELV_UTILS_DIR, 'build')
+const ELV_UTILS_DIR = path.resolve(path.join(__dirname, '..', '..')) // dev use only - don't use for things that will run from /build
+const buildDir = path.join(ELV_UTILS_DIR, 'build')                   // dev use only - don't use for things that will run from /build
+const exampleFilesDir = path.join(ELV_UTILS_DIR, 'example-files')    // dev use only - don't use for things that will run from /build
+
 const utilitiesDir = path.join(__dirname, '..')
 const concernsDir = path.join(utilitiesDir, 'lib', 'concerns')
 
@@ -273,6 +275,7 @@ module.exports = {
   ellipsize,
   ELV_UTILS_DIR,
   etaString,
+  exampleFilesDir,
   fabricItemDesc,
   formattedInspect,
   identity,
