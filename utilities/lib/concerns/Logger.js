@@ -201,7 +201,7 @@ const New = (context) => {
 
   const logList = (...args) => {
     // if there is more than one arg, and some are lists, unwrap them into top level of list
-    const list = [args].flat(1)
+    const list = args.flat(1)
     list.forEach(item => log(item))
   }
 
