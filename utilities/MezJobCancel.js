@@ -42,14 +42,14 @@ class MezzanineJobStatus extends Utility {
     logger.log(`Found ${sortedLROEntries.length} transcode(s):`)
 
     const cancellableLROs = []
-    for(const [lroKey, lro] of sortedLROEntries) {
+    for (const [lroKey, lro] of sortedLROEntries) {
       const runStateForInclusion = lro.reported_run_state || lro.run_state
       logger.log()
       logger.log(`  ${lro.desc}`)
       logger.log(`  LRO id: ${lroKey}`)
       logger.log(`  run state '${lro.run_state}'${lro.reported_run_state ? ` (run state reported by node: '${lro.reported_run_state}')` : ''}`)
 
-      if([LRO.LRO_RS_RUNNING, LRO.LRO_RS_NOT_STARTED].includes(runStateForInclusion)) {
+      if ([LRO.LRO_RS_RUNNING, LRO.LRO_RS_NOT_STARTED].includes(runStateForInclusion)) {
         cancellableLROs.push(lroKey)
       }
 
@@ -57,19 +57,20 @@ class MezzanineJobStatus extends Utility {
 
     logger.log()
 
-    if(cancellableLROs.length === 0) throw Error('No cancellable LROs found.')
+    if (cancellableLROs.length === 0) throw Error('No cancellable LROs found.')
     logger.log(`Found ${cancellableLROs.length} cancellable transcode(s), sending cancel request to each of the following:`)
 
     const lroDraftInfo = await this.concerns.LRO.draftInfo({libraryId, objectId})
 
     const promises = {}
-    for(const lroKey of cancellableLROs) {
+    for (const lroKey of cancellableLROs) {
       const lro = statusReport.LROs[lroKey]
+      const lroDesc = lro.desc || lroKey
       logger.log()
-      logger.log(`  ${lro.desc || lroKey}:`)
+      logger.log(`  ${lroDesc}:`)
       logger.log(`    run_state: '${lro.run_state}'${lro.reported_run_state ? ` (run state reported by node: '${lro.reported_run_state}')` : ''}`)
 
-      // call method without awaiting
+      // call method without awaiting (because avpipe can take a long time to return, even timing out)
       promises[lroKey] = client.CallBitcodeMethod({
         objectId,
         libraryId,
@@ -77,7 +78,10 @@ class MezzanineJobStatus extends Utility {
         writeToken: lroDraftInfo.writeToken,
         constant: false,
         body: {lro_id: lroKey}
-      })
+      }).then(
+        () => logger.log(`cancel call succeeded: ${lroDesc}`),
+        e => logger.warn(`cancel call failed: ${lroDesc} ${e}`)
+      )
     }
 
     logger.log()
@@ -95,7 +99,7 @@ class MezzanineJobStatus extends Utility {
   }
 }
 
-if(require.main === module) {
+if (require.main === module) {
   Utility.cmdLineInvoke(MezzanineJobStatus)
 } else {
   module.exports = MezzanineJobStatus

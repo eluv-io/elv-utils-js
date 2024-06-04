@@ -6,12 +6,12 @@ const Utility = require('./lib/Utility')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
 const Client = require('./lib/concerns/Client')
 const CloudAccess = require('./lib/concerns/CloudAccess')
-const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
+const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
 
 class FilesProbe extends Utility {
   static blueprint() {
     return {
-      concerns: [Client, ExistObjOrVer, ArgOutfile, CloudAccess],
+      concerns: [Client, ExistLibOrObjOrVerOrDft, ArgOutfile, CloudAccess],
       options: [
         NewOpt('files', {
           demand: true,
@@ -29,10 +29,13 @@ class FilesProbe extends Utility {
 
     const access = this.concerns.CloudAccess.credentialSet(false)
 
-    await this.concerns.ExistObjOrVer.argsProc()
+    const {libraryId, objectId, versionHash, writeToken} = await this.concerns.ExistLibOrObjOrVerOrDft.argsProc()
 
     const {data, errors, warnings} = await client.CallBitcodeMethod({
-      versionHash: this.args.versionHash,
+      libraryId,
+      objectId,
+      versionHash,
+      writeToken,
       method: '/media/files/probe',
       constant: false,
       body: {file_paths: files, access}

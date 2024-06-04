@@ -249,6 +249,10 @@ module.exports = class Utility {
       return this.logger.allInfoGet()
     }, failureReason => {
       this.logger.error(failureReason)
+      if(failureReason?.message) this.logger.error(failureReason?.message)
+      if(failureReason?.url) this.logger.error(failureReason?.url)
+      if(isArray(failureReason?.body?.errors)) this.logger.error(failureReason?.body?.errors.map(e => e.reason || `${e}`))
+
       this.logger.log()
       if(this.env.ELVUTILS_THROW) throw Error(failureReason)
       if(!process.exitCode) process.exitCode = 1
