@@ -6,9 +6,9 @@ const path = require('path')
 
 const {runUtility} = require('../../utilities/lib/helpers')
 
-const {exampleABRProfilePath, exampleVideoPath, utilityPath} = require('../test-helpers')
+const {exampleABRProfilePath, exampleVideoPath, timestampFilename, utilityPath} = require('../test-helpers')
 
-const MasterCreate = require(utilityPath('MasterCreate.test.js'))
+const MasterCreate = require(utilityPath('MasterCreate.js'))
 const MezCreate = require(utilityPath('MezCreate.js'))
 
 const SmallLocalIngestNoDRM = async ({
@@ -50,17 +50,16 @@ const SmallLocalIngestNoDRM = async ({
 }
 
 const testParams = {
-  masterTitle: path.basename(__filename),
+  masterTitle: timestampFilename(path.basename(__filename)),
   masterFiles: [exampleVideoPath],
-  mezTitle: path.basename(__filename),
+  mezTitle: timestampFilename(path.basename(__filename)),
   abrProfilePath: exampleABRProfilePath('abr_profile_no_drm_store_clear.json')
 }
 
-SmallLocalIngestNoDRM(testParams).then(
-  successValue => {
-    console.log(`Mez object: ${successValue.mezCreateResult.data.object_id}`)
-  },
-  failureReason => {
-    throw Error(failureReason)
-  }
-)
+describe(__filename, function () {
+  this.timeout(0)
+  it('should run successfully', async () => {
+    await SmallLocalIngestNoDRM(testParams)
+  })
+})
+

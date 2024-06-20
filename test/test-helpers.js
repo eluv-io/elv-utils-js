@@ -76,18 +76,10 @@ const requireConcern = subDirAndFilename => path.isAbsolute(subDirAndFilename)
 const requireUtility = subDirAndFilename => require(path.join(utilitiesDir, subDirAndFilename))
 
 // awaitTest run the utility synchronously and throw error if it fails
-const runUtilityTest =  (utility, argList, env, throwOnError = true) => {
+const runUtilityTest =  async (utility, argList, env, throwOnError = true) => {
   if (!process.env.ELVUTILS_CONFIG) throw Error('Env variable ELVUTILS_CONFIG must be set to run integration test')
 
-  runUtility(utility, argList, testEnv, throwOnError).then(
-    successValue => {
-      console.log('Test passed.')
-      return successValue
-    },
-    failureReason => {
-      throw Error(failureReason)
-    }
-  )
+  return await runUtility(utility, argList, testEnv, throwOnError)
 }
 
 // pass in __filename (which is a full path), get back string with current timestamp + just file name

@@ -14,6 +14,7 @@
     "check-dependency-updates": "echo 'Checking dependencies in package.json for updates...' && npx npm-check-updates",
     "release": "echo 'Incrementing version and publishing to npmjs.com...' && cp package.json ./build/package.json && np --no-2fa",
     "test": "mocha --recursive \"./test/unit/**/*.test.js\"",
+    "test-integration": "mocha --recursive \"./test/integration/**/*.test.js\"",
     "version": "echo 'Executing npm publish hook: version... (rebuilds ./build/dist)' &&  npm run build || true"
   },
   "repository": {
@@ -32,6 +33,7 @@
     "@eluvio/elv-js-helpers": "^6.3.1",
     "@eluvio/elv-lro-status": "^3.0.7",
     "@eluvio/ramda-fork": "^0.28.1",
+    "@sindresorhus/slugify": "^1.1.0",
     "airtable": "^0.11.6",
     "cbor": "^8.1.0",
     "columnify": "^1.6.0",

@@ -16,4 +16,4 @@ Functions that return an ObjectModel wrapped value will throw an error if the da
 | **Throws error on invalid data** | Yes  | No | 
 | **Function name start** | Never starts with `Checked` | Always starts with `Checked`  |
 |  **Function name end** | Sometimes ends with `Model`  | Never ends with `Model` | 
-| **Examples** | `NonBlankString()`<br>`BlueprintModel()`<br>`OptDefModel()` | `CheckedNonBlankString()`<br>`CheckedBlueprint()`<br>`CheckedOptDef()` |
+| **Examples** | `BlueprintModel()`<br>`OptDefModel()` | `CheckedNonBlankString()`<br>`CheckedBlueprint()`<br>`CheckedOptDef()` |

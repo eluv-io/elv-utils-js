@@ -4,11 +4,17 @@ const {exampleVideoPath, requireUtility, runUtilityTest, timestampFilename} = re
 
 const MasterCreate = requireUtility('MasterCreate.js')
 
-runUtilityTest(
-  MasterCreate,
-  [
-    '--title', timestampFilename(__filename),
-    '--files', exampleVideoPath
-  ],
-  {}
-)
+describe(__filename, function () {
+  this.timeout(0)
+  it('should run successfully', async () => {
+    await runUtilityTest(
+      MasterCreate,
+      [
+        '--title', timestampFilename(__filename),
+        '--files', exampleVideoPath
+      ],
+      {}
+    )
+  })
+})
+
