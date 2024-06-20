@@ -104,7 +104,7 @@ class MasterCreate extends Utility {
     const {errors, warnings, id} = createResponse
     // Log object id immediately, in case of error later in script
     // Don't log hash yet, it will change if --streams was provided (or any other revision to object is needed)
-    logger.data('object_id', id)
+    logger.data('objectId', id)
 
     let hash = createResponse.hash
 
@@ -155,7 +155,7 @@ class MasterCreate extends Utility {
       ''
     )
 
-    logger.data('version_hash', hash)
+    logger.data('versionHash', hash)
 
     if(!streams) {
       // Check if resulting variant has an audio and a video stream
@@ -169,20 +169,20 @@ class MasterCreate extends Utility {
         logger.log()
         logger.warn('WARNING: no audio stream found')
         logger.log()
-        logger.data('audio_found', false)
+        logger.data('audioFound', false)
       } else {
-        logger.data('audio_found', true)
+        logger.data('audioFound', true)
       }
 
       if(!Object.keys(streamsFromServer).includes('video')) {
         logger.log()
         logger.warn('WARNING: no video stream found')
         logger.log()
-        logger.data('video_found', false)
+        logger.data('videoFound', false)
       } else {
-        logger.data('video_found', true)
+        logger.data('videoFound', true)
       }
-      logger.data('variant_streams', streamsFromServer)
+      logger.data('variantStreams', streamsFromServer)
     }
 
     // add info on source files to data if --json selected
@@ -194,7 +194,7 @@ class MasterCreate extends Utility {
         versionHash: hash,
         metadataSubtree: '/production_master/sources'
       }))
-      logger.data('media_files', sources)
+      logger.data('mediaFiles', sources)
     }
   }
 

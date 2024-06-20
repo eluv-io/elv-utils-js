@@ -79,7 +79,7 @@ class VariantAddStream extends Utility {
       objectId,
       subtree: `/production_master/variants/${variantKey}/streams/${streamKey}`
     })
-    this.logger.data('version_hash', newHash)
+    this.logger.data('versionHash', newHash)
     this.logger.log(`New version hash: ${newHash}`)
   }
 

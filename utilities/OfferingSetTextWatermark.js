@@ -71,7 +71,7 @@ class OfferingSetTextWatermark extends Utility {
       })
     }
 
-    this.logger.data('version_hash', newHash)
+    this.logger.data('versionHash', newHash)
     this.logger.log(`New Version Hash: ${newHash}`)
   }
 

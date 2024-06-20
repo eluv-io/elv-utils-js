@@ -91,7 +91,7 @@ class FilesAdd extends Utility {
         writeToken: suppliedOrNewWriteToken
       })
       logger.log(`New version hash: ${hash}`)
-      logger.data('version_hash', hash)
+      logger.data('versionHash', hash)
     }
     logger.log('')
   }

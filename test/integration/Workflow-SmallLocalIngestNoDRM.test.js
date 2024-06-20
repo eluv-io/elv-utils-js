@@ -36,7 +36,7 @@ const SmallLocalIngestNoDRM = async ({
     MezCreate,
     [
       '--title', mezTitle,
-      '--masterHash', masterCreateResult.data.version_hash,
+      '--masterHash', masterCreateResult.data.versionHash,
       '--abrProfile', abrProfilePath,
       '--wait'
     ],

@@ -73,7 +73,7 @@ class MetaCopy extends Utility {
       metadata: revisedMetadata,
       objectId
     })
-    this.logger.data('version_hash', newHash)
+    this.logger.data('versionHash', newHash)
   }
 
   header() {

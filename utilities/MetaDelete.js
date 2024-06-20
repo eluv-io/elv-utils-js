@@ -62,7 +62,7 @@ class MetaDelete extends Utility {
       writeToken
     })
 
-    if (!writeToken) this.logger.data('version_hash', newHash)
+    if (!writeToken) this.logger.data('versionHash', newHash)
   }
 
   header() {

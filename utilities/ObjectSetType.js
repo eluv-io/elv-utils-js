@@ -27,7 +27,7 @@ class ObjectSetType extends Utility {
     const typeRef = this.args.type
 
     let newHash = (await this.concerns.ContentType.set({libraryId, objectId, typeRef})).hash
-    logger.data('version_hash', newHash)
+    logger.data('versionHash', newHash)
     logger.log(`New version hash: ${newHash}`)
   }
 

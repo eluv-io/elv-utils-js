@@ -1,5 +1,5 @@
 // code related to --variantKey
-const {NewOpt} = require('../options')
+const {NewOpt} = require('../../options')
 
 const blueprint = {
   name: 'ArgVariantKey',

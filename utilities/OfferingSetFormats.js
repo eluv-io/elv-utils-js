@@ -62,7 +62,7 @@ class OfferingSetFormats extends Utility {
       objectId,
       subtree: `/offerings/${offeringKey}`
     })
-    logger.data('version_hash', newHash)
+    logger.data('versionHash', newHash)
     logger.log('New version hash: ' + newHash)
   }
 

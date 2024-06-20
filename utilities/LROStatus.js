@@ -5,7 +5,7 @@ const Utility = require('./lib/Utility')
 
 const ArgLroId = require('./lib/concerns/ArgLroId')
 const ArgNodeUrl = require('./lib/concerns/ArgNodeUrl')
-const ArgWriteToken = require('./lib/concerns/ArgWriteToken')
+const ArgWriteToken = require('./lib/concerns/args/ArgWriteToken')
 const LRO = require('./lib/concerns/LRO')
 
 class LROStatus extends Utility {

@@ -60,7 +60,7 @@ class MezJobStatus extends Utility {
 
       status_summary = statusReport.summary
 
-      logger.data('status_summary', status_summary)
+      logger.data('statusSummary', status_summary)
 
       if(lro.warningFound(statusReport) && !(finalize && force)) throw Error('Warnings raised for job status, exiting script!')
     }
@@ -87,7 +87,7 @@ class MezJobStatus extends Utility {
         `  Version Hash: ${latestHash}`,
         ''
       )
-      logger.data('version_hash', latestHash)
+      logger.data('versionHash', latestHash)
       logger.data('finalized', true)
 
       await this.concerns.ArgNoWait.waitUnlessNo({libraryId, objectId, latestHash})

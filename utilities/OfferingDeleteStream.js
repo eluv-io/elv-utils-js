@@ -5,7 +5,7 @@ const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
+const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
 
 class OfferingDeleteStream extends Utility {
@@ -54,7 +54,7 @@ class OfferingDeleteStream extends Utility {
       objectId,
       subtree: `/offerings/${offeringKey}`
     })
-    logger.data('version_hash', newHash)
+    logger.data('versionHash', newHash)
     logger.log('New version hash: ' + newHash)
   }
 

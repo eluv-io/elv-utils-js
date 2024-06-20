@@ -2,23 +2,22 @@
 
 const R = require('@eluvio/ramda-fork')
 
-const {ModOpt, NewOpt} = require('./lib/options')
+const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 
 const {PublicMetadataPathArrayModel} = require('./lib/models/PublicMetadataPath')
 
 const JSON = require('./lib/concerns/JSON')
-const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
+const ExistLib = require('./lib/concerns/kits/ExistLib')
 const Metadata = require('./lib/concerns/Metadata')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
 
 class LibraryListObjects extends Utility {
   static blueprint() {
     return {
-      concerns: [JSON, ArgLibraryId, Metadata, FabricObject],
+      concerns: [JSON, ExistLib, Metadata, FabricObject],
       options: [
-        ModOpt('libraryId', {demand: true}),
         NewOpt('filter', {
           descTemplate: 'JSON expression (or path to JSON file if starting with \'@\') to filter objects by (public) metadata',
           type: 'string'
@@ -57,7 +56,9 @@ class LibraryListObjects extends Utility {
 
     const select = ['/public/name', ...this.args.fields]
 
-    const objectList = await this.concerns.ArgLibraryId.libObjectList(
+    await this.concerns.ExistLib.argsProc()
+
+    const objectList = await this.concerns.ExistLib.objectList(
       {
         filterOptions: {
           select,
@@ -98,7 +99,7 @@ class LibraryListObjects extends Utility {
       formattedObjList.push(formattedObj)
     }
 
-    logger.data('object_list', formattedObjList)
+    logger.data('objectList', formattedObjList)
 
     logger.logTable({list: formattedObjList})
     if(formattedObjList.length === 0) logger.warn('No visible objects found using supplied private key.')

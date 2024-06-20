@@ -16,7 +16,7 @@ class ListTypes extends Utility {
   async body() {
     const logger = this.logger
     const typeList = await this.concerns.ContentType.list()
-    logger.data('content_types', typeList)
+    logger.data('contentTypes', typeList)
     logger.logTable({list: typeList})
     if(typeList.length === 0) logger.warn('No visible content types found using supplied private key.')
   }

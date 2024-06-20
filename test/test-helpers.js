@@ -55,6 +55,15 @@ const exampleABRProfilePath = (filename) => path.join(exampleFilesDir, filename)
 
 const exampleVideoPath = path.join(exampleFilesDir, 'video.mp4')
 
+const localDevTenantInfo = {
+  FABRIC_CONFIG_URL: 'http://127.0.0.1:8008/config?qspace=dev&self',
+  groupAddress: '0x8d8780cfa0970a064e247e4a7829f0106b38d7f7',
+  masterLib: 'ilib3fm7YhNrmYBNsgNwFuUso1CRVFw3',
+  masterType: 'iq__2tfLjovW8zMN9Yh6eLmwynX1Cbip',
+  mezLib: 'ilib29dvmbN91uyXRwcMX88CAs8q2zeT',
+  mezType: 'iq__8SLzhEyJWiJ41BPezhswG56MUwL'
+}
+
 const params = testParams => mergeDeepRight(
   testParams,
   testEnv
@@ -66,6 +75,7 @@ const prefixTimestamp = (str) => `${now().toISOString()} ${str}`
 const removeElvEnvVars = () => {
   delete process.env.ELVUTILS_CONF
   delete process.env.FABRIC_CONFIG_URL
+  delete process.env.FABRIC_NETWORK
   delete process.env.PRIVATE_KEY
 }
 
@@ -76,7 +86,7 @@ const requireConcern = subDirAndFilename => path.isAbsolute(subDirAndFilename)
 const requireUtility = subDirAndFilename => require(path.join(utilitiesDir, subDirAndFilename))
 
 // awaitTest run the utility synchronously and throw error if it fails
-const runUtilityTest =  async (utility, argList, env, throwOnError = true) => {
+const runUtilityTest = async (utility, argList, env, throwOnError = true) => {
   if (!process.env.ELVUTILS_CONFIG) throw Error('Env variable ELVUTILS_CONFIG must be set to run integration test')
 
   return await runUtility(utility, argList, testEnv, throwOnError)
@@ -96,6 +106,7 @@ module.exports = {
   exampleABRProfilePath,
   exampleVideoPath,
   expect,
+  localDevTenantInfo,
   params,
   prefixTimestamp,
   removeElvEnvVars,

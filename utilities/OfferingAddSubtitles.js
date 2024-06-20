@@ -15,7 +15,7 @@ const ArgLabel = require('./lib/concerns/args/ArgLabel')
 const ArgLanguage = require('./lib/concerns/args/ArgLanguage')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
 const ArgStoreClear = require('./lib/concerns/args/ArgStoreClear')
-const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
+const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey')
 const ArgTimeShift = require('./lib/concerns/ArgTimeShift')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
@@ -136,7 +136,7 @@ class OfferingAddSubtitles extends Utility {
       writeToken
     })
 
-    logger.data('version_hash', newHash)
+    logger.data('versionHash', newHash)
     logger.log('New version hash: ' + newHash)
   }
 

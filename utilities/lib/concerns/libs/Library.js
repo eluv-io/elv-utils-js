@@ -3,6 +3,7 @@ const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight
 
 const Client = require('../Client')
 const Logger = require('../Logger')
+
 const Part = require('../Part')
 
 const blueprint = {
@@ -71,9 +72,6 @@ const New = context => {
     }
   }
 
-  // get object ID of the library itself
-  const libObjectId = async({libraryId}) => (await _contentLibrary({libraryId})).qid
-
   // list of libraries
   const list = async () => {
     const logger = context.concerns.Logger
@@ -88,15 +86,18 @@ const New = context => {
   }
 
   const metadata = async({libraryId}) => {
-    const objectId = await libObjectId({libraryId})
+    const objId = await objectId({libraryId})
     const client = await context.concerns.Client.get()
-    return await client.ContentObjectMetadata({libraryId, objectId})
+    return await client.ContentObjectMetadata({libraryId, objectId: objId})
   }
 
   const name = async({libraryId}) => {
     const libInfo = await info({libraryId})
     return libInfo.metadata?.public?.name || libInfo.metadata?.name
   }
+
+  // get object ID of the library itself
+  const objectId = async({libraryId}) => (await _contentLibrary({libraryId})).qid
 
   // list of objects within a library
   const objectList = async ({filterOptions, libraryId}) => {
@@ -127,10 +128,10 @@ const New = context => {
     create,
     forObject,
     info,
-    libObjectId,
     list,
     metadata,
     name,
+    objectId,
     objectList,
     partList,
     typeHash

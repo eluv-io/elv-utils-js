@@ -1,18 +1,17 @@
 const R = require('@eluvio/ramda-fork')
 
-const {ModOpt, StdOpt} = require('./lib/options')
+const {StdOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
+const ExistLib = require('./lib/concerns/kits/ExistLib')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
 const ArgType = require('./lib/concerns/ArgType')
 
 class ObjectCreate extends Utility {
   static blueprint() {
     return {
-      concerns: [ArgLibraryId, ArgType, ArgMetadata],
+      concerns: [ExistLib, ArgType, ArgMetadata],
       options: [
-        ModOpt('libraryId', {demand: true}),
         StdOpt('name',
           {
             demand: true,
@@ -31,7 +30,7 @@ class ObjectCreate extends Utility {
     const metadataFromArg = this.concerns.ArgMetadata.asObject() || {}
     const metadata = R.mergeDeepRight(metadataFromArg, {'public':{name}})
 
-    const {objectId, versionHash} = await this.concerns.ArgLibraryId.libCreateObject({
+    const {objectId, versionHash} = await this.concerns.ExistLib.createObject({
       commitMessage: 'create object',
       metadata,
       type

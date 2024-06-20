@@ -61,7 +61,7 @@ class ListVersions extends Utility {
     }
 
     this.logger.data('versions', versionList)
-    this.logger.data('version_count', versionList.length)
+    this.logger.data('versionCount', versionList.length)
     if(this.args.outfile) {
       if(this.args.json) {
         this.concerns.ArgOutfile.writeJson({obj: versionList})

@@ -10,15 +10,15 @@ const Client = require('./lib/concerns/Client')
 const Finalize = require('./lib/concerns/Finalize')
 const LocalFile = require('./lib/concerns/LocalFile')
 const LRO = require('./lib/concerns/LRO')
-const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
+const ExistLib = require('./lib/concerns/kits/ExistLib')
 const {seconds} = require('./lib/helpers')
 
 class SimpleIngest extends Utility {
   static blueprint() {
     return {
-      concerns: [Client, Finalize, LocalFile, ArgLibraryId, LRO],
+      concerns: [Client, Finalize, LocalFile, ExistLib, LRO],
       options: [
-        ModOpt('libraryId', {demand: true, forX: 'new media object'}),
+        ModOpt('libraryId', {forX: 'new media object'}),
         NewOpt('title', {
           demand: true,
           descTemplate: 'Title for new media object',
@@ -37,6 +37,8 @@ class SimpleIngest extends Utility {
   async body() {
     const logger = this.logger
 
+    const {drm, libraryId, title} = await this.concerns.ExistLib.argsProc()
+
     let fileHandles = []
     const fileInfo = this.concerns.LocalFile.fileInfo(fileHandles)
 
@@ -45,7 +47,7 @@ class SimpleIngest extends Utility {
     const client = await this.concerns.Client.get()
 
     // get metadata from Library
-    const libInfo = await this.concerns.ArgLibraryId.libInfo()
+    const libInfo = await this.concerns.ExistLib.info()
 
     const type = R.path(['metadata', 'abr', 'mez_content_type'], libInfo)
     if(R.isNil(type)) throw Error('Library does not specify content type for simple ingests')
@@ -57,7 +59,7 @@ class SimpleIngest extends Utility {
 
     const libMezPermission = R.path(['metadata', 'abr', 'mez_permission_level'], libInfo)
 
-    const {drm, libraryId, title} = this.args
+
     const encrypt = true
 
     logger.log('Uploading files...')
@@ -76,7 +78,7 @@ class SimpleIngest extends Utility {
     const {id, hash} = createMasterResponse
     // Log object id immediately, in case of error later in script
     // Don't log hash yet, it will change if --streams was provided (or any other revision to object is needed)
-    logger.data('object_id', id)
+    logger.data('objectId', id)
 
     // Close file handles (if any)
     this.concerns.LocalFile.closeFileHandles(fileHandles)
@@ -91,7 +93,7 @@ class SimpleIngest extends Utility {
       ''
     )
 
-    logger.data('version_hash', hash)
+    logger.data('versionHash', hash)
 
     if(!R.isNil(createMasterResponse.errors) && !R.isEmpty(createMasterResponse.errors)) throw Error(`Error(s) encountered while inspecting uploaded files: ${createMasterResponse.errors.join('\n')}`)
 
@@ -118,8 +120,8 @@ class SimpleIngest extends Utility {
 
     // add info on source files and variant to data if --json selected
     if(this.args.json) {
-      logger.data('media_files', sources)
-      logger.data('variant_default', variant)
+      logger.data('mediaFiles', sources)
+      logger.data('variantDefault', variant)
     }
 
     // generate ABR profile
@@ -171,11 +173,11 @@ class SimpleIngest extends Utility {
     const lroWriteToken = R.path(['lro_draft', 'write_token'], startJobsResponse)
     const lroNode = R.path(['lro_draft', 'node'], startJobsResponse)
 
-    logger.data('library_id', libraryId)
-    logger.data('object_id', id)
-    logger.data('offering_key', 'default')
-    logger.data('write_token', lroWriteToken)
-    logger.data('write_node', lroNode)
+    logger.data('libraryId', libraryId)
+    logger.data('objectId', id)
+    logger.data('offeringKey', 'default')
+    logger.data('writeToken', lroWriteToken)
+    logger.data('writeNode', lroNode)
 
     logger.logList(
       '',
@@ -255,7 +257,7 @@ class SimpleIngest extends Utility {
           logger.log('Previous version hash: ' + prevHash )
           logger.log('New version hash: ' + newHash )
         }
-        logger.data('version_hash', newHash)
+        logger.data('versionHash', newHash)
       }
     }
 
@@ -266,7 +268,7 @@ class SimpleIngest extends Utility {
       `  Version Hash: ${latestHash}`,
       ''
     )
-    logger.data('version_hash', latestHash)
+    logger.data('versionHash', latestHash)
     await this.concerns.Finalize.waitForPublish({
       latestHash,
       libraryId,

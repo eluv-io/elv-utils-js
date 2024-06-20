@@ -7,6 +7,7 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ExistLibOrObjOrDft = require('./lib/concerns/kits/ExistLibOrObjOrDft')
+const Library = require('./lib/concerns/libs/Library')
 const Metadata = require('./lib/concerns/Metadata')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
 const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
@@ -17,6 +18,7 @@ class MetaSet extends Utility {
       concerns: [
         ExistLibOrObjOrDft,
         Metadata,
+        Library,
         ArgMetadata,
         ArgCommitMsg
       ],
@@ -55,7 +57,13 @@ class MetaSet extends Utility {
 
     // operations that may need to wait on network access
     // ----------------------------------------------------
-    const {libraryId, objectId, writeToken} = await this.concerns.ExistLibOrObjOrDft.argsProc()
+    const args = await this.concerns.ExistLibOrObjOrDft.argsProc()
+
+    const {libraryId, writeToken} = args
+
+    // if we are setting metadata on a library, get the object ID of the library
+    // TODO: move metadata write methods to Exist*.js
+    const objectId = args.objectId || await this.concerns.Library.objectId({libraryId})
 
     logger.log('Retrieving existing metadata from object...')
     const currentMetadata = await this.concerns.ExistLibOrObjOrDft.metadata()
@@ -85,7 +93,7 @@ class MetaSet extends Utility {
       writeToken
     })
 
-    if (!writeToken) this.logger.data('version_hash', newHash)
+    if (!writeToken) this.logger.data('versionHash', newHash)
   }
 
   header() {

@@ -1,5 +1,5 @@
 // code related to --streamKey
-const {NewOpt} = require('../options')
+const {NewOpt} = require('../../options')
 
 const blueprint = {
   name: 'ArgStreamKey',

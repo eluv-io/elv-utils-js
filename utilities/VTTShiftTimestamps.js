@@ -51,7 +51,7 @@ class VTTShiftTimestamps extends Utility {
       ? Subtitle.adjustTimestamps(timeShift, originalData)
       : originalData
 
-    logger.data('adjusted_subtitles', shiftedData)
+    logger.data('adjustedSubtitles', shiftedData)
     this.concerns.ArgOutfile.write({text: shiftedData})
   }
 

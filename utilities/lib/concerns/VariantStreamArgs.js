@@ -5,8 +5,8 @@ const {NewOpt} = require('../options')
 
 const ArgAlternateFor = require('./args/ArgAlternateFor')
 const ArgRole = require('./args/ArgRole')
-const ArgStreamKey = require('./ArgStreamKey')
-const ArgVariantKey = require('./ArgVariantKey')
+const ArgStreamKey = require('./args/ArgStreamKey')
+const ArgVariantKey = require('./args/ArgVariantKey')
 const blueprint = {
   name: 'VariantStreamArgs',
   concerns: [ArgAlternateFor, ArgRole, ArgStreamKey, ArgVariantKey],
