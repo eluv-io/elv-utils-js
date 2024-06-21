@@ -1,8 +1,10 @@
 // Integration test for https://docs.eluv.io/docs/guides/media-ingest/elv-utils-js/utilities/#librarylistobjectsjs
 
-const {localDevTenantInfo, requireUtility, runUtilityTest, expect} = require('../test-helpers')
+const {elvUtilsConfigResolved, requireUtility, runUtilityTest, expect} = require('../test-helpers')
 
 const LibraryListObjects = requireUtility('LibraryListObjects.js')
+
+const config = elvUtilsConfigResolved()
 
 describe(__filename, function () {
   this.timeout(0)
@@ -10,7 +12,7 @@ describe(__filename, function () {
     await runUtilityTest(
       LibraryListObjects,
       [
-        '--libraryId', localDevTenantInfo.mezLib,
+        '--libraryId', config.mezLib,
         '--date',
         '--hash',
         '--name',

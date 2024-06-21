@@ -1,8 +1,10 @@
 // Integration test for https://docs.eluv.io/docs/guides/media-ingest/elv-utils-js/utilities/#libraryinfojs
 
-const {expect, localDevTenantInfo, requireUtility, runUtilityTest} = require('../test-helpers')
+const {expect, elvUtilsConfigResolved, requireUtility, runUtilityTest} = require('../test-helpers')
 
 const LibraryInfo = requireUtility('LibraryInfo.js')
+
+const config = elvUtilsConfigResolved()
 
 describe(__filename, function () {
   this.timeout(0)
@@ -10,7 +12,8 @@ describe(__filename, function () {
     const result = await runUtilityTest(
       LibraryInfo,
       [
-        '--libraryId', localDevTenantInfo.mezLib
+        '--libraryId', config.mezLib,
+        '--silent'
       ],
       {}
     )

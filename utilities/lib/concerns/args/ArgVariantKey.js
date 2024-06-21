@@ -12,6 +12,7 @@ const blueprint = {
   ]
 }
 
+// eslint-disable-next-line no-unused-vars
 const New = context => {
 
   // instance interface

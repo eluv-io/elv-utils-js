@@ -7,10 +7,12 @@ const MasterCreate = requireUtility('MasterCreate.js')
 describe(__filename, function () {
   this.timeout(0)
   it('should run successfully', async () => {
+    const title = timestampFilename(__filename)
+
     await runUtilityTest(
       MasterCreate,
       [
-        '--title', timestampFilename(__filename),
+        '--title', title,
         '--files', exampleVideoPath
       ],
       {}

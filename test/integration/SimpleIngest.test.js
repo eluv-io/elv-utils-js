@@ -1,9 +1,8 @@
 // Integration test for https://docs.eluv.io/docs/guides/media-ingest/elv-utils-js/utilities/#simpleingestjs
 
 const {
-  exampleABRProfilePath,
   exampleVideoPath,
-  localDevTenantInfo,
+  elvUtilsConfigResolved,
   requireUtility,
   runUtilityTest,
   timestampFilename
@@ -12,23 +11,27 @@ const {
 const SimpleIngest = requireUtility('SimpleIngest.js')
 const MetaSet = requireUtility('MetaSet.js')
 
-const abrProfile = require(exampleABRProfilePath('abr_profile_both'))
+const config = elvUtilsConfigResolved()
+
+const abrProfile = require(config.abrProfile)
 
 const libAbrMetadata = {
-  mez_content_type: localDevTenantInfo.mezType,
+  mez_content_type: config.mezType,
   default_profile: abrProfile,
-  mez_manage_groups: [localDevTenantInfo.groupAddress],
+  mez_manage_groups: [config.groupAddress],
   mez_permission_level: 'editable'
 }
 
 describe(__filename, function () {
   this.timeout(0)
   it('should run successfully', async () => {
+    const title = timestampFilename(__filename)
+
     // make sure library has needed metadata for SimpleIngest
     await runUtilityTest(
       MetaSet,
       [
-        '--libraryId', localDevTenantInfo.mezLib,
+        '--libraryId', config.mezLib,
         '--metadata', JSON.stringify(libAbrMetadata),
         '--path', '/abr',
         '--commitMsg', 'Set metadata for SimpleIngest.js',
@@ -40,8 +43,8 @@ describe(__filename, function () {
     await runUtilityTest(
       SimpleIngest,
       [
-        '--libraryId', localDevTenantInfo.mezLib,
-        '--title', timestampFilename(__filename),
+        '--libraryId', config.mezLib,
+        '--title', title,
         '--files', exampleVideoPath
       ],
       {}

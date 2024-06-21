@@ -389,14 +389,16 @@ const readFilesAndResolve = ({cwd = process.cwd(), confFilePaths, debugLogger}) 
   return resolveConfPresets(mergedConf, debugLogger)
 }
 
-const readFilesAndSubstitute = ({cwd = process.cwd(), filePaths, debugLogger}) => {
-  const resolvedVarsDef = readFilesAndResolve({cwd, filePaths, debugLogger})
+const readFilesAndSubstitute = ({cwd = process.cwd(), confFilePaths, debugLogger}) => {
+  const resolvedVarsDef = readFilesAndResolve({cwd, confFilePaths, debugLogger})
   return substituteVarSetXrefs(resolvedVarsDef.defaults, debugLogger)
 }
 
 // Process Configuration 'presets_use' directives
 // Must first have been processed with mergeVars() to convert
 // 'presets_add' / 'presets_omit'
+// noinspection JSUnusedLocalSymbols
+// eslint-disable-next-line no-unused-vars
 const resolveConfPresets = (mergedConf, debugLogger) => {
   // validate
   V.ConfMergedModel(mergedConf)

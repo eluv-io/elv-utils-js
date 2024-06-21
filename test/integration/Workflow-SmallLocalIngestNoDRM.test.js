@@ -49,10 +49,12 @@ const SmallLocalIngestNoDRM = async ({
   }
 }
 
+const title = timestampFilename(path.basename(__filename))
+
 const testParams = {
-  masterTitle: timestampFilename(path.basename(__filename)),
+  masterTitle: title,
   masterFiles: [exampleVideoPath],
-  mezTitle: timestampFilename(path.basename(__filename)),
+  mezTitle: title,
   abrProfilePath: exampleABRProfilePath('abr_profile_no_drm_store_clear.json')
 }
 

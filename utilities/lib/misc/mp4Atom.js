@@ -21,10 +21,12 @@ const MP4AtomReadContextModel = ObjectModel(
 class MP4AtomReadContext extends MP4AtomReadContextModel
 {
 
+  // noinspection JSUnusedGlobalSymbols
   get currentAtomBytesLeft() {
     return this.currentAtomLength - this.posWithinAtom
   }
 
+  // noinspection JSUnusedGlobalSymbols
   get currentAtomEnd() {
     return this.currentAtomStart + this.currentAtomLength
   }

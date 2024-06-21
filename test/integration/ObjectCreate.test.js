@@ -1,17 +1,21 @@
 // Integration test for https://docs.eluv.io/docs/guides/media-ingest/elv-utils-js/utilities/#objectcreatejs
 
-const {expect, localDevTenantInfo, requireUtility, runUtilityTest, timestampFilename} = require('../test-helpers')
+const {expect, elvUtilsConfigResolved, requireUtility, runUtilityTest, timestampFilename} = require('../test-helpers')
+const path = require('path')
 
 const ObjectCreate = requireUtility('ObjectCreate.js')
+
+const config = elvUtilsConfigResolved()
 
 describe(__filename, function () {
   this.timeout(0)
   it('should run successfully', async () => {
+    const title = timestampFilename(path.basename(__filename))
     const result = await runUtilityTest(
       ObjectCreate,
       [
-        '--libraryId', localDevTenantInfo.mezLib,
-        '--name', timestampFilename(__filename)
+        '--libraryId', config.mezLib,
+        '--name', title
       ],
       {}
     )

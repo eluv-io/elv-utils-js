@@ -9,8 +9,10 @@ const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight
 const now = require('@eluvio/elv-js-helpers/Datetime/now')
 
 const {concernList, concernsDir, exampleFilesDir, runUtility, utilitiesDir} = require('../utilities/lib/helpers')
+const {readFilesAndSubstitute} = require('../utilities/lib/configs')
 
 const Utility = require('../utilities/lib/Utility')
+const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
 
 chai.should()
 const expect = chai.expect
@@ -55,13 +57,9 @@ const exampleABRProfilePath = (filename) => path.join(exampleFilesDir, filename)
 
 const exampleVideoPath = path.join(exampleFilesDir, 'video.mp4')
 
-const localDevTenantInfo = {
-  FABRIC_CONFIG_URL: 'http://127.0.0.1:8008/config?qspace=dev&self',
-  groupAddress: '0x8d8780cfa0970a064e247e4a7829f0106b38d7f7',
-  masterLib: 'ilib3fm7YhNrmYBNsgNwFuUso1CRVFw3',
-  masterType: 'iq__2tfLjovW8zMN9Yh6eLmwynX1Cbip',
-  mezLib: 'ilib29dvmbN91uyXRwcMX88CAs8q2zeT',
-  mezType: 'iq__8SLzhEyJWiJ41BPezhswG56MUwL'
+const elvUtilsConfigResolved = () =>  {
+  if (!process.env.ELVUTILS_CONFIG) throwError('Environment variable ELVUTILS_CONFIG is not set')
+  return readFilesAndSubstitute({confFilePaths: [process.env.ELVUTILS_CONFIG]})
 }
 
 const params = testParams => mergeDeepRight(
@@ -106,7 +104,7 @@ module.exports = {
   exampleABRProfilePath,
   exampleVideoPath,
   expect,
-  localDevTenantInfo,
+  elvUtilsConfigResolved,
   params,
   prefixTimestamp,
   removeElvEnvVars,
