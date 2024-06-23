@@ -12,6 +12,7 @@
     "build": "echo 'Deleting and recreating ./build directory...' && rimraf build && bin/makeBuildDir.sh && npm run build-main-js",
     "build-main-js": "echo 'Rebuilding main.js...' && node ./bin/buildMain.js",
     "check-dependency-updates": "echo 'Checking dependencies in package.json for updates...' && npx npm-check-updates",
+    "generate-dep-graph": "echo 'Generating module dependency diagram...' && node ./bin/graphDeps.js",
     "release": "echo 'Incrementing version and publishing to npmjs.com...' && cp package.json ./build/package.json && np --no-2fa",
     "test": "mocha --recursive \"./test/unit/**/*.test.js\"",
     "test-integration": "mocha --recursive \"./test/integration/**/*.test.js\"",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "chai": "^4.3.7",
     "eslint": "^8.32.0",
+    "madge": "^7.0.0",
     "mocha": "^10.4.0",
     "np": "^7.6.3",
     "npm-check-updates": "^16.14.20",
