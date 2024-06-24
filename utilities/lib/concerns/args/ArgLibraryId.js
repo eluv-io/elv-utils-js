@@ -1,4 +1,5 @@
 // code related to --libraryId
+const LibraryIdModel = require('../../models/LibraryIdModel')
 
 const {NewOpt} = require('../../options')
 
@@ -8,6 +9,7 @@ const blueprint = {
     NewOpt('libraryId',
       {
         descTemplate: 'Library ID{X} (should start with \'ilib\')',
+        coerce: LibraryIdModel,
         type: 'string'
       }
     )

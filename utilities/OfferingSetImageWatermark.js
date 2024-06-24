@@ -8,8 +8,8 @@ const ArgClear = require('./lib/concerns/args/ArgClear')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
 const ArgWatermark = require('./lib/concerns/ArgWatermark')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const FabricFile = require('./lib/concerns/FabricFile')
-const Metadata = require('./lib/concerns/Metadata')
+const FabricFile = require('./lib/concerns/libs/FabricFile')
+const Metadata = require('./lib/concerns/libs/Metadata')
 
 const chkNoClearOrWatermark = (argv) => {
   if (!argv.clear && !argv.watermark) {

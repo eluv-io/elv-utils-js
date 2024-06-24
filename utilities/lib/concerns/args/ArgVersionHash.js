@@ -1,4 +1,5 @@
 // code related to --versionHash
+const VersionHashModel = require('../../models/VersionHashModel')
 
 const {NewOpt} = require('../../options')
 
@@ -13,6 +14,7 @@ const blueprint = {
     NewOpt('versionHash',
       {
         descTemplate: 'Version hash{X} (should start with \'hq__\')',
+        coerce: VersionHashModel,
         type: 'string'
       }
     )

@@ -10,7 +10,7 @@ const {PublicMetadataPathArrayModel} = require('./lib/models/PublicMetadataPath'
 
 const JSON = require('./lib/concerns/JSON')
 const ExistLib = require('./lib/concerns/kits/ExistLib')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
 
 class LibraryListObjects extends Utility {

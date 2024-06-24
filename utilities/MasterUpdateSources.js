@@ -9,7 +9,7 @@ const Utility = require('./lib/Utility')
 const Client = require('./lib/concerns/Client')
 const CloudAccess = require('./lib/concerns/CloudAccess')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata')
 
 class MasterUpdateSources extends Utility {
   static blueprint() {

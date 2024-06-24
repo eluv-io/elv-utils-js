@@ -3,8 +3,9 @@ const kindOf = require('kind-of')
 const R = require('@eluvio/ramda-fork')
 const slugify = require('@sindresorhus/slugify')
 
-const {throwError} = require('../helpers')
-const {NonBlankString} = require('../models/Models')
+const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
+const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
+
 const {NewOpt, StdOpt} = require('../options')
 
 const coerceAssetMetadata = arg => kindOf(arg) === 'object'
@@ -128,7 +129,7 @@ const New = (context) => {
       || assetMetadataArgField('title')
       || oldAssetMetadata.title
     try {
-      NonBlankString(t)
+      NonBlankStrModel(t)
     } catch(e) {
       throw Error('--title not supplied and could not determine from other args or existing object')
     }

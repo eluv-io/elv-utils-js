@@ -1,6 +1,7 @@
 // Finalize an existing draft
 
 const Utility = require('./lib/Utility')
+const {ModOpt} = require('./lib/options')
 
 const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
 const ExistDft = require('./lib/concerns/kits/ExistDft')
@@ -10,7 +11,7 @@ class DraftFinalize extends Utility {
     return {
       concerns: [ExistDft, ArgCommitMsg],
       options: [
-
+        ModOpt('commitMsg', {default: 'DraftFinalize.js called'})
       ]
     }
   }

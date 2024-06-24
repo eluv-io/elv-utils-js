@@ -1,9 +1,10 @@
 // Defines basic data validation models used to build more complex validators
 
+const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
+
 const curry = require('crocks/helpers/curry')
 const Result = require('crocks/Result')
 const {Err, Ok} = Result
-const kindOf = require('kind-of')
 
 // Object Model basic and common derived types
 const Om = require('objectmodel')
@@ -45,9 +46,7 @@ const NegativeInteger = NegativeNumber.extend().assert(Number.isInteger).as('Neg
 const NonNegativeInteger = NonNegativeNumber.extend().assert(Number.isInteger).as('NonNegativeInteger')
 
 // Strings
-const NonBlankString = BasicModel(String).assert(function isNotBlank(str) {
-  return kindOf(str) === 'string' && str.trim().length > 0
-}).as('NonBlankString')
+
 const NormalizedString = BasicModel(String).assert(function isNormalized(str) {
   return str.normalize() === str
 }).as('NormalizedString')
@@ -78,7 +77,7 @@ const TypedArrayNonEmpty = (def) => ArrayModel(def).assert(function isNotEmpty(a
   return arr.length > 0
 }).as('TypedArrayNonEmpty')
 
-const NonBlankStringOrArrayOfSame = BasicModel([NonBlankString, ArrayModel(NonBlankString)])
+const NonBlankStringOrArrayOfSame = BasicModel([NonBlankStrModel, ArrayModel(NonBlankStrModel)])
 
 
 // Others
@@ -123,6 +122,7 @@ const SealedModel = def => {
 // Custom Error Collector for models
 // ==============================================
 
+// eslint-disable-next-line no-unused-vars
 const ErrCollect = function(errors, logger=console){
   let errLines = []
   errors.forEach(error => {
@@ -176,9 +176,9 @@ const CheckedPresentPropName = curry((errorMessage, object, propertyName) => Obj
   : Err(Error(`"${propertyName}" ${errorMessage || ' not found'}`))
 )
 
-// tests 'a' against NonBlankString model, returns Result wrapping 'a' or error
+// tests 'a' against NonBlankStrModel, returns Result wrapping 'a' or error
 // CheckedNonBlankString :: a => Result e a
-const CheckedNonBlankString = CheckedResult(NonBlankString)
+const CheckedNonBlankString = CheckedResult(NonBlankStrModel)
 
 
 module.exports = {
@@ -200,7 +200,6 @@ module.exports = {
   PositiveInteger,
   NegativeInteger,
   NonNegativeInteger,
-  NonBlankString,
   NormalizedString,
   TrimmedString,
   PastDate,

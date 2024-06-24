@@ -1,11 +1,12 @@
 // Holds sets of credentials for S3, along with path matching rules
 
+const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
+
 const awsRegions = require('../data/aws_regions')
 const awsRegionNames = Object.keys(awsRegions)
 
 const {
   CheckedResult,
-  NonBlankString,
   ObjectModel,
   SealedModel,
   TypedArrayNonEmpty
@@ -16,20 +17,20 @@ const StorageEndpointModel = SealedModel({
 })
 
 const CloudCredentialsModel = SealedModel({
-  access_key_id: NonBlankString,
-  secret_access_key: NonBlankString
+  access_key_id: NonBlankStrModel,
+  secret_access_key: NonBlankStrModel
 })
 
 const RemoteAccessModel = ObjectModel({
   protocol: 's3',
   platform: 'aws',
-  path: NonBlankString,
+  path: NonBlankStrModel,
   storage_endpoint: StorageEndpointModel,
   cloud_credentials: CloudCredentialsModel
 })
 
 const CredentialModel = ObjectModel({
-  path_matchers: TypedArrayNonEmpty(NonBlankString),
+  path_matchers: TypedArrayNonEmpty(NonBlankStrModel),
   remote_access: RemoteAccessModel
 })
 

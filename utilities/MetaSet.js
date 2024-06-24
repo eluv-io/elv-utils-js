@@ -8,8 +8,8 @@ const Utility = require('./lib/Utility')
 
 const ExistLibOrObjOrDft = require('./lib/concerns/kits/ExistLibOrObjOrDft')
 const Library = require('./lib/concerns/libs/Library')
-const Metadata = require('./lib/concerns/Metadata')
-const ArgMetadata = require('./lib/concerns/ArgMetadata')
+const Metadata = require('./lib/concerns/libs/Metadata')
+const ArgMetadata = require('./lib/concerns/args/ArgMetadata')
 const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
 
 class MetaSet extends Utility {

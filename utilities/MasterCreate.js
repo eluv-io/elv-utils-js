@@ -8,7 +8,7 @@ const V = require('./lib/models/Variant')
 const VariantModel = V.VariantModel
 
 const AssetMetadata = require('./lib/concerns/AssetMetadata')
-const ArgMetadata = require('./lib/concerns/ArgMetadata')
+const ArgMetadata = require('./lib/concerns/args/ArgMetadata')
 const ArgType = require('./lib/concerns/ArgType')
 const Client = require('./lib/concerns/Client')
 const CloudFile = require('./lib/concerns/CloudFile')

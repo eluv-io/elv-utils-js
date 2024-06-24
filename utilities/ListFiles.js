@@ -1,22 +1,23 @@
 // Retrieve file list from object
 const Utility = require('./lib/Utility')
 
-const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
-const FabricFile = require('./lib/concerns/FabricFile')
+const ExistObjOrVerOrDft = require('./lib/concerns/kits/ExistObjOrVerOrDft')
+const FabricFile = require('./lib/concerns/libs/FabricFile')
 const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const ArgFilePath = require('./lib/concerns/args/ArgFilePath')
 
 class ListFiles extends Utility {
   static blueprint() {
     return {
-      concerns: [ExistObjOrVer, FabricFile, ArgOutfile]
+      concerns: [ExistObjOrVerOrDft, FabricFile, ArgOutfile, ArgFilePath]
     }
   }
 
   async body() {
-    const {outfile} = this.args
-    const {libraryId, objectId, versionHash} = await this.concerns.ExistObjOrVer.argsProc()
+    const {outfile, filePath} = this.args
+    const {libraryId, objectId, versionHash, writeToken} = await this.concerns.ExistObjOrVerOrDft.argsProc()
 
-    const fileList = await this.concerns.FabricFile.fileList({libraryId, objectId, versionHash})
+    const fileList = await this.concerns.FabricFile.fileList({filePath, libraryId, objectId, versionHash, writeToken})
     this.logger.data('files', fileList)
 
     if(outfile) {

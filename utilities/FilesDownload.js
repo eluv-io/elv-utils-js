@@ -10,7 +10,7 @@ const Utility = require('./lib/Utility')
 const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
 const Client = require('./lib/concerns/Client')
 const Logger = require('./lib/concerns/Logger')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata')
 
 class FilesDownload extends Utility {
   static blueprint() {

@@ -7,7 +7,7 @@ const Utility = require('./lib/Utility')
 const Client = require('./lib/concerns/Client')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata')
 
 class MezRegenDrmKeys extends Utility {
   static blueprint() {

@@ -1,4 +1,5 @@
 // code related to --objectId
+const ObjectIdModel = require('../../models/ObjectIdModel')
 
 const {NewOpt} = require('../../options')
 
@@ -12,6 +13,7 @@ const blueprint = {
     NewOpt('objectId',
       {
         descTemplate: 'Object ID{X} (should start with \'iq__\')',
+        coerce: ObjectIdModel,
         type: 'string'
       }
     )

@@ -4,12 +4,12 @@ const R = require('@eluvio/ramda-fork')
 
 const isString = require('@eluvio/elv-js-helpers/Boolean/isString')
 
-const {fabricItemDesc} = require('../helpers')
+const {fabricItemDesc} = require('../../helpers')
 
-const Client = require('./Client')
-const Edit = require('./Edit')
-const JSON = require('./JSON')
-const Logger = require('./Logger')
+const Client = require('../Client')
+const Edit = require('../Edit')
+const JSON = require('../JSON')
+const Logger = require('../Logger')
 
 const pathRegex = /^(\/[^/]+)+$/
 
@@ -155,7 +155,7 @@ const New = context => {
 
   const get = async ({libraryId, subtree, objectId, versionHash, writeToken}) => {
     const client = await context.concerns.Client.get()
-    logger.log(`Retrieving metadata ${pathDesc(subtree)}from ${fabricItemDesc({objectId, versionHash, writeToken})}...`)
+    logger.log(`Retrieving metadata ${pathDesc(subtree)}from ${fabricItemDesc({libraryId, objectId, versionHash, writeToken})}...`)
     return await client.ContentObjectMetadata({
       libraryId,
       metadataSubtree: subtree,
@@ -166,6 +166,8 @@ const New = context => {
   }
 
   const write = async ({commitMessage, libraryId, metadata, noWait, objectId, subtree, writeToken}) => {
+
+
     return await context.concerns.Edit.writeMetadata({
       commitMessage,
       libraryId,

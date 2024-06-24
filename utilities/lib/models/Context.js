@@ -1,12 +1,13 @@
+const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
+
 const {
   ArrayModel,
-  NonBlankString,
   ObjectModel,
   CheckedResult
 } = require('./Models')
 
 const ContextModel = ObjectModel({
-  argList: ArrayModel(NonBlankString),
+  argList: ArrayModel(NonBlankStrModel),
   args: Object,
   concerns: Object,
   cwd: String,

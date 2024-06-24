@@ -6,7 +6,7 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const AssetMetadata = require('./lib/concerns/AssetMetadata')
-const ArgMetadata = require('./lib/concerns/ArgMetadata')
+const ArgMetadata = require('./lib/concerns/args/ArgMetadata')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
 const ArgType = require('./lib/concerns/ArgType')
 const Client = require('./lib/concerns/Client')

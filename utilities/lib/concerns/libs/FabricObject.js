@@ -8,7 +8,7 @@ const Draft = require('./Draft')
 const Finalize = require('../Finalize')
 const Library = require('./Library')
 const Logger = require('../Logger')
-const Metadata = require('../Metadata')
+const Metadata = require('./Metadata')
 const Part = require('../Part')
 const Version = require('./Version')
 

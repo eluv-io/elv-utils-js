@@ -1,10 +1,11 @@
 // Specifies concerns, options and checksMap for a Concern or Script
 
+const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
+
 const {
   CheckedResult,
   FunctionModel,
   KVMapModelFactory,
-  NonBlankString,
   ObjectModel
 } = require('./Models')
 
@@ -14,7 +15,7 @@ const OptChecksMapModel = KVMapModelFactory(OptCheckModel)
 const BlueprintModel = ObjectModel({
   checksMap: [KVMapModelFactory(OptCheckModel)],
   concerns: [Array],
-  name: NonBlankString,
+  name: NonBlankStrModel,
   options: [Array],
 })
 

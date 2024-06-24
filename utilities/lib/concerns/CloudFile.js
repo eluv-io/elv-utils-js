@@ -3,7 +3,9 @@ const path = require('path')
 const kindOf = require('kind-of')
 const R = require('@eluvio/ramda-fork')
 
-const {removeTrailingSlash, throwError} = require('../helpers')
+const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
+
+const {removeTrailingSlash} = require('../helpers')
 
 const {StdOpt, NewOpt} = require('../options')
 

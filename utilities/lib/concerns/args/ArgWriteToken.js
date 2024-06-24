@@ -1,5 +1,5 @@
 // code related to --writeToken
-const {throwError} = require('../../helpers')
+const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
 
 const {NewOpt} = require('../../options')
 
@@ -8,6 +8,7 @@ const ArgObjectId = require('./ArgObjectId')
 const Draft = require('../libs/Draft')
 const FabricObject = require('../libs/FabricObject')
 const Logger = require('../Logger')
+const WriteTokenModel = require('../../models/WriteTokenModel')
 
 const blueprint = {
   name: 'ArgWriteToken',
@@ -15,6 +16,7 @@ const blueprint = {
   conflicts: 'versionHash',
   options: [
     NewOpt('writeToken', {
+      coerce: WriteTokenModel,
       conflicts: 'versionHash',
       descTemplate: 'Write token{X}',
       type: 'string'

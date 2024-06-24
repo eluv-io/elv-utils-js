@@ -4,6 +4,8 @@ const isBase58String = require('@eluvio/elv-js-helpers/Boolean/isBase58String')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 const passesModelCheck = require('@eluvio/elv-js-helpers/Boolean/passesModelCheck')
 
+// Note that this performs no validation that the object actually exists, it only checks that string is well-formed
+
 const ObjectIdModel = NonBlankStrModel.extend()
   .assert(
     ...assertAfterCheck(

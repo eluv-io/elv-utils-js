@@ -6,13 +6,14 @@ const isNumber = require('@eluvio/elv-js-helpers/Boolean/isNumber')
 const sortBy = require('@eluvio/elv-js-helpers/Functional/sortBy')
 const throwIfArgsBad = require('@eluvio/elv-js-helpers/Validation/throwIfArgsBad')
 
-const FabricFilePathModel = require('../models/FabricFilePathModel')
-const LibraryIdModel = require('../models/LibraryIdModel')
-const ObjectIdModel = require('../models/ObjectIdModel')
-const VersionHashModel = require('../models/VersionHashModel')
+const FabricFilePathModel = require('../../models/FabricFilePathModel')
+const LibraryIdModel = require('../../models/LibraryIdModel')
+const ObjectIdModel = require('../../models/ObjectIdModel')
+const VersionHashModel = require('../../models/VersionHashModel')
+const WriteTokenModel = require('../../models/WriteTokenModel')
 
-const Client = require('./Client')
-const Logger = require('./Logger')
+const Client = require('../Client')
+const Logger = require('../Logger')
 const Metadata = require('./Metadata')
 
 const blueprint = {
@@ -40,6 +41,8 @@ const mapEntry = (listFilesResult, filePath) => {
   return getPath(pathArray, listFilesResult)
 }
 
+// Converts ListFiles response object from node Files API to
+// a flat array of only files.
 const mapToList = (obj, currentPath = '/') => {
   let result = []
   for (const [k,v] of Object.entries(obj)) {
@@ -82,12 +85,12 @@ const New = context => {
     return entry !== undefined
   }
 
-  const fileList = async ({libraryId, objectId, versionHash}) => {
-    const fMap = await filesMap({libraryId, objectId, versionHash})
+  const fileList = async ({libraryId, objectId, filePath, versionHash, writeToken}) => {
+    const fMap = await filesMap({libraryId, objectId, filePath, versionHash, writeToken})
     return mapToList(fMap)
   }
 
-  const filesMap = async ({libraryId, objectId, versionHash}) => {
+  const filesMap = async ({libraryId, objectId, filePath, versionHash, writeToken}) => {
     const client = await context.concerns.Client.get()
     try {
       return await client.ListFiles({

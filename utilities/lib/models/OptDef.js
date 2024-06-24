@@ -2,12 +2,13 @@
 
 const R = require('@eluvio/ramda-fork')
 
+const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
+
 const {
   ArrayModel,
   BasicModel,
   FunctionModel,
   KVMapModelFactory,
-  NonBlankString,
   NonBlankStringOrArrayOfSame,
   NonNull,
   CheckedResult,
@@ -22,7 +23,7 @@ const commonOptFields = {
   coerce: [FunctionModel(NonNull).return(NonNull)],
   default: [NonNull],
   demand: [Boolean],
-  group: [NonBlankString],
+  group: [NonBlankStrModel],
   hidden: [Boolean],
   implies: [NonBlankStringOrArrayOfSame],
   normalize: [Boolean],
@@ -33,10 +34,10 @@ const commonOptFields = {
 }
 
 const optDescFields = {
-  descTemplate: NonBlankString,
-  forX: [NonBlankString],
-  ofX: [NonBlankString],
-  X: [NonBlankString]
+  descTemplate: NonBlankStrModel,
+  forX: [NonBlankStrModel],
+  ofX: [NonBlankStrModel],
+  X: [NonBlankStrModel]
 }
 
 const optDefFields = R.mergeAll([
@@ -50,7 +51,7 @@ const CheckedOptDef = CheckedResult(OptDefModel)
 const optDefOverrideFields = R.mergeAll([
   commonOptFields,
   optDescFields,
-  {descTemplate: [NonBlankString]}
+  {descTemplate: [NonBlankStrModel]}
 ])
 const OptDefOverrideModel = SealedModel(optDefOverrideFields).as('OptDefOverride')
 const CheckedOptDefOverride = CheckedResult(OptDefOverrideModel)

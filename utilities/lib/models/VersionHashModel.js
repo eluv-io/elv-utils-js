@@ -6,6 +6,8 @@ const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel'
 const passesModelCheck = require('@eluvio/elv-js-helpers/Boolean/passesModelCheck')
 const throwsException = require('@eluvio/elv-js-helpers/Boolean/throwsException')
 
+const ObjectIdModel = require('./ObjectIdModel')
+
 const VersionHashModel = NonBlankStrModel.extend()
   .assert(
     ...assertAfterCheck(
@@ -22,8 +24,14 @@ const VersionHashModel = NonBlankStrModel.extend()
   ).assert(
     ...assertAfterCheck(
       s => passesModelCheck(NonBlankStrModel, s) && s.startsWith('hq__') && isBase58String(s.slice(4)),
-      s => !throwsException(() => Utils.DecodeVersionHash(s.slice(4))),
+      s => !throwsException(() => Utils.DecodeVersionHash(s)),
       'is not a valid Version Hash (decode failed)'
+    )
+  ).assert(
+    ...assertAfterCheck(
+      s => passesModelCheck(NonBlankStrModel, s) && s.startsWith('hq__') && isBase58String(s.slice(4)) && !throwsException(() => Utils.DecodeVersionHash(s)),
+      s => !throwsException(() => ObjectIdModel(Utils.DecodeVersionHash(s).objectId)),
+      'is not a valid Version Hash (decoded object id failed validation)'
     )
   )
   .as('VersionHash')

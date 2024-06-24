@@ -11,6 +11,8 @@ const Result = require('crocks/Result')
 const {Err, Ok} = Result
 const curry = require('crocks/helpers/curry')
 
+const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
+
 // --------------------------------------------
 // wait
 // --------------------------------------------
@@ -233,10 +235,6 @@ const objUnwrapValues = obj => R.toPairs(obj).reduce(objUnwrapReducer, Ok([])).m
 
 const singleEntryMap = curry((key, value) => Object({[key]: value}))
 
-const throwError = message => {
-  throw Error(message)
-}
-
 // returns fixed singleton value
 const unit = () => true
 
@@ -298,7 +296,6 @@ module.exports = {
   subst,
   suppressNullLike,
   tapJson,
-  throwError,
   trimSlashes,
   unit,
   utilitiesDir,
