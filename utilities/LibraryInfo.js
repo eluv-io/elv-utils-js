@@ -3,8 +3,8 @@
 const Utility = require('./lib/Utility')
 
 const ExistLib = require('./lib/concerns/kits/ExistLib')
-const Logger = require('./lib/concerns/Logger')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const Logger = require('./lib/concerns/kits/Logger')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile')
 
 class LibraryInfo extends Utility {
   static blueprint() {

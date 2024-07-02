@@ -1,16 +1,16 @@
 // Edit an existing stream in an existing variant
-const JSON = require('./lib/concerns/JSON')
+const JSON = require('./lib/concerns/libs/JSON')
 
 const isNumber = require('@eluvio/elv-js-helpers/Boolean/isNumber')
 const NonNegativeIntModel = require('@eluvio/elv-js-helpers/Model/NonNegativeIntModel')
 
 const {HDRInfoModel} = require('./lib/models/HDRInfoModel')
-const {MasterSourcesModel} = require('./lib/models/Master')
+const {MasterSourcesModel} = require('./lib/models/MasterModels')
 
 const Utility = require('./lib/Utility')
 const {NewOpt} = require('./lib/options')
 
-const Edit = require('./lib/concerns/Edit')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class MasterAddHDRInfo extends Utility {

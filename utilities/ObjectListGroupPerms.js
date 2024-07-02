@@ -3,15 +3,15 @@ const {ModOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
-const AccessGroup = require('./lib/concerns/AccessGroup')
-const ArgObjectId = require('./lib/concerns/ArgObjectId')
+const AccessGroup = require('./lib/concerns/libs/AccessGroup')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger')
 
 class ObjectListGroupPerms extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ArgObjectId, AccessGroup, FabricObject],
+      concerns: [Logger, ExistObj, AccessGroup, FabricObject],
       options: [
         ModOpt('objectId', {demand: true, X: ' to list group permissions for'})
       ]
@@ -23,7 +23,7 @@ class ObjectListGroupPerms extends Utility {
     // get group list so we can look up names
     const groups = await this.concerns.AccessGroup.index()
 
-    const {objectId} = await this.concerns.ArgObjectId.argsProc()
+    const {objectId} = await this.concerns.ExistObj.argsProc()
 
     const groupsAndPerms = await this.concerns.FabricObject.groupPerms({objectId})
 

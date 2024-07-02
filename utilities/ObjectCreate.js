@@ -5,7 +5,7 @@ const Utility = require('./lib/Utility')
 
 const ExistLib = require('./lib/concerns/kits/ExistLib')
 const ArgMetadata = require('./lib/concerns/args/ArgMetadata')
-const ArgType = require('./lib/concerns/ArgType')
+const ArgType = require('./lib/concerns/args/ArgType')
 
 class ObjectCreate extends Utility {
   static blueprint() {

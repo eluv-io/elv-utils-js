@@ -1,7 +1,7 @@
 // code related to --storeClear arg
 const {NewOpt} = require('../../options')
 
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger')
 
 const blueprint = {
   name: 'ArgStoreClear',
@@ -15,7 +15,6 @@ const blueprint = {
 }
 
 const New = () => {
-
   return {}
 }
 

@@ -1,14 +1,14 @@
 // Add a new variant to a production master
-const {MasterModel} = require('./lib/models/Master')
-const {VariantModel} = require('./lib/models/Variant')
+const {MasterModel} = require('./lib/models/MasterModels')
+const {VariantModel} = require('./lib/models/VariantModels')
 
 const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
 
 const ArgVariantKey = require('./lib/concerns/args/ArgVariantKey')
-const Edit = require('./lib/concerns/Edit')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const JSON = require('./lib/concerns/JSON')
+const JSON = require('./lib/concerns/libs/JSON')
 
 class MasterAddVariant extends Utility {
   static blueprint() {

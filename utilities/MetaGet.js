@@ -5,15 +5,15 @@ const {fabricItemDesc} = require('./lib/helpers')
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const JPath = require('./lib/concerns/JPath')
+const ArgJPath = require('./lib/concerns/args/ArgJPath')
 const Metadata = require('./lib/concerns/libs/Metadata')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile')
 
 class MetaGet extends Utility {
   static blueprint() {
     return {
-      concerns: [JPath, ExistLibOrObjOrVerOrDft, ArgOutfile],
+      concerns: [ArgJPath, ExistLibOrObjOrVerOrDft, ArgOutfile],
       options: [
         ModOpt('jpath', {X: 'to extract'}),
         NewOpt('path', {

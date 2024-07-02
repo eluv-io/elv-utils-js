@@ -6,10 +6,10 @@ const isString = require('@eluvio/elv-js-helpers/Boolean/isString')
 
 const {fabricItemDesc} = require('../../helpers')
 
-const Client = require('../Client')
-const Edit = require('../Edit')
-const JSON = require('../JSON')
-const Logger = require('../Logger')
+const Client = require('../kits/Client')
+const Edit = require('./Edit')
+const JSON = require('./JSON')
+const Logger = require('../kits/Logger')
 
 const pathRegex = /^(\/[^/]+)+$/
 
@@ -166,8 +166,6 @@ const New = context => {
   }
 
   const write = async ({commitMessage, libraryId, metadata, noWait, objectId, subtree, writeToken}) => {
-
-
     return await context.concerns.Edit.writeMetadata({
       commitMessage,
       libraryId,

@@ -8,7 +8,7 @@ const sinon = require('sinon')
 const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
 const now = require('@eluvio/elv-js-helpers/Datetime/now')
 
-const {concernList, concernsDir, exampleFilesDir, runUtility, utilitiesDir} = require('../utilities/lib/helpers')
+const {concernList, concernsDir, exampleFilesDir, runUtility, utilitiesDir, readFileJSON} = require('../utilities/lib/helpers')
 const {readFilesAndSubstitute} = require('../utilities/lib/configs')
 
 const Utility = require('../utilities/lib/Utility')
@@ -57,6 +57,10 @@ const exampleABRProfilePath = (filename) => path.join(exampleFilesDir, filename)
 
 const exampleVideoPath = path.join(exampleFilesDir, 'video.mp4')
 
+const exampleVideoTagsPath = path.join(exampleFilesDir, 'video_tags.json')
+
+const exampleVideoTags = () => readFileJSON(exampleVideoTagsPath)
+
 const elvUtilsConfigResolved = () =>  {
   if (!process.env.ELVUTILS_CONFIG) throwError('Environment variable ELVUTILS_CONFIG is not set')
   return readFilesAndSubstitute({confFilePaths: [process.env.ELVUTILS_CONFIG]})
@@ -103,6 +107,8 @@ module.exports = {
   concern2utility,
   exampleABRProfilePath,
   exampleVideoPath,
+  exampleVideoTags,
+  exampleVideoTagsPath,
   expect,
   elvUtilsConfigResolved,
   params,

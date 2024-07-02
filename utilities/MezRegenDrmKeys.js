@@ -4,8 +4,8 @@ const R = require('@eluvio/ramda-fork')
 
 const Utility = require('./lib/Utility')
 
-const Client = require('./lib/concerns/Client')
-const Edit = require('./lib/concerns/Edit')
+const Client = require('./lib/concerns/kits/Client')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const Metadata = require('./lib/concerns/libs/Metadata')
 

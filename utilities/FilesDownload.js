@@ -8,8 +8,8 @@ const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
-const Client = require('./lib/concerns/Client')
-const Logger = require('./lib/concerns/Logger')
+const Client = require('./lib/concerns/kits/Client')
+const Logger = require('./lib/concerns/kits/Logger')
 const Metadata = require('./lib/concerns/libs/Metadata')
 
 class FilesDownload extends Utility {

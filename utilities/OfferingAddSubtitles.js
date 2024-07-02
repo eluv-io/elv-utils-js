@@ -16,12 +16,12 @@ const ArgLanguage = require('./lib/concerns/args/ArgLanguage')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
 const ArgStoreClear = require('./lib/concerns/args/ArgStoreClear')
 const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey')
-const ArgTimeShift = require('./lib/concerns/ArgTimeShift')
-const Edit = require('./lib/concerns/Edit')
+const ArgTimeShift = require('./lib/concerns/args/ArgTimeShift')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const Metadata = require('./lib/concerns/libs/Metadata')
-const Part = require('./lib/concerns/Part')
-const Subtitle = require('./lib/concerns/Subtitle')
+const Part = require('./lib/concerns/libs/Part')
+const Subtitle = require('./lib/concerns/libs/Subtitle')
 
 class OfferingAddSubtitles extends Utility {
   static blueprint() {

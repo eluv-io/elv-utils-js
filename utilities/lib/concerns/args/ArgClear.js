@@ -1,7 +1,7 @@
 // code related to --clear arg
 const {NewOpt} = require('../../options')
 
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger')
 
 const blueprint = {
   name: 'ArgClear',
@@ -14,7 +14,7 @@ const blueprint = {
   ]
 }
 
-const New = context => {
+const New = () => {
 
   return {}
 }

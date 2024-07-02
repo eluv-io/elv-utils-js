@@ -6,10 +6,10 @@ const Utility = require('./lib/Utility')
 
 const ABR = require('@eluvio/elv-abr-profile')
 
-const Client = require('./lib/concerns/Client')
-const Finalize = require('./lib/concerns/Finalize')
-const LocalFile = require('./lib/concerns/LocalFile')
-const LRO = require('./lib/concerns/LRO')
+const Client = require('./lib/concerns/kits/Client')
+const Finalize = require('./lib/concerns/libs/Finalize')
+const LocalFile = require('./lib/concerns/kits/LocalFile')
+const LRO = require('./lib/concerns/libs/LRO')
 const ExistLib = require('./lib/concerns/kits/ExistLib')
 const {seconds} = require('./lib/helpers')
 

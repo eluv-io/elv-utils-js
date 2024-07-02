@@ -1,10 +1,10 @@
 // code related to libraries / library IDs
 const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
 
-const Client = require('../Client')
-const Logger = require('../Logger')
+const Client = require('../kits/Client')
+const Logger = require('../kits/Logger')
 
-const Part = require('../Part')
+const Part = require('./Part')
 
 const blueprint = {
   name: 'Library',

@@ -7,11 +7,25 @@ const kindOf = require('kind-of')
 const moment = require('moment')
 const R = require('@eluvio/ramda-fork')
 
-const Result = require('crocks/Result')
-const {Err, Ok} = Result
-const curry = require('crocks/helpers/curry')
+const Err = require('@eluvio/elv-js-helpers/ADT/Err')
+const Ok = require('@eluvio/elv-js-helpers/ADT/Ok')
+
+const isGT = require('@eluvio/elv-js-helpers/Boolean/isGT')
+
+const isLT = require('@eluvio/elv-js-helpers/Boolean/isLT')
+const isUndefined = require('@eluvio/elv-js-helpers/Boolean/isUndefined')
+
+const curry = require('@eluvio/elv-js-helpers/Functional/curry')
 
 const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
+
+const AnyModel = require('@eluvio/elv-js-helpers/Model/AnyModel')
+const FunctionModel = require('@eluvio/elv-js-helpers/Model/FunctionModel')
+
+const defArrayModel = require('@eluvio/elv-js-helpers/ModelFactory/defArrayModel')
+const defSealedObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defSealedObjModel')
+
+const throwIfArgsBad = require('@eluvio/elv-js-helpers/Validation/throwIfArgsBad')
 
 // --------------------------------------------
 // wait
@@ -31,6 +45,7 @@ const compare = (a, b) => {
       ? 1
       : 0
 }
+
 
 // --------------------------------------------
 // string processing
@@ -101,7 +116,7 @@ const etaString = seconds => {
   let pieces = []
 
   const days = Math.trunc(seconds / 86400)
-  if(days > 0) dataStarted = true
+  if (days > 0) dataStarted = true
   pieces.push(dataStarted ? days.toString() + 'd' : '')
 
   const hoursString = unixTimestamp.format(dataStarted ? 'HH\\h' : 'H\\h')
@@ -158,7 +173,7 @@ const NONSTANDARD_UTILITIES = [
 
 const readFile = (filePath, cwd = '.', logger) => {
   const fullPath = absPath(filePath, cwd)
-  if(logger) logger.log(`Reading file ${fullPath}...`)
+  if (logger) logger.log(`Reading file ${fullPath}...`)
   return fs.readFileSync(fullPath)
 }
 
@@ -169,7 +184,7 @@ const standardUtilityFilenames = () => fs.readdirSync(utilitiesDir).filter(f => 
 // Try interpreting the string as a file path. If that fails, return string
 const stringOrFileContents = (str, cwd = '.', logger) => {
   try {
-    const exists = fs.existsSync(path.resolve(cwd,str))
+    const exists = fs.existsSync(path.resolve(cwd, str))
     return exists ? readFile(str, cwd, logger) : str
   } catch (e) {
     return str
@@ -216,6 +231,56 @@ const identity = x => x
 // unwrap a Result object
 const join = x => x.either(identity, identity)
 
+const MINMAX_PARAMS_MODEL = defSealedObjModel(
+  'minMax() params arg',
+  {
+    getFn: [FunctionModel],
+    maxGetFn: [FunctionModel],
+    maxInitial: [AnyModel],
+    minGetFn: [FunctionModel],
+    minInitial: [AnyModel],
+  }
+)
+
+const MINMAX_LIST_MODEL = defArrayModel(
+  'minMax() list arg',
+  AnyModel
+)
+// find min and max of an iterable
+const minMax = (
+  params,
+  list
+) => {
+  throwIfArgsBad(MINMAX_PARAMS_MODEL, params)
+  throwIfArgsBad(MINMAX_LIST_MODEL, list)
+
+  const minInitial = isUndefined(params.minInitial) ? Infinity : params.minInitial
+  const maxInitial = isUndefined(params.maxInitial) ? -Infinity : params.maxInitial
+
+  const minGetFn = isUndefined(params.minGetFn) ?
+    isUndefined(params.getFn) ?
+      identity :
+      params.getFn :
+    params.minGetFn
+
+  const maxGetFn = isUndefined(params.maxGetFn) ?
+    isUndefined(params.getFn) ?
+      identity :
+      params.getFn :
+    params.maxGetFn
+
+  return list.reduce(
+    (accumulator, element) => Object({
+      max: isGT(accumulator.max, maxGetFn(element)) ? maxGetFn(element) : accumulator.max,
+      min: isLT(accumulator.min, minGetFn(element)) ? minGetFn(element) : accumulator.min
+    }),
+    {
+      max: maxInitial,
+      min: minInitial
+    }
+  )
+}
+
 // Accumulate an array of unwrapped objects, return Ok(array) or Err(error)
 // Returns Err(error) if accumulator is already an Err object or if kvPair value is an Err object
 const objUnwrapReducer = (rAccPairs, kvPair) => {
@@ -258,7 +323,6 @@ const runUtility = async (utility, argList, env, throwOnError = true) => {
 }
 
 
-
 module.exports = {
   absPath,
   buildDir,
@@ -280,6 +344,7 @@ module.exports = {
   join,
   jsonCurry,
   logLine,
+  minMax,
   NONSTANDARD_UTILITIES,
   objUnwrapValues,
   padStart,

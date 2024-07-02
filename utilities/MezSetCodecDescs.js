@@ -4,8 +4,8 @@ const {fabricItemDesc} = require('./lib/helpers')
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const Client = require('./lib/concerns/Client')
-const Edit = require('./lib/concerns/Edit')
+const Client = require('./lib/concerns/kits/Client')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const setCodecDescs = require('./lib/misc/setCodecDescs')
 

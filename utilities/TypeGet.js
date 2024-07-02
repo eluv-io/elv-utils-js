@@ -3,9 +3,9 @@
 const Utility = require('./lib/Utility')
 const {fabricItemDesc} = require('./lib/helpers')
 
-const ContentType = require('./lib/concerns/ContentType')
+const ContentType = require('./lib/concerns/libs/ContentType')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger')
 
 class ObjectSetType extends Utility {
   static blueprint() {

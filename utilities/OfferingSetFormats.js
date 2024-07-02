@@ -6,7 +6,7 @@ const Utility = require('./lib/Utility')
 
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const Metadata = require('./lib/concerns/libs/Metadata')
-const PlayoutFormats = require('./lib/concerns/PlayoutFormats')
+const PlayoutFormat = require('./lib/concerns/libs/PlayoutFormat')
 
 class OfferingSetFormats extends Utility {
   static blueprint() {
@@ -21,7 +21,7 @@ class OfferingSetFormats extends Utility {
           type: 'string'
         }),
         NewOpt('formats', {
-          choices: PlayoutFormats.FORMATS,
+          choices: PlayoutFormat.FORMATS,
           demand: true,
           descTemplate: 'What playout formats the offerings should support.',
           string: true,
@@ -36,7 +36,7 @@ class OfferingSetFormats extends Utility {
     const {offeringKey, formats} = this.args
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
 
-    const elvCryptDrmKids = PlayoutFormats.formatsIncludeDrm(formats)
+    const elvCryptDrmKids = PlayoutFormat.formatsIncludeDrm(formats)
       ? await this.concerns.Metadata.get({
         libraryId,
         objectId,
@@ -52,7 +52,7 @@ class OfferingSetFormats extends Utility {
 
     if (isNil(offeringMetadata) || isEmpty(offeringMetadata)) throw Error(`Offering '${offeringKey}' not found.`)
 
-    const modifiedOffering = PlayoutFormats.modifiedOffering(offeringMetadata, formats, elvCryptDrmKids)
+    const modifiedOffering = PlayoutFormat.modifiedOffering(offeringMetadata, formats, elvCryptDrmKids)
 
     // Write back metadata
     const newHash = await this.concerns.Metadata.write({

@@ -7,13 +7,14 @@ const sortBy = require('@eluvio/elv-js-helpers/Functional/sortBy')
 const throwIfArgsBad = require('@eluvio/elv-js-helpers/Validation/throwIfArgsBad')
 
 const FabricFilePathModel = require('../../models/FabricFilePathModel')
+const FabricFilePathArrayModel = require('../../models/FabricFilePathArrayModel')
 const LibraryIdModel = require('../../models/LibraryIdModel')
 const ObjectIdModel = require('../../models/ObjectIdModel')
 const VersionHashModel = require('../../models/VersionHashModel')
 const WriteTokenModel = require('../../models/WriteTokenModel')
 
-const Client = require('../Client')
-const Logger = require('../Logger')
+const Client = require('../kits/Client')
+const Logger = require('../kits/Logger')
 const Metadata = require('./Metadata')
 
 const blueprint = {
@@ -21,12 +22,31 @@ const blueprint = {
   concerns: [Client, Logger, Metadata]
 }
 
-const READ_FILE_PATH_ARGS_MODEL = defObjectModel('exists()', {
+const FABRIC_FILE_DEL_ARGSMODEL = defObjectModel('FabricFile.del()', {
+  filePaths: FabricFilePathArrayModel,
+  libraryId: [LibraryIdModel],
+  objectId: [ObjectIdModel],
+  writeToken: WriteTokenModel
+})
+
+const FABRIC_FILE_READ_ARGSMODEL_FIELDS = {
   filePath: FabricFilePathModel,
   libraryId: [LibraryIdModel],
   objectId: [ObjectIdModel],
   versionHash: [VersionHashModel]
-})
+}
+
+const FABRIC_FILE_EXISTS_ARGSMODEL = defObjectModel(
+  'FabricFile.exists()',
+  FABRIC_FILE_READ_ARGSMODEL_FIELDS
+)
+
+const FABRIC_FILE_PATH_INFO_ARGSMODEL = defObjectModel(
+  'FabricFile.pathInfo()',
+  FABRIC_FILE_READ_ARGSMODEL_FIELDS
+)
+
+const fileLink = ({filePath}) => Object({'/': `./files/${filePath}`})
 
 const isDir = fileMapEntry => fileMapEntry['.']?.type === 'directory'
 
@@ -68,11 +88,36 @@ const pathToArray = filePath => {
 }
 
 const New = context => {
-  // const logger = context.concerns.Logger;
+
+  // upload (non-S3) files to object
+  const add = async ({encrypt, fileInfo, libraryId, objectId, writeToken}) => {
+    const client = await context.concerns.Client.get()
+    return await client.UploadFiles({
+      libraryId,
+      objectId,
+      writeToken,
+      fileInfo,
+      callback: logProgressCallback,
+      encryption: encrypt ? 'cgck' : 'none'
+    })
+  }
+
+  const del = async ({filePaths, libraryId, objectId, writeToken}) => {
+    throwIfArgsBad(FABRIC_FILE_DEL_ARGSMODEL,{filePaths, libraryId, objectId, writeToken})
+
+    const client = await context.concerns.Client.get()
+
+    return await client.DeleteFiles({
+      libraryId,
+      objectId,
+      filePaths,
+      writeToken
+    })
+  }
 
   // checks if a file exists
   const exists = async ({filePath, libraryId, objectId, versionHash}) => {
-    throwIfArgsBad(READ_FILE_PATH_ARGS_MODEL,{filePath, libraryId, objectId, versionHash})
+    throwIfArgsBad(FABRIC_FILE_EXISTS_ARGSMODEL,{filePath, libraryId, objectId, versionHash})
 
     let filesMap = await filesMap({
       libraryId,
@@ -85,6 +130,7 @@ const New = context => {
     return entry !== undefined
   }
 
+
   const fileList = async ({libraryId, objectId, filePath, versionHash, writeToken}) => {
     const fMap = await filesMap({libraryId, objectId, filePath, versionHash, writeToken})
     return mapToList(fMap)
@@ -96,7 +142,9 @@ const New = context => {
       return await client.ListFiles({
         libraryId,
         objectId,
-        versionHash
+        path: filePath,
+        versionHash,
+        writeToken
       })
     } catch (e) {
       // try retrieving all metadata, so we can get better error if e.g. object not found
@@ -111,23 +159,36 @@ const New = context => {
     }
   }
 
+  // log progress to console
+  const logProgressCallback = progress => {
+    Object.keys(progress).sort().forEach(filename => {
+      const {uploaded, total} = progress[filename]
+      const percentage = total === 0 ? '100.0%' : (100 * uploaded / total).toFixed(1) + '%'
+      context.concerns.Logger.log(`${filename}: ${percentage}`)
+    })
+  }
+
   const pathInfo = async ({filePath, libraryId, objectId, versionHash}) => {
-    throwIfArgsBad(READ_FILE_PATH_ARGS_MODEL,{filePath, libraryId, objectId, versionHash})
-    const fMap = await filesMap({libraryId, objectId, versionHash})
+    throwIfArgsBad(FABRIC_FILE_PATH_INFO_ARGSMODEL,{filePath, libraryId, objectId, versionHash})
+    const fMap = await filesMap({filePath, libraryId, objectId, versionHash})
     return mapEntry(fMap, filePath)
   }
 
   // instance interface
   return {
+    add,
+    del,
     exists,
     fileList,
     filesMap,
+    logProgressCallback,
     pathInfo
   }
 }
 
 module.exports = {
   blueprint,
+  fileLink,
   isDir,
   isEncrypted,
   isFile,

@@ -1,0 +1,32 @@
+{
+  "not-today-brian": {
+    "label": "Not today, Brian",
+    "tags": [
+      {
+        "start_time": 7000,
+        "end_time": 9441,
+        "text": "Not in the hospital"
+      },
+      {
+        "start_time": 12641,
+        "end_time": 14761,
+        "text": "Not in the yard"
+      },
+      {
+        "start_time": 18121,
+        "end_time": 20481,
+        "text": "Not in the restaurant"
+      }
+    ]
+  },
+  "not-today-thrak": {
+    "label": "Not today, Thrak",
+    "tags": [
+      {
+        "start_time": 23601,
+        "end_time": 27041,
+        "text": "Not in game"
+      }
+    ]
+  }
+}

@@ -7,9 +7,9 @@ const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ArgFile = require('./lib/concerns/args/ArgFile')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
-const ArgTimeShift = require('./lib/concerns/ArgTimeShift')
-const Subtitle = require('./lib/concerns/Subtitle')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile')
+const ArgTimeShift = require('./lib/concerns/args/ArgTimeShift')
+const Subtitle = require('./lib/concerns/libs/Subtitle')
 
 class VTTShiftTimestamps extends Utility {
   static blueprint() {

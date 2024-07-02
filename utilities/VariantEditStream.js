@@ -1,14 +1,14 @@
 // Edit an existing stream in an existing variant
 const R = require('@eluvio/ramda-fork')
 
-const {MasterModel} = require('./lib/models/Master')
-const {VariantModel, VariantStreamModel} = require('./lib/models/Variant')
+const {MasterModel} = require('./lib/models/MasterModels')
+const {VariantModel, VariantStreamModel} = require('./lib/models/VariantModels')
 
 const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
 
-const VariantStreamArgs = require('./lib/concerns/VariantStreamArgs')
-const Edit = require('./lib/concerns/Edit')
+const VariantStreamArgs = require('./lib/concerns/kits/VariantStreamArgs')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class VariantEditStream extends Utility {

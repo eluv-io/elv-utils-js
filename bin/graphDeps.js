@@ -1,33 +1,20 @@
-const fs = require('fs')
+
 const path = require('path')
 
-const madge = require('madge')
+const buildDepGraph =  require('../test/tools/buildDepGraph')
+const buildRequireAllConcerns = require('../test/tools/buildRequireAllConcerns')
+const buildRequireAllUtils = require('../test/tools/buildRequireAllUtils')
 
-const buildRequireAllUtils = require('./buildRequireAllUtils')
+const CONCERNS_DIAGRAM_PATH = path.join(__dirname, '../test/unit/concernsDepGraph.svg')
+const CONCERNS_ROOT_PATH = path.join(__dirname, '../utilities/lib/concerns/CONCERNS')
 
-const DIAGRAM_PATH = path.join(__dirname, '../test/unit/depGraph.svg')
-const ROOT_PATH = path.join(__dirname, '../test/unit/require-all-utilities.js')
+const UTILS_DIAGRAM_PATH = path.join(__dirname, '../test/unit/utilsDepGraph.svg')
+const UTILS_ROOT_PATH = path.join(__dirname, '../utilities/UTILITIES')
 
-buildRequireAllUtils()
 
-madge(
-  ROOT_PATH,
-  {
-    fontSize: '10px',
-    backgroundColor: '#FFFFFF',
-    cyclicNodeColor: '#F00000',
-    edgeColor: '#666666',
-    graphVizOptions: {
-      G: {
-        rankdir: 'LR'
-      }
-    },
-    includeNpm: true,
-    nodeColor: '#000000',
-    noDependencyColor: '#008000'
-  }
-).then((res) => res.svg())
-  .then((output) => {
-    fs.writeFileSync(DIAGRAM_PATH, output.toString())
-    console.log('Diagram saved to ' + path.resolve(DIAGRAM_PATH))
-  })
+
+buildRequireAllConcerns(CONCERNS_ROOT_PATH)
+buildDepGraph(CONCERNS_ROOT_PATH, CONCERNS_DIAGRAM_PATH, true)
+
+buildRequireAllUtils(UTILS_ROOT_PATH)
+buildDepGraph(UTILS_ROOT_PATH, UTILS_DIAGRAM_PATH, true)

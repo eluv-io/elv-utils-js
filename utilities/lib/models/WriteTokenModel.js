@@ -8,7 +8,7 @@ const throwsException = require('@eluvio/elv-js-helpers/Boolean/throwsException'
 
 const ObjectIdModel = require('./ObjectIdModel')
 
-const WriteToken = NonBlankStrModel.extend()
+const WriteTokenModel = NonBlankStrModel.extend()
   .assert(
     ...assertAfterCheck(
       passesModelCheck(NonBlankStrModel),
@@ -36,5 +36,5 @@ const WriteToken = NonBlankStrModel.extend()
   )
   .as('WriteToken')
 
-module.exports = WriteToken
+module.exports = WriteTokenModel
 

@@ -4,16 +4,15 @@ const R = require('@eluvio/ramda-fork')
 const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const Client = require('./lib/concerns/Client')
-const ArgNoWait = require('./lib/concerns/ArgNoWait')
-const ArgObjectId = require('./lib/concerns/ArgObjectId')
-const Logger = require('./lib/concerns/Logger')
-const LRO = require('./lib/concerns/LRO')
+const Client = require('./lib/concerns/kits/Client')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
+const Logger = require('./lib/concerns/kits/Logger')
+const LRO = require('./lib/concerns/libs/LRO')
 
 class MezzanineJobStatus extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ArgObjectId, Client, LRO, ArgNoWait],
+      concerns: [Logger, ExistObj, Client, LRO],
       options: [
         ModOpt('objectId', {ofX: 'mezzanine', demand: true}),
         ModOpt('libraryId', {forX: 'mezzanine'})
@@ -25,7 +24,7 @@ class MezzanineJobStatus extends Utility {
     const client = await this.concerns.Client.get()
     const logger = this.logger
 
-    const {libraryId, objectId} = await this.concerns.ArgObjectId.argsProc()
+    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
 
     let statusReport
     statusReport = await this.concerns.LRO.status({libraryId, objectId})

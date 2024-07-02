@@ -3,13 +3,13 @@
 
 const uniq = require('@eluvio/elv-js-helpers/Functional/uniq')
 
-const Client = require('../Client')
+const Client = require('../kits/Client')
 const Draft = require('./Draft')
-const Finalize = require('../Finalize')
+const Finalize = require('./Finalize')
 const Library = require('./Library')
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger')
 const Metadata = require('./Metadata')
-const Part = require('../Part')
+const Part = require('./Part')
 const Version = require('./Version')
 
 const blueprint = {
@@ -20,6 +20,8 @@ const blueprint = {
 const New = context => {
   const logger = context.concerns.Logger
 
+  // creates and finalizes content object
+  // TODO: remove finalization, refactor into wrapper
   const create = async ({commitMessage = 'Create object', libraryId, metadata, noWait, type}) => {
     if(!libraryId) throw Error('FabricObject.create() - missing libraryId')
     const {objectId, writeToken} = await context.concerns.Draft.create({libraryId, metadata, type})

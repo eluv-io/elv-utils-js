@@ -4,7 +4,7 @@ const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
 
 const ArgVariantKey = require('./lib/concerns/args/ArgVariantKey')
-const Edit = require('./lib/concerns/Edit')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class MasterCopyVariant extends Utility {

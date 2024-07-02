@@ -3,16 +3,16 @@
 const {NewOpt, ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const Client = require('./lib/concerns/Client')
-const ArgNoWait = require('./lib/concerns/ArgNoWait')
-const ArgObjectId = require('./lib/concerns/ArgObjectId')
-const Logger = require('./lib/concerns/Logger')
-const LRO = require('./lib/concerns/LRO')
+const Client = require('./lib/concerns/kits/Client')
+const ArgNoWaitPublish = require('./lib/concerns/args/ArgNoWaitPublish')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
+const Logger = require('./lib/concerns/kits/Logger')
+const LRO = require('./lib/concerns/libs/LRO')
 
 class MezJobStatus extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ArgObjectId, Client, LRO, ArgNoWait],
+      concerns: [Logger, ExistObj, Client, LRO, ArgNoWaitPublish],
       options: [
         ModOpt('objectId', {ofX: 'mezzanine', demand: true}),
         ModOpt('libraryId', {forX: 'mezzanine'}),
@@ -25,7 +25,7 @@ class MezJobStatus extends Utility {
           implies: 'finalize',
           type: 'boolean'
         }),
-        ModOpt('noWait', {implies: 'finalize'})
+        ModOpt('noWaitPublish', {implies: 'finalize'})
       ]
     }
   }
@@ -35,7 +35,7 @@ class MezJobStatus extends Utility {
     const logger = this.logger
     const lro = this.concerns.LRO
 
-    const {finalize, libraryId, objectId, force} = await this.concerns.ArgObjectId.argsProc()
+    const {finalize, libraryId, objectId, force} = await this.concerns.ExistObj.argsProc()
     //const offeringKey = this.args.offeringKey;
 
     let statusReport
@@ -90,7 +90,7 @@ class MezJobStatus extends Utility {
       logger.data('versionHash', latestHash)
       logger.data('finalized', true)
 
-      await this.concerns.ArgNoWait.waitUnlessNo({libraryId, objectId, latestHash})
+      await this.concerns.ArgNoWaitPublish.waitUnlessNo({libraryId, objectId, latestHash})
     }
   }
 

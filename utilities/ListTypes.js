@@ -2,8 +2,8 @@
 
 const Utility = require('./lib/Utility')
 
-const ContentType = require('./lib/concerns/ContentType')
-const Logger = require('./lib/concerns/Logger')
+const ContentType = require('./lib/concerns/libs/ContentType')
+const Logger = require('./lib/concerns/kits/Logger')
 
 class ListTypes extends Utility {
   static blueprint() {

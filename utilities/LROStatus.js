@@ -3,10 +3,10 @@
 const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ArgLroId = require('./lib/concerns/ArgLroId')
-const ArgNodeUrl = require('./lib/concerns/ArgNodeUrl')
+const ArgLroId = require('./lib/concerns/args/ArgLroId')
+const ArgNodeUrl = require('./lib/concerns/args/ArgNodeUrl')
 const ArgWriteToken = require('./lib/concerns/args/ArgWriteToken')
-const LRO = require('./lib/concerns/LRO')
+const LRO = require('./lib/concerns/libs/LRO')
 
 class LROStatus extends Utility {
   static blueprint() {

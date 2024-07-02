@@ -6,8 +6,8 @@ const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const Client = require('./lib/concerns/Client')
-const CloudAccess = require('./lib/concerns/CloudAccess')
+const Client = require('./lib/concerns/kits/Client')
+const CloudAccess = require('./lib/concerns/kits/CloudAccess')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const Metadata = require('./lib/concerns/libs/Metadata')
 

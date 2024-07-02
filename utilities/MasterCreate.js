@@ -4,18 +4,18 @@ const R = require('@eluvio/ramda-fork')
 const {ModOpt, NewOpt, StdOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const V = require('./lib/models/Variant')
+const V = require('./lib/models/VariantModels')
 const VariantModel = V.VariantModel
 
-const AssetMetadata = require('./lib/concerns/AssetMetadata')
+const AssetMetadata = require('./lib/concerns/kits/AssetMetadata')
 const ArgMetadata = require('./lib/concerns/args/ArgMetadata')
-const ArgType = require('./lib/concerns/ArgType')
-const Client = require('./lib/concerns/Client')
-const CloudFile = require('./lib/concerns/CloudFile')
-const ContentType = require('./lib/concerns/ContentType')
-const Finalize = require('./lib/concerns/Finalize')
-const JSON = require('./lib/concerns/JSON')
-const LocalFile = require('./lib/concerns/LocalFile')
+const ArgType = require('./lib/concerns/args/ArgType')
+const Client = require('./lib/concerns/kits/Client')
+const CloudFile = require('./lib/concerns/kits/CloudFile')
+const ContentType = require('./lib/concerns/libs/ContentType')
+const Finalize = require('./lib/concerns/libs/Finalize')
+const JSON = require('./lib/concerns/libs/JSON')
+const LocalFile = require('./lib/concerns/kits/LocalFile')
 
 class MasterCreate extends Utility {
   static blueprint() {

@@ -3,7 +3,7 @@ const Utility = require('./lib/Utility')
 
 const ExistObjOrVerOrDft = require('./lib/concerns/kits/ExistObjOrVerOrDft')
 const FabricFile = require('./lib/concerns/libs/FabricFile')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile')
 const ArgFilePath = require('./lib/concerns/args/ArgFilePath')
 
 class ListFiles extends Utility {

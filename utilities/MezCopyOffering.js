@@ -2,7 +2,7 @@ const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
 
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
-const Edit = require('./lib/concerns/Edit')
+const Edit = require('./lib/concerns/libs/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 
 class MezCopyOffering extends Utility {

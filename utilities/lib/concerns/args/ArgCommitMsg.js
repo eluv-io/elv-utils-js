@@ -8,7 +8,8 @@ const blueprint = {
     NewOpt('commitMsg', {
       descTemplate: 'Commit message for finalization',
       coerce: NonBlankStrModel,
-      type: 'string'
+      type: 'string',
+      conflicts: 'noFinalize'
     })
   ]
 }

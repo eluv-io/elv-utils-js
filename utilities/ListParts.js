@@ -2,7 +2,7 @@
 const Utility = require('./lib/Utility')
 
 const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile')
 
 class ListParts extends Utility {
   static blueprint() {

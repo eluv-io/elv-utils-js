@@ -3,9 +3,9 @@ const {NewOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
-const ContentType = require('./lib/concerns/ContentType')
+const ContentType = require('./lib/concerns/libs/ContentType')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger')
 
 class ObjectSetType extends Utility {
   static blueprint() {

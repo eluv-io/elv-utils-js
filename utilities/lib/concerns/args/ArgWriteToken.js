@@ -7,13 +7,12 @@ const ArgLibraryId = require('./ArgLibraryId')
 const ArgObjectId = require('./ArgObjectId')
 const Draft = require('../libs/Draft')
 const FabricObject = require('../libs/FabricObject')
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger')
 const WriteTokenModel = require('../../models/WriteTokenModel')
 
 const blueprint = {
   name: 'ArgWriteToken',
   concerns: [ArgLibraryId, ArgObjectId, Draft, FabricObject, Logger],
-  conflicts: 'versionHash',
   options: [
     NewOpt('writeToken', {
       coerce: WriteTokenModel,

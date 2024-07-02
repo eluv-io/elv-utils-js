@@ -4,7 +4,7 @@ const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const Library = require('./lib/concerns/libs/Library')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger')
 
 class ListLibraries extends Utility {
   static blueprint() {

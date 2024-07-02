@@ -6,9 +6,9 @@ const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 
-const {PublicMetadataPathArrayModel} = require('./lib/models/PublicMetadataPath')
+const {PublicMetadataPathArrayModel} = require('./lib/models/PublicMetadataPathModels')
 
-const JSON = require('./lib/concerns/JSON')
+const JSON = require('./lib/concerns/libs/JSON')
 const ExistLib = require('./lib/concerns/kits/ExistLib')
 const Metadata = require('./lib/concerns/libs/Metadata')
 const FabricObject = require('./lib/concerns/libs/FabricObject')

@@ -4,7 +4,7 @@ const blueprint = {
   name: 'ArgReplace',
   options: [
     NewOpt('replace', {
-      descTemplate: 'Replace any existing data',
+      descTemplate: 'Replace any existing {X}data',
       type: 'boolean'
     })
   ]

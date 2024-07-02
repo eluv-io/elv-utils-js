@@ -15,7 +15,7 @@ To run against a local development node prepared using `elv-client-js/testScript
     "masterType":        "iq__2tfLjovW8zMN9Yh6eLmwynX1Cbip",
     "mezLib":            "ilib29dvmbN91uyXRwcMX88CAs8q2zeT",
     "mezType":           "iq__8SLzhEyJWiJ41BPezhswG56MUwL",
-    "PRIVATE_KEY":       "0x... (your test account private key"
+    "PRIVATE_KEY":       "0x... (your test account private key)"
   },
   "presets": {}
 }

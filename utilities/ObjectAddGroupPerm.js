@@ -3,16 +3,16 @@ const {ModOpt, NewOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
-const Client = require('./lib/concerns/Client')
-const ArgObjectId = require('./lib/concerns/ArgObjectId')
-const Logger = require('./lib/concerns/Logger')
+const Client = require('./lib/concerns/kits/Client')
+const ExistObj = require('./lib/concerns/kits/ExistObj')
+const Logger = require('./lib/concerns/kits/Logger')
 
 const permissionTypes = ['see', 'access', 'manage']
 
 class ObjectAddGroupPerm extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ArgObjectId, Client],
+      concerns: [Logger, ExistObj, Client],
       options: [
         ModOpt('objectId', {demand: true, X: ' to add group permission to'}),
         NewOpt('groupAddress', {
@@ -34,7 +34,7 @@ class ObjectAddGroupPerm extends Utility {
     const logger = this.concerns.Logger
     const client = await this.concerns.Client.get()
 
-    const {objectId, groupAddress, permission} = await this.concerns.ArgObjectId.argsProc()
+    const {objectId, groupAddress, permission} = await this.concerns.ExistObj.argsProc()
 
     logger.log(`Adding permission: ${permission}...`)
     await client.AddContentObjectGroupPermission({

@@ -3,9 +3,9 @@
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
-const Client = require('./lib/concerns/Client')
-const CloudAccess = require('./lib/concerns/CloudAccess')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile')
+const Client = require('./lib/concerns/kits/Client')
+const CloudAccess = require('./lib/concerns/kits/CloudAccess')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
 
 class FilesProbe extends Utility {

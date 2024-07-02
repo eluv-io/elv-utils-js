@@ -44,7 +44,7 @@ const ArgPresets = require('./concerns/args/ArgPresets')
 const ArgConfs = require('./concerns/args/ArgConfs')
 const Configs = require('./configs')
 
-const Logger = require('./concerns/Logger')
+const Logger = require('./concerns/kits/Logger')
 
 const addUniversalItems = (blueprint) => {
   return {

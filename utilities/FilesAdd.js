@@ -7,17 +7,17 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ArgDestDir = require('./lib/concerns/args/ArgDestDir')
-const ArgNoWait = require('./lib/concerns/ArgNoWait')
+const ArgNoWaitPublish = require('./lib/concerns/args/ArgNoWaitPublish')
 const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
-const CloudFile = require('./lib/concerns/CloudFile')
-const Edit = require('./lib/concerns/Edit')
-const LocalFile = require('./lib/concerns/LocalFile')
-const Logger = require('./lib/concerns/Logger')
+const CloudFile = require('./lib/concerns/kits/CloudFile')
+const Edit = require('./lib/concerns/libs/Edit')
+const LocalFile = require('./lib/concerns/kits/LocalFile')
+const Logger = require('./lib/concerns/kits/Logger')
 
 class FilesAdd extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ExistObjOrDft, Edit, ArgDestDir, ArgNoWait, LocalFile, CloudFile],
+      concerns: [Logger, ExistObjOrDft, Edit, ArgDestDir, ArgNoWaitPublish, LocalFile, CloudFile],
       options: [
         ModOpt('destDir', {descTemplate: 'Destination directory within object (must start with \'/\'). Will be created if it does not exist.',}),
         ModOpt('files', {X: 'to add'}),
@@ -31,7 +31,7 @@ class FilesAdd extends Utility {
 
   async body() {
     const logger = this.logger
-    const {storeClear, noWait, destDir} = this.args
+    const {storeClear, noWaitPublish, destDir} = this.args
 
     let access
     if(this.args.s3Reference || this.args.s3Copy) access = this.concerns.CloudFile.credentialSet()
@@ -86,7 +86,7 @@ class FilesAdd extends Utility {
       const hash = await this.concerns.Edit.finalize({
         commitMessage: `Add files ${fileBasenamesList.join(', ')}${destDir ? ` to folder ${destDir}` : ''}`,
         libraryId,
-        noWait,
+        noWait: noWaitPublish,
         objectId,
         writeToken: suppliedOrNewWriteToken
       })
