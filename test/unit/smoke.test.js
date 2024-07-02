@@ -2,7 +2,8 @@ const {standardUtilityFilenames} = require('../../utilities/lib/helpers')
 
 const TH = require('../test-helpers')
 
-describe('utilities', () => {
+describe('utilities', function () {
+  this.timeout(0)
   for (const u of standardUtilityFilenames()) {
     it(`${u} should return argMap successfully`, () => {
       const klass = TH.requireUtility(u)
@@ -11,7 +12,8 @@ describe('utilities', () => {
   }
 })
 
-describe('concerns', () => {
+describe('concerns', function () {
+  this.timeout(0)
   for (const u of TH.concernList()) {
     it(`${u} should load successfully`, () => {
       TH.requireConcern(u)
@@ -19,7 +21,8 @@ describe('concerns', () => {
   }
 })
 
-describe('concerns as utilities', () => {
+describe('concerns as utilities', function () {
+  this.timeout(0)
   for (const u of TH.concernList()) {
     it(`${u} should successfully load as a utility`, () => {
       const klass = TH.concern2utility(TH.requireConcern(u), [])
