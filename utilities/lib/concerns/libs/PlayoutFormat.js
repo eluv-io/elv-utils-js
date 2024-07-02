@@ -105,7 +105,7 @@ const verifyCompatibility = (offering, formatKey, elvCryptDrmKids = {}) => {
 }
 
 
-const New = context => {
+const New = () => {
 
   // instance interface
   return {}
