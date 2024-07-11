@@ -51,6 +51,15 @@ const FORMAT_DEFS = {
       type: 'ProtoHls'
     }
   },
+  'hls-playready-cenc': {
+    'drm': {
+      'enc_scheme_name': 'cenc',
+      'type': 'DrmPlayReady'
+    },
+    'protocol': {
+      'type': 'ProtoHls'
+    }
+  },
   'hls-sample-aes': {
     drm: {
       enc_scheme_name: 'cbcs',
@@ -105,7 +114,7 @@ const verifyCompatibility = (offering, formatKey, elvCryptDrmKids = {}) => {
 }
 
 
-const New = context => {
+const New = () => {
 
   // instance interface
   return {}
