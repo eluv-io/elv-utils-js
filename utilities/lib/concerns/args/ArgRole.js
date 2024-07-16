@@ -15,7 +15,7 @@ const blueprint = {
   ]
 }
 
-const New = context => {
+const New = () => {
 
   // instance interface
   return {}

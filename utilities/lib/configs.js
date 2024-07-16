@@ -397,7 +397,7 @@ const readFilesAndSubstitute = ({cwd = process.cwd(), filePaths, debugLogger}) =
 // Process Configuration 'presets_use' directives
 // Must first have been processed with mergeVars() to convert
 // 'presets_add' / 'presets_omit'
-const resolveConfPresets = (mergedConf, debugLogger) => {
+const resolveConfPresets = (mergedConf) => {
   // validate
   V.ConfMergedModel(mergedConf)
   // flatten

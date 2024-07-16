@@ -38,7 +38,7 @@ const isArray = require('@eluvio/elv-js-helpers/Boolean/isArray')
 
 const {loadConcerns} = require('./concerns')
 const {callContext, cmdLineContext} = require('./context')
-const {BuildWidget, DelOpt, ModOpt, NewOpt} = require('./options')
+const {BuildWidget, ModOpt, NewOpt} = require('./options')
 
 const ArgPresets = require('./concerns/args/ArgPresets')
 const ArgConfs = require('./concerns/args/ArgConfs')
@@ -122,10 +122,6 @@ module.exports = class Utility {
 
   static buildWidget(blueprint) {
     return BuildWidget(blueprint)
-  }
-
-  static DelOpt(optName) {
-    return DelOpt(optName)
   }
 
   static ModOpt(optName, overrides) {

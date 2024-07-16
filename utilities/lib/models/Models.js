@@ -123,7 +123,7 @@ const SealedModel = def => {
 // Custom Error Collector for models
 // ==============================================
 
-const ErrCollect = function(errors, logger=console){
+const ErrCollect = function(errors){
   let errLines = []
   errors.forEach(error => {
     // eslint-disable-next-line quotes

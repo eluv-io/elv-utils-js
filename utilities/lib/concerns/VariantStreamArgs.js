@@ -56,7 +56,7 @@ const blueprint = {
   ]
 }
 
-const New = context => {
+const New = () => {
 
   const optsFromStream = stream => {
 

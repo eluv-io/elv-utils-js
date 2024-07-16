@@ -8,7 +8,7 @@ const blueprint = {
   concerns: [Client, Logger]
 }
 
-const New = context => {
+const New = () => {
   // const logger = context.concerns.Logger;
 
   // instance interface
