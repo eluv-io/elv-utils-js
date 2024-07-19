@@ -273,6 +273,7 @@ const PresetsRawModel = defTypedKVObjModel(
 const ConfRawModel = defSealedObjModel(
   'ConfRaw',
   {
+    comment: [String],
     defaults: VarSetRawModel,
     presets: PresetsRawModel
   }
@@ -286,6 +287,7 @@ const ConfRawModel = defSealedObjModel(
 const ConfRawPartialModel = defSealedObjModel(
   'ConfRawPartial',
   {
+    comment: [String],
     defaults: [VarSetRawModel],
     presets: [PresetsRawModel]
   }
