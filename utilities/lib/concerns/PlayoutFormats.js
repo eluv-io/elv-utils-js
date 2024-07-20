@@ -68,6 +68,16 @@ const FORMAT_DEFS = {
     protocol: {
       type: 'ProtoHls'
     }
+  },
+  'hls-widevine-cenc': {
+    drm: {
+      content_id: '',
+      enc_scheme_name: 'cenc',
+      type: 'DrmWidevine'
+    },
+    protocol: {
+      type: 'ProtoHls'
+    }
   }
 }
 
