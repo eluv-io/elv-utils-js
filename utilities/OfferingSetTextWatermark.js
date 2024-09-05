@@ -53,7 +53,7 @@ class OfferingSetTextWatermark extends Utility {
 
     if (clear) {
       if (!currentOffering.simple_watermark) throw Error(`Offering '${offeringKey}' does not currently have a text watermark.`)
-      newHash = this.concerns.Metadata.del({
+      newHash = await this.concerns.Metadata.del({
         commitMessage: 'Remove text watermark',
         libraryId,
         objectId,
