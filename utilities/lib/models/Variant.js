@@ -7,13 +7,15 @@ const R = require('@eluvio/ramda-fork')
 //
 // defNonEmptyKVObjModel
 
+const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
 
 const defBasicModel = require('@eluvio/elv-js-helpers/ModelFactory/defBasicModel')
 const defNonEmptyArrModel = require('@eluvio/elv-js-helpers/ModelFactory/defNonEmptyArrModel')
 const defNonEmptyTypedKVObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defNonEmptyTypedKVObjModel')
 const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')
 // const defTypedKVObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defTypedKVObjModel')
-const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
+
+const FractionStrModel = require('@eluvio/elv-js-helpers/Model/FractionStrModel')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 const NonNegativeIntModel = require('@eluvio/elv-js-helpers/Model/NonNegativeIntModel')
 const PositiveNumModel = require('@eluvio/elv-js-helpers/Model/PositiveNumModel')
@@ -28,6 +30,18 @@ const MIX_5CHANNELS_1STEREO = '5CHANNELS_1STEREO'   // extract 5 channels from a
 const MIX_5MONO_1STEREO = '5MONO_1STEREO'       // combine 5 mono streams into a single stereo stream (mixdown)
 const MIX_6CHANNELS_1SURROUND = '6CHANNELS_1SURROUND' // extract 6 channels from a single multichannel stream, combine into a single 5.1 audio stream
 const MIX_6MONO_1SURROUND = '6MONO_1SURROUND'      // combine 6 mono audio streams into a single 5.1 audio stream
+
+const DEINTERLACE_BWDIF_FIELD = 'bwdif_field' // Outputs one frame per 'field' (effectively doubling frame rate)
+const DEINTERLACE_BWDIF_FRAME = 'bwdif_frame' // Outputs one frame per 'field' (effectively doubling frame rate)
+const DEINTERLACE_NONE = '' // Outputs one frame per input frame (reduces quality)
+
+const VALID_DEINTERLACE_METHODS = [
+  DEINTERLACE_NONE,
+  DEINTERLACE_BWDIF_FIELD,
+  DEINTERLACE_BWDIF_FRAME
+]
+
+const DeinterlaceMethodModel = defBasicModel('MappingInfo', VALID_DEINTERLACE_METHODS)
 
 const VALID_MAPPINGS = [
   MIX_NOOP,
@@ -66,6 +80,8 @@ const filesApiPathAllSame = R.pipe(
 const alternateForAndRole = stream => isNil(stream.alternate_for) === isNil( stream.role)
 
 const alternateForIsVideo = stream => isNil(stream.alternate_for) || stream.type === TYPE_VIDEO
+const deinterlaceIsVideo = stream => isNil(stream.deinterlace) || stream.type === TYPE_VIDEO
+const targetFrameRateIsVideo = stream => isNil(stream.target_frame_rate) || stream.type === TYPE_VIDEO
 
 const channelsAllOrNone = R.pipe(
   R.map(R.pipe(R.prop('channel_index'), R.isNil)),
@@ -95,16 +111,20 @@ const VariantStreamModel = defObjectModel(
   {
     alternate_for: [NonBlankStrModel],
     default_for_media_type: [Boolean],
+    deinterlace: [DeinterlaceMethodModel],
     label: [String],
     language: [String],
     mapping_info: [MappingInfoModel],
     role: [NonBlankStrModel],
     sources: VariantStreamSourceArrayModel,
+    target_frame_rate: [FractionStrModel],
     type: [StreamTypeModel] // older objects may not have a type field
   }
 )
   .assert(alternateForAndRole, '\'alternate_for\' and \'role\' must both be set or both blank')
   .assert(alternateForIsVideo, 'only video streams can have \'alternate_for\' set')
+  .assert(deinterlaceIsVideo, 'only video streams can have \'deinterlace\' set')
+  .assert(targetFrameRateIsVideo, 'only video streams can have \'target_frame_rate\' set')
 
 const VariantModel = defObjectModel(
   'Variant',

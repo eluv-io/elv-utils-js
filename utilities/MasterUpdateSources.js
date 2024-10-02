@@ -9,15 +9,16 @@ const Utility = require('./lib/Utility')
 const Client = require('./lib/concerns/Client')
 const CloudAccess = require('./lib/concerns/CloudAccess')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
+const FabricFile = require('./lib/concerns/FabricFile.js')
 const Metadata = require('./lib/concerns/Metadata')
 
 class MasterUpdateSources extends Utility {
   static blueprint() {
     return {
-      concerns: [Client, ExistObj, CloudAccess, Metadata],
+      concerns: [Client, ExistObj, FabricFile, CloudAccess, Metadata],
       options: [
         NewOpt('files', {
-          descTemplate: 'Filenames within object (must be at top level). If omitted, all top-level files will be probed.',
+          descTemplate: 'Filename(s) within object. If omitted, all files will be probed. Omit leading slashes (/)',
           string: true,
           type: 'array'
         })
@@ -30,7 +31,7 @@ class MasterUpdateSources extends Utility {
 
     const access = this.concerns.CloudAccess.credentialSet(false)
 
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    const {libraryId, objectId, versionHash} = await this.concerns.ExistObj.argsProc()
 
     // get production_master metadata
     const masterMetadata = await this.concerns.ExistObj.metadata({subtree: '/production_master'}) || {}
@@ -39,38 +40,38 @@ class MasterUpdateSources extends Utility {
 
     // get list of files
     const client = await this.concerns.Client.get()
-    const fileInfo = await client.ListFiles({libraryId, objectId})
-    const topLevelFiles = Object.keys(fileInfo)
-      .filter(k => fileInfo[k].type !== 'directory')
-      .filter(k => fileInfo[k]['.'].type !== 'directory')
+    //const fileInfo = await client.ListFiles({libraryId, objectId})
+    const fileInfo = await this.concerns.FabricFile.fileList({libraryId, objectId, versionHash})
+    // collect file paths and remove leading slashes
+    const filePathList = fileInfo.map(x => x.path.slice(1))
 
     // validate --files
     if(files) {
       for(const file of files) {
-        if(!topLevelFiles.includes(file)) throw Error(`file '${file}' not found in object.`)
+        if(!filePathList.includes(file)) throw Error(`file '${file}' not found in object.`)
       }
     }
 
-    const filesToScan = files || topLevelFiles
+    const filesToScan = files || filePathList
 
     const successfulFiles = []
-    for(const file of filesToScan) {
-      this.logger.log(`Probing ${file}...`)
+    for(const filePath of filesToScan) {
+      this.logger.log(`Probing ${filePath}...`)
       const {data, errors, warnings} = await client.CallBitcodeMethod({
         objectId,
         libraryId,
         method: '/media/files/probe',
         constant: false, // needs to be a POST in case S3 credentials are needed
-        body: {file_paths: [file], access}
+        body: {file_paths: [filePath], access}
       })
       this.logger.errorsAndWarnings({errors, warnings})
-      if(Object.keys(data).includes(file)) successfulFiles.push(file)
+      if(Object.keys(data).includes(filePath)) successfulFiles.push(filePath)
       master.sources = mergeRight(master.sources, data)
     }
 
     // remove missing sources
     for(const source of Object.keys(master.sources)) {
-      if(!topLevelFiles.includes(source)) {
+      if(!filePathList.includes(source)) {
         this.logger.log(`Source '${source}' no longer exists, removing...`)
         delete master.sources[source]
       }

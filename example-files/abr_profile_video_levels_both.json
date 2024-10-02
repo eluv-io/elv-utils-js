@@ -1,0 +1,192 @@
+{
+  "audio_individual_drm_keys": false,
+  "drm_optional": true,
+  "store_clear": false,
+  "ladder_specs": {
+    "{\"media_type\":\"audio\",\"channels\":1}": {
+      "rung_specs": [
+        {
+          "bit_rate": 128000,
+          "media_type": "audio",
+          "pregenerate": true
+        }
+      ]
+    },
+    "{\"media_type\":\"audio\",\"channels\":2}": {
+      "rung_specs": [
+        {
+          "bit_rate": 192000,
+          "media_type": "audio",
+          "pregenerate": true
+        }
+      ]
+    },
+    "{\"media_type\":\"audio\",\"channels\":6}": {
+      "rung_specs": [
+        {
+          "bit_rate": 384000,
+          "media_type": "audio",
+          "pregenerate": true
+        }
+      ]
+    },
+    "{\"media_type\":\"video\",\"aspect_ratio_height\":9,\"aspect_ratio_width\":16}": {
+      "rung_specs": [
+        {
+          "bit_rate": 5000000,
+          "height": 1080,
+          "level": "4.0",
+          "media_type": "video",
+          "pregenerate": true,
+          "profile": "high",
+          "width": 1920
+        },
+        {
+          "bit_rate": 3150000,
+          "height": 720,
+          "level": "3.1",
+          "media_type": "video",
+          "pregenerate": false,
+          "profile": "high",
+          "width": 1280
+        },
+        {
+          "bit_rate": 2100000,
+          "height": 540,
+          "level": "3.1",
+          "media_type": "video",
+          "pregenerate": false,
+          "profile": "high",
+          "width": 960
+        },
+        {
+          "bit_rate": 1500000,
+          "height": 404,
+          "level": "3.1",
+          "media_type": "video",
+          "pregenerate": false,
+          "profile": "high",
+          "width": 720
+        },
+        {
+          "bit_rate": 800000,
+          "height": 360,
+          "level": "3.1",
+          "media_type": "video",
+          "pregenerate": false,
+          "profile": "high",
+          "width": 640
+        },
+        {
+          "bit_rate": 300000,
+          "height": 224,
+          "level": "3.0",
+          "media_type": "video",
+          "pregenerate": false,
+          "profile": "baseline",
+          "width": 400
+        }
+      ]
+    }
+  },
+  "playout_formats": {
+    "dash-widevine": {
+      "drm": {
+        "content_id": "",
+        "enc_scheme_name": "cenc",
+        "license_servers": [],
+        "type": "DrmWidevine"
+      },
+      "protocol": {
+        "min_buffer_length": 2,
+        "type": "ProtoDash"
+      }
+    },
+    "dash-widevine-acor": {
+      "drm": {
+        "audio_clear": "onRequest",
+        "content_id": "",
+        "enc_scheme_name": "cenc",
+        "license_servers": [],
+        "type": "DrmWidevine"
+      },
+      "protocol": {
+        "min_buffer_length": 2,
+        "type": "ProtoDash"
+      }
+    },
+    "dash-widevine-audio-clear": {
+      "drm": {
+        "audio_clear": "always",
+        "content_id": "",
+        "enc_scheme_name": "cenc",
+        "license_servers": [],
+        "type": "DrmWidevine"
+      },
+      "protocol": {
+        "min_buffer_length": 2,
+        "type": "ProtoDash"
+      }
+    },
+    "hls-aes128": {
+      "drm": {
+        "enc_scheme_name": "aes-128",
+        "type": "DrmAes128"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
+    "hls-playready-cenc": {
+      "drm": {
+        "enc_scheme_name": "cenc",
+        "type": "DrmPlayReady"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
+    "hls-sample-aes": {
+      "drm": {
+        "enc_scheme_name": "cbcs",
+        "type": "DrmSampleAes"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
+    "hls-widevine-cenc": {
+      "drm": {
+        "content_id": "",
+        "enc_scheme_name": "cenc",
+        "type": "DrmWidevine"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
+    "dash-clear": {
+      "drm": null,
+      "protocol": {
+        "min_buffer_length": 2,
+        "type": "ProtoDash"
+      }
+    },
+    "hls-clear": {
+      "drm": null,
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    }
+  },
+  "segment_specs": {
+    "audio": {
+      "segs_per_chunk": 15,
+      "target_dur": 2
+    },
+    "video": {
+      "segs_per_chunk": 15,
+      "target_dur": 2
+    }
+  }
+}

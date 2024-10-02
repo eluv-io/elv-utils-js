@@ -29,12 +29,12 @@ const setCodecDescs = async ({
       const msStream = result.media_struct.streams[streamKey]
       if(!msStream) throw Error(`Stream '${streamKey}' from offering.playout.streams not found in offering.media_struct.streams`)
       if(msStream.codec_type === 'video') {
-
+        logger && logger.log('  Getting auth token for segment request...')
         const authToken = await elvClient.authClient.AuthorizationToken({
           libraryId,
           objectId,
           writeToken,
-          update: true // <-- auth oddity
+          update: false
         })
 
         // get bitrate ladder

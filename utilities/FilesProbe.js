@@ -15,7 +15,7 @@ class FilesProbe extends Utility {
       options: [
         NewOpt('files', {
           demand: true,
-          descTemplate: 'File name(s) within object (must be at top level).',
+          descTemplate: 'File path(s) within object.',
           string: true,
           type: 'array'
         })

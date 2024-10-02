@@ -19,6 +19,11 @@ class VariantEditStream extends Utility {
         ModOpt('streamKey', {
           demand: true,
         }),
+        NewOpt('clearDeinterlace', {
+          descTemplate: 'Blank out the stream\'s deinterlace field',
+          type: 'boolean',
+          conflicts: 'deinterlace'
+        }),
         NewOpt('clearMapping', {
           descTemplate: 'Blank out the stream\'s mapping_info field',
           type: 'boolean',
@@ -38,6 +43,11 @@ class VariantEditStream extends Utility {
           descTemplate: 'Clear any multiplier values in stream \'sources\' list',
           type: 'boolean',
           conflicts: 'multipliers'
+        }),
+        NewOpt('clearTargetFrameRate', {
+          descTemplate: 'Blank out the stream\'s target_frame_rate field',
+          type: 'boolean',
+          conflicts: 'targetFrameRate'
         })
       ]
     }
@@ -49,18 +59,22 @@ class VariantEditStream extends Utility {
     const streamOpts = R.pick(
       [
         'channelIndex',
+        'deinterlace',
         'file',
         'label',
         'language',
         'isDefault',
         'mapping',
         'multipliers',
-        'streamIndex'
+        'streamIndex',
+        'targetFrameRate'
       ],
       this.args
     )
 
-    const {clearChannelIndex, clearLanguage, clearMapping, clearMultipliers} = this.args
+
+
+    const {clearChannelIndex, clearDeinterlace, clearLanguage, clearMapping, clearMultipliers, clearTargetFrameRate} = this.args
     const {streamKey, variantKey} = this.args
 
     // get production_master metadata
@@ -81,9 +95,11 @@ class VariantEditStream extends Utility {
     // merge
     const mergedOpts = R.mergeRight(oldStreamOpts, streamOpts)
     if(clearChannelIndex) delete mergedOpts.channelIndex
+    if(clearDeinterlace) delete mergedOpts.deinterlace
     if(clearLanguage) delete mergedOpts.language
     if(clearMapping) delete mergedOpts.mapping
     if(clearMultipliers) delete mergedOpts.multipliers
+    if(clearTargetFrameRate) delete mergedOpts.target_frame_rate
 
     // recompose
     const revisedStream = this.context.concerns.VariantStreamArgs.streamFromOpts(sources, mergedOpts)

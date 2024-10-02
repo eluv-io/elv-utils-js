@@ -1,6 +1,8 @@
 // arguments for working with variant streams
 const R = require('@eluvio/ramda-fork')
 
+const FractionStrModel = require('@eluvio/elv-js-helpers/Model/FractionStrModel')
+
 const {NewOpt} = require('../options')
 
 const ArgAlternateFor = require('./args/ArgAlternateFor')
@@ -11,6 +13,11 @@ const blueprint = {
   name: 'VariantStreamArgs',
   concerns: [ArgAlternateFor, ArgRole, ArgStreamKey, ArgVariantKey],
   options: [
+    NewOpt('deinterlace', {
+      descTemplate: 'Video deinterlace method',
+      type: 'string',
+      choices: ['bwdif_field', 'bwdif_frame']
+    }),
     NewOpt('label', {
       descTemplate: 'Stream label to show in UI',
       type: 'string'
@@ -27,6 +34,11 @@ const blueprint = {
     NewOpt('file', {
       descTemplate: 'File within master object to use as stream source',
       type: 'string'
+    }),
+    NewOpt('targetFrameRate', {
+      descTemplate: 'Frame rate to use for mezzanine video stream',
+      type: 'string',
+      coerce: FractionStrModel
     }),
     NewOpt('mapping', {
       choices: [
@@ -62,11 +74,13 @@ const New = () => {
 
     const {label, language, role} = stream
     const alternateFor = stream.alternate_for
+    const deinterlace = stream.deinterlace
     const isDefault = stream.default_for_media_type
     const mapping = stream.mapping_info
 
     const file = stream.sources[0].files_api_path
     const streamIndex = stream.sources.map(x => x.stream_index)
+    const targetFrameRate = stream.target_frame_rate
 
     const foundChannelIndexes = stream.sources.map(x => x.channel_index).filter(x=>x)
     const channelIndex = R.isEmpty(foundChannelIndexes)
@@ -81,6 +95,7 @@ const New = () => {
     return {
       alternateFor,
       channelIndex,
+      deinterlace,
       file,
       label,
       language,
@@ -88,7 +103,8 @@ const New = () => {
       mapping,
       multipliers,
       role,
-      streamIndex
+      streamIndex,
+      targetFrameRate
     }
   }
 
@@ -96,6 +112,7 @@ const New = () => {
     const {
       alternateFor,
       channelIndex,
+      deinterlace,
       file,
       label,
       language,
@@ -103,7 +120,8 @@ const New = () => {
       mapping,
       multipliers,
       role,
-      streamIndex
+      streamIndex,
+      targetFrameRate
     } = opts
 
     if(!sources[file]) throw Error(`Source '${file}' not found in master. If the file exists in the object, run utilities/MasterUpdateSources.js first.`)
@@ -111,11 +129,13 @@ const New = () => {
     const result = {
       alternate_for: alternateFor,
       default_for_media_type: isDefault,
+      deinterlace,
       label,
       language,
       mapping_info: mapping,
       role,
-      sources: []
+      sources: [],
+      target_frame_rate: targetFrameRate
     }
 
     const source = sources[file]

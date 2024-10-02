@@ -51,6 +51,7 @@ class MezSetCodecDescs extends Utility {
       })
     }
 
+    this.logger.log('Write back metadata...')
     // write metadata back to draft
     await this.concerns.Edit.writeMetadata({
       commitMessage: 'Update codec descriptors for video rungs',
