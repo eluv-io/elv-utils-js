@@ -34,7 +34,7 @@ const setCodecDescs = async ({
           libraryId,
           objectId,
           writeToken,
-          update: false
+          update: true // <- else getting segment will fail unless it is cached already on server
         })
 
         // get bitrate ladder
