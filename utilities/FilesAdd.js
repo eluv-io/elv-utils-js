@@ -1,4 +1,4 @@
-// Create new production master from specified file(s)
+// Upload file(s) or add from S3
 const path = require('path')
 
 const {fabricItemDesc} = require('./lib/helpers')
