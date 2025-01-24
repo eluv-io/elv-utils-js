@@ -82,7 +82,7 @@ const validateTargetPath = ({metadata, path}) => {
   }
 }
 
-const validPathFormat = ({path}) => path.match(pathRegex) && path.match(pathRegex)[0] === path
+const validPathFormat = ({path}) => path === '/' || path.match(pathRegex) && path.match(pathRegex)[0] === path
 
 // Makes sure all attributes along object path are objects or undefined, and that path ends at an undefined attribute
 const validTargetPath = ({metadata, targetPath}) => {
