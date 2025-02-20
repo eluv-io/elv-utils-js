@@ -48,6 +48,11 @@ class VariantEditStream extends Utility {
           descTemplate: 'Blank out the stream\'s target_frame_rate field',
           type: 'boolean',
           conflicts: 'targetFrameRate'
+        }),
+        NewOpt('clearTargetTimebase', {
+          descTemplate: 'Blank out the stream\'s target_timebase field',
+          type: 'boolean',
+          conflicts: 'targetTimebase'
         })
       ]
     }
@@ -67,7 +72,8 @@ class VariantEditStream extends Utility {
         'mapping',
         'multipliers',
         'streamIndex',
-        'targetFrameRate'
+        'targetFrameRate',
+        'targetTimebase'
       ],
       this.args
     )

@@ -40,6 +40,11 @@ const blueprint = {
       type: 'string',
       coerce: FractionStrModel
     }),
+    NewOpt('targetTimebase', {
+      descTemplate: 'Timebase to use for mezzanine stream',
+      type: 'string',
+      coerce: FractionStrModel
+    }),
     NewOpt('mapping', {
       choices: [
         '2MONO_1STEREO',       // combine 2 mono audio streams into a single stereo audio stream
@@ -81,6 +86,7 @@ const New = () => {
     const file = stream.sources[0].files_api_path
     const streamIndex = stream.sources.map(x => x.stream_index)
     const targetFrameRate = stream.target_frame_rate
+    const targetTimebase = stream.target_timebase
 
     const foundChannelIndexes = stream.sources.map(x => x.channel_index).filter(x=>x)
     const channelIndex = R.isEmpty(foundChannelIndexes)
@@ -104,7 +110,8 @@ const New = () => {
       multipliers,
       role,
       streamIndex,
-      targetFrameRate
+      targetFrameRate,
+      targetTimebase
     }
   }
 
@@ -121,7 +128,8 @@ const New = () => {
       multipliers,
       role,
       streamIndex,
-      targetFrameRate
+      targetFrameRate,
+      targetTimebase
     } = opts
 
     if(!sources[file]) throw Error(`Source '${file}' not found in master. If the file exists in the object, run utilities/MasterUpdateSources.js first.`)
@@ -135,7 +143,8 @@ const New = () => {
       mapping_info: mapping,
       role,
       sources: [],
-      target_frame_rate: targetFrameRate
+      target_frame_rate: targetFrameRate,
+      target_timebase: targetTimebase
     }
 
     const source = sources[file]
