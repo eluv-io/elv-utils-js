@@ -54,7 +54,7 @@ class OfferingSetImageWatermark extends Utility {
 
     if (clear) {
       if (!currentOffering.image_watermark) throw Error(`Offering '${offeringKey}' does not currently have an image watermark.`)
-      newHash = this.concerns.Metadata.del({
+      newHash = await this.concerns.Metadata.del({
         commitMessage: 'Remove image watermark',
         libraryId,
         objectId,
