@@ -61,7 +61,11 @@ class OfferingSetImageWatermark extends Utility {
         subtree: subtree + '/image_watermark'
       })
     } else {
-      if (currentOffering.simple_watermark) throw Error(`Offering '${offeringKey}' currently has a text watermark. Please remove first with 'OfferingSetTextWatermark.js --clear'`)
+      if (currentOffering.simple_watermark || currentOffering.html_watermark) {
+        throw Error(
+          `Offering '${offeringKey}' already has a simple text or html watermark. Please remove it before setting an image watermark.`
+        )
+      }
       const currentHash = await this.concerns.ArgObjectId.objLatestHash()
       // check that file exists
       const filePath = watermark.image
