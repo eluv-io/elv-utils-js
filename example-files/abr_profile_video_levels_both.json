@@ -137,6 +137,17 @@
         "type": "ProtoHls"
       }
     },
+    "hls-fairplay": {
+      "drm": {
+        "enc_scheme_name": "cbcs",
+        "ext_params": {"foo": "bar"},
+        "license_servers": [],
+        "type": "DrmFairplay"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
     "hls-playready-cenc": {
       "drm": {
         "enc_scheme_name": "cenc",
