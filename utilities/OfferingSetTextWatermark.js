@@ -60,7 +60,11 @@ class OfferingSetTextWatermark extends Utility {
         subtree: subtree + '/simple_watermark'
       })
     } else {
-      if (currentOffering.image_watermark) throw Error(`Offering '${offeringKey}' currently has an image watermark. Please remove first with 'OfferingSetImageWatermark.js --clear'`)
+      if (currentOffering.image_watermark || currentOffering.html_watermark) {
+        throw Error(
+          `Offering '${offeringKey}' already has an image or html watermark. Please remove it before setting a simple text watermark.`
+        )
+      }
 
       newHash = await this.concerns.Metadata.write({
         commitMessage: 'Set text watermark',

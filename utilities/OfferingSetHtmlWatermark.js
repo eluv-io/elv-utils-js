@@ -1,8 +1,8 @@
-// Set or clear image watermark for an offering
+// Set or clear HTML watermark for an offering
 
 const Utility = require('./lib/Utility')
 
-const ImageWatermarkModel = require('./lib/models/ImageWatermarkModel')
+const HtmlWatermarkModel = require('./lib/models/HtmlWatermarkModel')
 
 const ArgClear = require('./lib/concerns/args/ArgClear')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
@@ -15,11 +15,10 @@ const chkNoClearOrWatermark = (argv) => {
   if (!argv.clear && !argv.watermark) {
     throw Error('Must supply either --watermark or --clear')
   }
-  return true // tell yargs that the arguments passed the check
+  return true // Indicate that the argument check passed
 }
 
-
-class OfferingSetImageWatermark extends Utility {
+class OfferingSetHtmlWatermark extends Utility {
   static blueprint() {
     return {
       concerns: [
@@ -36,14 +35,12 @@ class OfferingSetImageWatermark extends Utility {
 
   async body() {
     const logger = this.logger
-    const watermark = this.args.watermark && ImageWatermarkModel( this.concerns.ArgWatermark.asObject())
+    const watermark = this.args.watermark && HtmlWatermarkModel(this.concerns.ArgWatermark.asObject())
 
     const {offeringKey, clear} = this.args
 
-    // operations that may need to wait on network access
-    // ----------------------------------------------------
+    // Retrieve network-dependent identifiers and metadata
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
-
     logger.log('Retrieving existing offering metadata from object...')
     const subtree = `/offerings/${offeringKey}`
     const currentOffering = await this.concerns.ExistObj.metadata({subtree})
@@ -53,22 +50,26 @@ class OfferingSetImageWatermark extends Utility {
     let newHash
 
     if (clear) {
-      if (!currentOffering.image_watermark) throw Error(`Offering '${offeringKey}' does not currently have an image watermark.`)
+      if (!currentOffering.html_watermark) {
+        throw Error(`Offering '${offeringKey}' does not currently have an HTML watermark.`)
+      }
       newHash = await this.concerns.Metadata.del({
-        commitMessage: 'Remove image watermark',
+        commitMessage: 'Remove HTML watermark',
         libraryId,
         objectId,
-        subtree: subtree + '/image_watermark'
+        subtree: subtree + '/html_watermark'
       })
     } else {
-      if (currentOffering.simple_watermark || currentOffering.html_watermark) {
+      // Enforce mutual exclusivity: no other watermark should be set
+      if (currentOffering.simple_watermark || currentOffering.image_watermark) {
         throw Error(
-          `Offering '${offeringKey}' already has a simple text or html watermark. Please remove it before setting an image watermark.`
+          `Offering '${offeringKey}' already has a text or image watermark. Please remove it before setting an HTML watermark.`
         )
       }
+
+      // Validate the HTML file exists
+      const filePath = watermark.html
       const currentHash = await this.concerns.ArgObjectId.objLatestHash()
-      // check that file exists
-      const filePath = watermark.image
       const pathInfo = await this.concerns.FabricFile.pathInfo({
         libraryId,
         objectId,
@@ -81,14 +82,15 @@ class OfferingSetImageWatermark extends Utility {
       if (!FabricFile.isFile(pathInfo)) throw Error(`'${filePath}' is not a file`)
       if (!pathInfo['.']?.size ) throw Error(`'${filePath}' has no size`)
 
-      // convert watermark.image into a link
-      watermark.image = `/qfab/${currentHash}/files${filePath}`
+      // Convert watermark.html into a link
+      watermark.html = `/qfab/${currentHash}/files${filePath}`
+
       newHash = await this.concerns.Metadata.write({
-        commitMessage: 'Set image watermark',
+        commitMessage: 'Set HTML watermark',
         libraryId,
         metadata: watermark,
         objectId,
-        subtree: subtree + '/image_watermark'
+        subtree: subtree + '/html_watermark'
       })
     }
 
@@ -98,13 +100,13 @@ class OfferingSetImageWatermark extends Utility {
 
   header() {
     return this.args.clear
-      ? `Clear image watermark from offering '${this.args.offeringKey}' in object ${this.args.objectId}`
-      : `Set image watermark for offering '${this.args.offeringKey}' in object ${this.args.objectId}`
+      ? `Clear HTML watermark from offering '${this.args.offeringKey}' in object ${this.args.objectId}`
+      : `Set HTML watermark for offering '${this.args.offeringKey}' in object ${this.args.objectId}`
   }
 }
 
-if(require.main === module) {
-  Utility.cmdLineInvoke(OfferingSetImageWatermark)
+if (require.main === module) {
+  Utility.cmdLineInvoke(OfferingSetHtmlWatermark)
 } else {
-  module.exports = OfferingSetImageWatermark
+  module.exports = OfferingSetHtmlWatermark
 }
