@@ -1,6 +1,10 @@
 const kindOf = require('kind-of')
 const R = require('@eluvio/ramda-fork')
 
+// params is an object
+//   argList: [] array of string - list of arguments e.g. ['--libraryId','ilib29dvmbN91uyXRwcMX88CAs8q2zeT']
+//   cwd: string - current working directory
+//   env: object - environment variables
 const callContext = params => {
   if(kindOf(params.argList) !== 'array') {
     throw Error('argList must be an Array')

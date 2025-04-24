@@ -1,11 +1,12 @@
 // Probe file in object for media structure
+'use strict'
 
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile.js')
 const Client = require('./lib/concerns/Client')
-const CloudAccess = require('./lib/concerns/CloudAccess')
+const CloudAccess = require('./lib/concerns/kits/CloudAccess')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
 
 class FilesProbe extends Utility {
@@ -27,7 +28,7 @@ class FilesProbe extends Utility {
     const {files, outfile} = this.args
     const client = await this.concerns.Client.get()
 
-    const access = this.concerns.CloudAccess.credentialSet(false)
+    const access = this.concerns.CloudAccess.remoteAccessList(false)
 
     const {libraryId, objectId, versionHash, writeToken} = await this.concerns.ExistLibOrObjOrVerOrDft.argsProc()
 

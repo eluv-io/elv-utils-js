@@ -5,7 +5,7 @@ const pick = require('@eluvio/elv-js-helpers/Functional/pick')
 const {fabricItemDesc} = require('../helpers')
 
 const Client = require('./Client')
-const Logger = require('./Logger')
+const Logger = require('./kits/Logger.js')
 
 const blueprint = {
   name: 'ContentType',

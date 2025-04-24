@@ -1,19 +1,19 @@
 // go through LROs for mezzanine's active job and cancel each
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
-const ArgNoWait = require('./lib/concerns/ArgNoWait')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
-const Logger = require('./lib/concerns/Logger')
-const LRO = require('./lib/concerns/LRO')
+const Logger = require('./lib/concerns/kits/Logger.js')
+const LRO = require('./lib/concerns/libs/LRO.js')
 
-class MezzanineJobStatus extends Utility {
+class MezzanineJobCancel extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ArgObjectId, Client, LRO, ArgNoWait],
+      concerns: [Logger, ArgObjectId, Client, LRO],
       options: [
         ModOpt('objectId', {ofX: 'mezzanine', demand: true}),
         ModOpt('libraryId', {forX: 'mezzanine'})
@@ -100,7 +100,7 @@ class MezzanineJobStatus extends Utility {
 }
 
 if (require.main === module) {
-  Utility.cmdLineInvoke(MezzanineJobStatus)
+  Utility.cmdLineInvoke(MezzanineJobCancel)
 } else {
-  module.exports = MezzanineJobStatus
+  module.exports = MezzanineJobCancel
 }

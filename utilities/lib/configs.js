@@ -123,7 +123,7 @@ const contextMerge = ({
   // append to arg list
   const mergedArgList = suppliedArgList.concat(argsToConcat)
 
-  return {mergedArgList, mergedEnv}
+  return {mergedArgList, mergedEnv, resolvedConf: varSetSubstituted}
 }
 
 const builtInSubstVarValue = varName => {
@@ -389,8 +389,8 @@ const readFilesAndResolve = ({cwd = process.cwd(), confFilePaths, debugLogger}) 
   return resolveConfPresets(mergedConf, debugLogger)
 }
 
-const readFilesAndSubstitute = ({cwd = process.cwd(), filePaths, debugLogger}) => {
-  const resolvedVarsDef = readFilesAndResolve({cwd, filePaths, debugLogger})
+const readFilesAndSubstitute = ({cwd = process.cwd(), confFilePaths, debugLogger}) => {
+  const resolvedVarsDef = readFilesAndResolve({cwd, confFilePaths, debugLogger})
   return substituteVarSetXrefs(resolvedVarsDef.defaults, debugLogger)
 }
 

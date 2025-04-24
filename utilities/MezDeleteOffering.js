@@ -1,4 +1,5 @@
 // Remove an existing offering from a mezzanine
+'use strict'
 
 const Utility = require('./lib/Utility')
 const {ModOpt} = require('./lib/options')

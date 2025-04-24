@@ -1,4 +1,5 @@
-// Retrieve part list from object
+// Retrieve information about a Version
+'use strict'
 const Utility = require('./lib/Utility')
 
 const Version = require('./lib/concerns/libs/Version')

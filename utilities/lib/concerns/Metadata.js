@@ -8,8 +8,8 @@ const {fabricItemDesc} = require('../helpers')
 
 const Client = require('./Client')
 const Edit = require('./Edit')
-const JSON = require('./JSON')
-const Logger = require('./Logger')
+const ProcessJSON = require('./libs/ProcessJSON')
+const Logger = require('./kits/Logger.js')
 
 const pathRegex = /^(\/[^/]+)+$/
 
@@ -37,7 +37,7 @@ const pathToArray = ({path}) => {
   return result
 }
 
-const pretty = ({obj}) => JSON.stringify(obj, null, 2)
+const pretty = ({obj}) => ProcessJSON.stringify(obj, null, 2)
 
 const skeleton = () => Object({public: {}})
 
@@ -117,7 +117,7 @@ const New = context => {
 
   const checkTargetPath = ({force, metadata, targetPath}) => {
     if (!validTargetPath({metadata, targetPath})) {
-      const existingExcerpt = JSON.shortString({
+      const existingExcerpt = ProcessJSON.shortString({
         obj: valueAtPath({
           metadata,
           path: targetPath

@@ -1,4 +1,5 @@
 // Create a new mezzanine and start jobs
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const {seconds} = require('./lib/helpers')
@@ -10,12 +11,12 @@ const ArgMetadata = require('./lib/concerns/ArgMetadata')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
 const ArgType = require('./lib/concerns/ArgType')
 const Client = require('./lib/concerns/Client')
-const CloudAccess = require('./lib/concerns/CloudAccess')
+const CloudAccess = require('./lib/concerns/kits/CloudAccess')
 const ContentType = require('./lib/concerns/ContentType')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
-const Finalize = require('./lib/concerns/Finalize')
-const JSON = require('./lib/concerns/JSON')
-const LRO =  require('./lib/concerns/LRO')
+const Finalize = require('./lib/concerns/libs/Finalize.js')
+const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')
+const LRO =  require('./lib/concerns/libs/LRO.js')
 
 const chkLibraryPresent = (argv) => {
   if(!argv.existingMezId && !argv.libraryId) {
@@ -51,7 +52,7 @@ class MezCreate extends Utility {
         ContentType,
         FabricObject,
         Finalize,
-        JSON,
+        ProcessJSON,
         LRO
       ],
       options: [
@@ -129,17 +130,17 @@ class MezCreate extends Utility {
     // do steps that don't require network access first
     // ----------------------------------------------------
     const abrProfile = this.args.abrProfile
-      ? this.concerns.JSON.parseFile({path: this.args.abrProfile})
+      ? this.concerns.ProcessJSON.parseFile({path: this.args.abrProfile})
       : undefined
 
     let addlOffSpecs
     if(addlOfferingSpecs) {
-      addlOffSpecs = this.concerns.JSON.parseStringOrFile({strOrPath: addlOfferingSpecs})
+      addlOffSpecs = this.concerns.ProcessJSON.parseStringOrFile({strOrPath: addlOfferingSpecs})
     }
 
     const metadataFromArg =  this.concerns.ArgMetadata.asObject() || {}
 
-    let access = this.concerns.CloudAccess.credentialSet(false)
+    let access = this.concerns.CloudAccess.remoteAccessList(false)
 
     // operations that may need to wait on network access
     // ----------------------------------------------------

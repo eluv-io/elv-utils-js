@@ -1,3 +1,5 @@
+// code related to --forced arg
+'use strict'
 const {NewOpt} = require('../../options')
 
 const blueprint = {

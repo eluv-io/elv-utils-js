@@ -1,9 +1,10 @@
 // List versions of an object
+'use strict'
 const {NewOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const WriteLocalFile = require('./lib/concerns/kits/WriteLocalFile.js')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const Version = require('./lib/concerns/libs/Version')
 
@@ -11,7 +12,7 @@ const Version = require('./lib/concerns/libs/Version')
 class ListVersions extends Utility {
   static blueprint() {
     return {
-      concerns: [ArgOutfile, ExistObj],
+      concerns: [WriteLocalFile, ExistObj],
       options: [
         NewOpt('type', {
           descTemplate: 'include type of each version',
@@ -64,9 +65,9 @@ class ListVersions extends Utility {
     this.logger.data('version_count', versionList.length)
     if(this.args.outfile) {
       if(this.args.json) {
-        this.concerns.ArgOutfile.writeJson({obj: versionList})
+        this.concerns.WriteLocalFile.writeJson({obj: versionList})
       } else {
-        this.concerns.ArgOutfile.writeTable({list: versionList})
+        this.concerns.WriteLocalFile.writeTable({list: versionList})
       }
     } else {
       this.logger.logTable({list: versionList})

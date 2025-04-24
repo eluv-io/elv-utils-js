@@ -1,3 +1,5 @@
+// Copy an existing Offering to a new offering key
+'use strict'
 const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
 

@@ -1,7 +1,7 @@
 // Code to factor out commonalities in dealing with library vs. object vs. version vs. draft
 
 const Client = require('./Client')
-const Logger = require('./Logger')
+const Logger = require('./kits/Logger.js')
 
 const blueprint = {
   name: 'Fabric',

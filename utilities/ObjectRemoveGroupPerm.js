@@ -1,11 +1,12 @@
 // Remove a group permission for an object
+'use strict'
 const {ModOpt, NewOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 
 const permissionTypes = ['see', 'access', 'manage']
 

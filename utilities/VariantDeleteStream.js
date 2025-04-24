@@ -1,9 +1,10 @@
 // Remove an existing stream from an existing variant
+'use strict'
 
 const Utility = require('./lib/Utility')
 const {ModOpt} = require('./lib/options')
 
-const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
+const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey.js')
 const ArgVariantKey = require('./lib/concerns/ArgVariantKey')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')

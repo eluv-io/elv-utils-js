@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+'use strict'
 const prompt = require('prompt')
 const base58Decode=require('@eluvio/elv-js-helpers/Conversion/base58Decode')
 

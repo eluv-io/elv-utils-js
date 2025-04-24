@@ -1,8 +1,9 @@
 // List access groups visible to private key
+'use strict'
 const Utility = require('./lib/Utility')
 
 const AccessGroup = require('./lib/concerns/AccessGroup')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 
 class ListAccessGroups extends Utility {
   static blueprint() {

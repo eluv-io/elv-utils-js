@@ -1,6 +1,6 @@
 const Airtable = require('airtable')
 
-const Logger = require('./Logger')
+const Logger = require('./kits/Logger.js')
 
 const blueprint = {
   name: 'Airtable',

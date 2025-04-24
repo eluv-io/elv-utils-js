@@ -1,4 +1,5 @@
 // go through offerings and create full set of DRM keys for every audio/video stream
+'use strict'
 
 const R = require('@eluvio/ramda-fork')
 

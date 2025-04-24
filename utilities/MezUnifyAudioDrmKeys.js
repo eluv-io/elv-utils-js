@@ -1,4 +1,5 @@
 // go through offerings and set all audio streams to use same encryption keys
+'use strict'
 const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 const isEmpty = require('@eluvio/elv-js-helpers/Boolean/isEmpty')
 

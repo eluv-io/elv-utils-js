@@ -3,15 +3,14 @@ const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel'
 
 const {ElvClient} = require('@eluvio/elv-client-js/src/ElvClient')
 
-const elvRegions = require('../data/elv_regions')
-
 const {NewOpt} = require('../options')
 
-const Logger = require('./Logger')
+const Logger = require('./kits/Logger')
+const ArgElvGeo = require('./args/ArgElvGeo')
 
 const blueprint = {
   name: 'Client',
-  concerns: [Logger],
+  concerns: [ArgElvGeo, Logger],
   options: [
     NewOpt('configUrl', {
       conflicts: 'networkName',
@@ -36,12 +35,6 @@ const blueprint = {
       descTemplate: 'Number of seconds to wait for ethereum contract calls',
       group: 'API',
       type: 'number'
-    }),
-    NewOpt('elvGeo', {
-      choices: Object.keys(elvRegions).sort(),
-      descTemplate: 'Geographic region for the fabric nodes.',
-      group: 'API',
-      type: 'string'
     })
   ]
 }

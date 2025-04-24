@@ -1,4 +1,5 @@
 // Retrieve metadata from lib/obj/ver/dft
+'use strict'
 const isUndefined = require('@eluvio/elv-js-helpers/Boolean/isUndefined')
 
 const {fabricItemDesc} = require('./lib/helpers')
@@ -8,12 +9,12 @@ const Utility = require('./lib/Utility')
 const JPath = require('./lib/concerns/JPath')
 const Metadata = require('./lib/concerns/Metadata')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const WriteLocalFile = require('./lib/concerns/kits/WriteLocalFile.js')
 
 class MetaGet extends Utility {
   static blueprint() {
     return {
-      concerns: [JPath, ExistLibOrObjOrVerOrDft, ArgOutfile],
+      concerns: [JPath, ExistLibOrObjOrVerOrDft, WriteLocalFile],
       options: [
         ModOpt('jpath', {X: 'to extract'}),
         NewOpt('path', {
@@ -40,7 +41,7 @@ class MetaGet extends Utility {
     if (isUndefined(filteredMetadata)) throw Error('no metadata matched --jpath filter')
 
     if (outfile) {
-      this.concerns.ArgOutfile.writeJson({obj: filteredMetadata})
+      this.concerns.WriteLocalFile.writeJson({obj: filteredMetadata})
     } else {
       this.logger.log()
       this.logger.logObject(filteredMetadata)

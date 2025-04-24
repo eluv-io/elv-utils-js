@@ -1,32 +1,29 @@
-// Retrieve part list from object
+// Retrieve information about a Draft
+'use strict'
 const Utility = require('./lib/Utility')
+const {ModOpt} = require('./lib/options')
 
+const ArgWriteToken = require('./lib/concerns/args/ArgWriteToken')
 const Draft = require('./lib/concerns/libs/Draft')
-const {NewOpt} = require('./lib/options')
 
 class WriteTokenInfo extends Utility {
   static blueprint() {
     return {
-      concerns: [Draft],
+      concerns: [ArgWriteToken, Draft],
       options: [
-        NewOpt('writeToken', {
+        ModOpt('writeToken', {
           demand: true,
-          descTemplate: 'Write token to decode',
-          type: 'string'
-        }),
-        NewOpt('nodeUrl', {
-          descTemplate: 'Try to determine URL of node that generated the write token',
-          type: 'boolean'
+          descTemplate: 'Write token to decode'
         })
       ]
     }
   }
 
   async body() {
-    const {nodeUrl, writeToken} = this.args
+    const {writeToken} = this.args
     const result = this.concerns.Draft.decode({writeToken})
 
-    if (nodeUrl) try {
+    try {
       result.nodeUrl = await this.concerns.Draft.nodeURL({writeToken})
     } catch (e) {
       this.logger.warn(`Could not determine node URL for write token: ${e}`)

@@ -1,28 +1,47 @@
 // Create new master from specified file(s)
-const R = require('@eluvio/ramda-fork')
+'use strict'
+const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
 
-const {ModOpt, NewOpt, StdOpt} = require('./lib/options')
+const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const V = require('./lib/models/Variant')
 const VariantModel = V.VariantModel
 
-const AssetMetadata = require('./lib/concerns/AssetMetadata')
+const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
+const ArgLibraryId = require('./lib/concerns/args/ArgLibraryId')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
+const ArgNoFinalize = require('./lib/concerns/args/ArgNoFinalize')
+const ArgStoreClear = require('./lib/concerns/args/ArgStoreClear')
 const ArgType = require('./lib/concerns/ArgType')
+const AssetMetadata = require('./lib/concerns/AssetMetadata')
 const Client = require('./lib/concerns/Client')
-const CloudFile = require('./lib/concerns/CloudFile')
+const CloudFile = require('./lib/concerns/kits/CloudFile')
 const ContentType = require('./lib/concerns/ContentType')
-const Finalize = require('./lib/concerns/Finalize')
-const JSON = require('./lib/concerns/JSON')
-const LocalFile = require('./lib/concerns/LocalFile')
+const Finalize = require('./lib/concerns/libs/Finalize.js')
+const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')
+const LocalFile = require('./lib/concerns/kits/LocalFile')
 
 class MasterCreate extends Utility {
   static blueprint() {
     return {
-      concerns: [Client, CloudFile, JSON, LocalFile, AssetMetadata, ArgMetadata, ContentType, ArgType, Finalize],
+      concerns: [
+        Client,
+        CloudFile,
+        ContentType,
+        ProcessJSON,
+        LocalFile,
+        ArgCommitMsg,
+        ArgLibraryId,
+        AssetMetadata,
+        ArgMetadata,
+        ArgNoFinalize,
+        ArgStoreClear,
+        ArgType,
+        Finalize
+      ],
       options: [
-        StdOpt('libraryId', {
+        ModOpt('libraryId', {
           alias: ['masterLib', 'master-lib'],
           demand: true,
           forX: 'new master'
@@ -35,8 +54,8 @@ class MasterCreate extends Utility {
         ModOpt('metadata', {ofX: 'master object'}),
         ModOpt('title', {demand: true}),
         ModOpt('files', {forX: 'for new master'}),
-        NewOpt('storeClear', {
-          descTemplate: 'Store uploaded/copied files unencrypted',
+        ModOpt('storeClear', {
+          X: 'for uploaded/copied files',
           type: 'boolean'
         }),
         NewOpt('streams', {
@@ -49,14 +68,18 @@ class MasterCreate extends Utility {
 
   async body() {
     const logger = this.logger
-    const J = this.concerns.JSON
+    const J = this.concerns.ProcessJSON
 
-    const {encrypt, storeClear} = this.args
+    const {
+      storeClear,
+      s3Copy,
+      s3Reference
+    } = this.args
 
-    if(encrypt && storeClear) throw new Error('Cannot specify both --encrypt and --storeClear')
+    const addFromCloud = s3Reference || s3Copy
 
     let access
-    if(this.args.s3Reference || this.args.s3Copy) {
+    if(addFromCloud) {
       access = this.concerns.CloudFile.credentialSet()
     }
 
@@ -74,7 +97,7 @@ class MasterCreate extends Utility {
       oldPublicMetadata: metadataFromArg.public,
       backupNameSuffix: 'MASTER'
     })
-    const metadata = R.mergeRight(metadataFromArg, {public: newPublicMetadata})
+    const metadata = mergeRight(metadataFromArg, {public: newPublicMetadata})
 
     let fileHandles = []
     const fileInfo = access
@@ -86,7 +109,7 @@ class MasterCreate extends Utility {
     const client = await this.concerns.Client.get()
 
     const type = await this.concerns.ArgType.typVersionHash()
-    const {libraryId, s3Copy, s3Reference} = this.args
+    const {libraryId} = this.args
 
     const createResponse = await client.CreateProductionMaster({
       libraryId,
@@ -155,6 +178,9 @@ class MasterCreate extends Utility {
       ''
     )
 
+    logger.data('objectId', hash)
+    logger.data('versionHash', hash)
+    // preserve backwards compatibility
     logger.data('version_hash', hash)
 
     if(!streams) {

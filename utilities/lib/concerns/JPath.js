@@ -1,6 +1,6 @@
 const {NewOpt} = require('../options')
 
-const JSON = require('./JSON')
+const ProcessJSON = require('./libs/ProcessJSON.js')
 
 const blueprint = {
   name: 'JPath',
@@ -16,7 +16,7 @@ const New = context => {
   const jpathArg = context.args.jpath
 
   // convert --metadata argument to object (either literal JSON or @filePath)
-  const match = ({pattern = jpathArg, metadata}) => JSON.jPath({pattern, metadata})
+  const match = ({pattern = jpathArg, metadata}) => ProcessJSON.jPath({pattern, metadata})
 
   return {match}
 }

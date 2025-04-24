@@ -1,4 +1,5 @@
 // Copy metadata from one path to another within a single object
+'use strict'
 const objectPath = require('object-path')
 const R = require('@eluvio/ramda-fork')
 

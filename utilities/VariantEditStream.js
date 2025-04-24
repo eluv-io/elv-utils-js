@@ -1,86 +1,36 @@
 // Edit an existing stream in an existing variant
-const R = require('@eluvio/ramda-fork')
+'use strict'
+const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
 
 const {MasterModel} = require('./lib/models/Master')
 const {VariantModel, VariantStreamModel} = require('./lib/models/Variant')
 
 const Utility = require('./lib/Utility')
-const {ModOpt, NewOpt} = require('./lib/options')
+const {ModOpt} = require('./lib/options')
 
-const VariantStreamArgs = require('./lib/concerns/VariantStreamArgs')
+const VariantStreamArgs = require('./lib/concerns/kits/VariantStreamArgs.js')
+const VariantStreamClearArgs = require('./lib/concerns/kits/VariantStreamClearArgs.js')
+
 const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
 
 class VariantEditStream extends Utility {
   static blueprint() {
     return {
-      concerns: [VariantStreamArgs, ExistObj, Edit],
+      concerns: [VariantStreamArgs, VariantStreamClearArgs, ExistObjOrDft, Edit],
       options: [
         ModOpt('streamKey', {
           demand: true,
-        }),
-        NewOpt('clearDeinterlace', {
-          descTemplate: 'Blank out the stream\'s deinterlace field',
-          type: 'boolean',
-          conflicts: 'deinterlace'
-        }),
-        NewOpt('clearMapping', {
-          descTemplate: 'Blank out the stream\'s mapping_info field',
-          type: 'boolean',
-          conflicts: 'mapping'
-        }),
-        NewOpt('clearLanguage', {
-          descTemplate: 'Clear stream\'s language field',
-          type: 'boolean',
-          conflicts: 'language'
-        }),
-        NewOpt('clearChannelIndex', {
-          descTemplate: 'Clear any channel_index values in stream \'sources\' list',
-          type: 'boolean',
-          conflicts: 'channelIndex'
-        }),
-        NewOpt('clearMultipliers', {
-          descTemplate: 'Clear any multiplier values in stream \'sources\' list',
-          type: 'boolean',
-          conflicts: 'multipliers'
-        }),
-        NewOpt('clearTargetFrameRate', {
-          descTemplate: 'Blank out the stream\'s target_frame_rate field',
-          type: 'boolean',
-          conflicts: 'targetFrameRate'
-        }),
-        NewOpt('clearTargetTimebase', {
-          descTemplate: 'Blank out the stream\'s target_timebase field',
-          type: 'boolean',
-          conflicts: 'targetTimebase'
         })
       ]
     }
   }
 
   async body() {
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    const {libraryId, objectId} = await this.concerns.ExistObjOrDft.argsProc()
 
-    const streamOpts = R.pick(
-      [
-        'channelIndex',
-        'deinterlace',
-        'file',
-        'label',
-        'language',
-        'isDefault',
-        'mapping',
-        'multipliers',
-        'streamIndex',
-        'targetFrameRate',
-        'targetTimebase'
-      ],
-      this.args
-    )
+    const streamOpts = this.concerns.VariantStreamArgs.optsFromArgs()
 
-
-
-    const {clearChannelIndex, clearDeinterlace, clearLanguage, clearMapping, clearMultipliers, clearTargetFrameRate} = this.args
     const {streamKey, variantKey} = this.args
 
     // get production_master metadata
@@ -99,13 +49,7 @@ class VariantEditStream extends Utility {
     const oldStreamOpts = this.context.concerns.VariantStreamArgs.optsFromStream(stream)
 
     // merge
-    const mergedOpts = R.mergeRight(oldStreamOpts, streamOpts)
-    if(clearChannelIndex) delete mergedOpts.channelIndex
-    if(clearDeinterlace) delete mergedOpts.deinterlace
-    if(clearLanguage) delete mergedOpts.language
-    if(clearMapping) delete mergedOpts.mapping
-    if(clearMultipliers) delete mergedOpts.multipliers
-    if(clearTargetFrameRate) delete mergedOpts.target_frame_rate
+    const mergedOpts = this.context.concerns.VariantStreamClearArgs.apply(mergeRight(oldStreamOpts, streamOpts))
 
     // recompose
     const revisedStream = this.context.concerns.VariantStreamArgs.streamFromOpts(sources, mergedOpts)

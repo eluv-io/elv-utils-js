@@ -1,26 +1,22 @@
 // List info about a library
-
-const {ModOpt} = require('./lib/options')
+'use strict'
 
 const Utility = require('./lib/Utility')
 
-const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
-const Logger = require('./lib/concerns/Logger')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
+const ExistLib = require('./lib/concerns/kits/ExistLib')
+const Logger = require('./lib/concerns/kits/Logger.js')
+const ArgOutfile = require('./lib/concerns/args/ArgOutfile.js')
 
 class LibraryInfo extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ArgLibraryId, ArgOutfile],
-      options: [
-        ModOpt('libraryId', {demand: true})
-      ]
+      concerns: [Logger, ExistLib, ArgOutfile]
     }
   }
 
   async body() {
     const logger = this.logger
-    const obj = await this.concerns.ArgLibraryId.libInfo()
+    const obj = await this.concerns.ExistLib.info()
     logger.data('library_info', obj)
     if(this.args.outfile) {
       this.concerns.ArgOutfile.writeJson({obj})

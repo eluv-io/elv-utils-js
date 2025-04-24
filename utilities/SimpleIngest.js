@@ -1,4 +1,6 @@
-// Create new production master from specified file(s)
+// Create new production master and mezzanine in a single object from specified file(s)
+// Requires that the Library have an ABR Profile set up in metadata
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const {ModOpt, NewOpt} = require('./lib/options')
@@ -7,9 +9,9 @@ const Utility = require('./lib/Utility')
 const ABR = require('@eluvio/elv-abr-profile')
 
 const Client = require('./lib/concerns/Client')
-const Finalize = require('./lib/concerns/Finalize')
-const LocalFile = require('./lib/concerns/LocalFile')
-const LRO = require('./lib/concerns/LRO')
+const Finalize = require('./lib/concerns/libs/Finalize.js')
+const LocalFile = require('./lib/concerns/kits/LocalFile')
+const LRO = require('./lib/concerns/libs/LRO.js')
 const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
 const {seconds} = require('./lib/helpers')
 

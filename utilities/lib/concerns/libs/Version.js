@@ -4,7 +4,7 @@ const pick = require('@eluvio/elv-js-helpers/Functional/pick')
 const Utils = require('@eluvio/elv-client-js/src/Utils')
 
 const Client = require('../Client')
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger.js')
 const Metadata = require('../Metadata')
 const Part = require('../Part')
 

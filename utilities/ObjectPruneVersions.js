@@ -1,4 +1,5 @@
 // Delete versions of an object
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const {NewOpt} = require('./lib/options')

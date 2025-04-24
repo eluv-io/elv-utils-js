@@ -1,4 +1,5 @@
 // code related to --writeToken
+'use strict'
 const {throwError} = require('../../helpers')
 
 const {NewOpt} = require('../../options')
@@ -6,12 +7,13 @@ const {NewOpt} = require('../../options')
 const ArgLibraryId = require('./ArgLibraryId')
 const ArgObjectId = require('./ArgObjectId')
 const Draft = require('../libs/Draft')
+const FabricNode = require('../libs/FabricNode')
 const FabricObject = require('../libs/FabricObject')
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger.js')
 
 const blueprint = {
   name: 'ArgWriteToken',
-  concerns: [ArgLibraryId, ArgObjectId, Draft, FabricObject, Logger],
+  concerns: [ArgLibraryId, ArgObjectId, Draft, FabricNode, FabricObject, Logger],
   conflicts: 'versionHash',
   options: [
     NewOpt('writeToken', {
@@ -50,7 +52,7 @@ const New = context => {
           nodeUrl: context.args.nodeUrl
         })
       } else {
-        context.concerns.Logger.warn('--nodeUrl not supplied, looking up node for write token (using --nodeUrl is much faster)')
+        context.concerns.Logger.warn('--nodeUrl not supplied, looking up node for write token')
         context.args.nodeUrl = await context.concerns.Draft.nodeURL({writeToken: context.args.writeToken})
         context.concerns.Logger.log(`Found node URL: ${context.args.nodeUrl}`)
       }

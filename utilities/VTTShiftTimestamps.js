@@ -1,29 +1,24 @@
-const fs = require('fs')
-// const path = require('path')
-
+// Create a new subtitle VTT file based on an existing VTT file, but shift timestamps by specified amount
+'use strict'
 const isNumber = require('@eluvio/elv-js-helpers/Boolean/isNumber')
 
 const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ArgFile = require('./lib/concerns/args/ArgFile')
-const ArgOutfile = require('./lib/concerns/ArgOutfile')
-const ArgTimeShift = require('./lib/concerns/ArgTimeShift')
-const Subtitle = require('./lib/concerns/Subtitle')
+const ArgTimeShift = require('./lib/concerns/args/ArgTimeShift')
+const Logger = require('./lib/concerns/kits/Logger')
+const Subtitle = require('./lib/concerns/libs/Subtitle')
+const WriteLocalFile = require('./lib/concerns/kits/WriteLocalFile')
 
 class VTTShiftTimestamps extends Utility {
   static blueprint() {
     return {
-      concerns: [
-        Subtitle,
-        ArgFile,
-        ArgOutfile,
-        ArgTimeShift
-      ],
+      concerns: [Logger, Subtitle, WriteLocalFile, ArgFile, ArgTimeShift],
       options: [
         ModOpt('file', {
           demand: true,
-          X: 'subtitle'
+          X: 'VTT subtitle file'
         }),
         ModOpt('timeShift', {
           X: 'from timestamps in subtitle file',
@@ -39,20 +34,18 @@ class VTTShiftTimestamps extends Utility {
 
   async body() {
     const logger = this.logger
-    const {
-      timeShift
-    } = this.args
-
-    const filePath = this.args.file
+    const {timeShift} = this.args
 
     // read captions file and apply any time shift
-    let originalData = fs.readFileSync(filePath)
+    const originalData = this.concerns.ArgFile.read()
     const shiftedData = isNumber(timeShift) && (timeShift !== 0)
       ? Subtitle.adjustTimestamps(timeShift, originalData)
       : originalData
 
     logger.data('adjusted_subtitles', shiftedData)
-    this.concerns.ArgOutfile.write({text: shiftedData})
+
+    // Write new file
+    this.concerns.WriteLocalFile.write({text: shiftedData})
   }
 
   header() {

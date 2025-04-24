@@ -5,8 +5,16 @@ const path = require('path')
 const chai = require('chai')
 const sinon = require('sinon')
 
-const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
 const now = require('@eluvio/elv-js-helpers/Datetime/now')
+const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
+const dumpJSON = require('@eluvio/elv-js-helpers/Misc/dumpJSON')
+
+const {
+  overrideDefaultsWithPreset,
+  readFilesAndResolve,
+  substituteVarSetXrefs
+
+} = require('../utilities/lib/configs')
 
 const {concernList, concernsDir, exampleFilesDir, runUtility, utilitiesDir} = require('../utilities/lib/helpers')
 
@@ -16,9 +24,13 @@ chai.should()
 const expect = chai.expect
 
 
-const testEnv = {
+const TEST_ENV = {
   cwd: __dirname,
-  env: {ELVUTILS_THROW: 1, ELVUTILS_SUPPRESS_USAGE: 1}
+  env: {
+    ELVUTILS_CONFIG: process.env.ELVUTILS_CONFIG,
+    ELVUTILS_SUPPRESS_USAGE: 1,
+    ELVUTILS_THROW: 1
+  }
 }
 
 const argList2Params = (...argList) => {
@@ -26,7 +38,7 @@ const argList2Params = (...argList) => {
   argList = argList.concat('--silent')
   return {
     argList,
-    ...testEnv
+    ...TEST_ENV
   }
 }
 
@@ -51,13 +63,27 @@ const concern2utility = concernObject => {
   return TestUtility
 }
 
+const elvUtilsConfigVals = (opts = {}) => {
+  if (!process.env.ELVUTILS_CONFIG) throw Error('Env variable ELVUTILS_CONFIG must be set')
+  const confResolved = readFilesAndResolve({confFilePaths: [process.env.ELVUTILS_CONFIG]})
+  const {presetNames} = opts
+
+  const confAfterOverrides = presetNames ?
+    presetNames.reduce(
+      (accumulator, presetName) => overrideDefaultsWithPreset({confResolved: accumulator, presetName}),
+      confResolved
+    ) :
+    confResolved
+  return substituteVarSetXrefs(confAfterOverrides.defaults)
+}
+
 const exampleABRProfilePath = (filename) => path.join(exampleFilesDir, filename)
 
 const exampleVideoPath = path.join(exampleFilesDir, 'video.mp4')
 
 const params = testParams => mergeDeepRight(
   testParams,
-  testEnv
+  TEST_ENV
 )
 
 // adds timestamp prefix to string
@@ -76,10 +102,10 @@ const requireConcern = subDirAndFilename => path.isAbsolute(subDirAndFilename)
 const requireUtility = subDirAndFilename => require(path.join(utilitiesDir, subDirAndFilename))
 
 // awaitTest run the utility synchronously and throw error if it fails
-const runUtilityTest =  (utility, argList, env, throwOnError = true) => {
+const runUtilityTest = (utility, argList, env, throwOnError = true) => {
   if (!process.env.ELVUTILS_CONFIG) throw Error('Env variable ELVUTILS_CONFIG must be set to run integration test')
 
-  runUtility(utility, argList, testEnv, throwOnError).then(
+  runUtility(utility, argList, TEST_ENV, throwOnError).then(
     successValue => {
       console.log('Test passed.')
       return successValue
@@ -101,6 +127,8 @@ module.exports = {
   concernList,
   concernsDir,
   concern2utility,
+  dumpJSON,
+  elvUtilsConfigVals,
   exampleABRProfilePath,
   exampleVideoPath,
   expect,
@@ -111,7 +139,7 @@ module.exports = {
   requireUtility,
   runUtilityTest,
   sinon,
-  testEnv,
+  testEnv: TEST_ENV,
   timestampFilename,
   utilitiesDir,
   utilityPath

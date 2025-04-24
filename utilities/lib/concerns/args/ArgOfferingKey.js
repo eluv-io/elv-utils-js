@@ -1,4 +1,5 @@
 // code related to --offeringKey
+'use strict'
 const {NewOpt} = require('../../options')
 
 const blueprint = {

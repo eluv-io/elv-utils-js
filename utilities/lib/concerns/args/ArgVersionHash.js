@@ -1,4 +1,5 @@
 // code related to --versionHash
+'use strict'
 
 const {NewOpt} = require('../../options')
 

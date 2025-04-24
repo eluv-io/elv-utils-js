@@ -1,11 +1,12 @@
 // Get content type for a library, object, version, or draft
+'use strict'
 
 const Utility = require('./lib/Utility')
 const {fabricItemDesc} = require('./lib/helpers')
 
 const ContentType = require('./lib/concerns/ContentType')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 
 class ObjectSetType extends Utility {
   static blueprint() {

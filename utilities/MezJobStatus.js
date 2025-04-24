@@ -1,18 +1,29 @@
 // Get mezzanine job status and optionally finalize
+'use strict'
 
 const {NewOpt, ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
-const ArgNoWait = require('./lib/concerns/ArgNoWait')
+const ArgIgnoreBitrateLimit = require('./lib/concerns/args/ArgIgnoreBitrateLimit')
+const ArgNoWaitPublish = require('./lib/concerns/args/ArgNoWaitPublish')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
-const Logger = require('./lib/concerns/Logger')
-const LRO = require('./lib/concerns/LRO')
+const Finalize = require('./lib/concerns/libs/Finalize.js')
+const Logger = require('./lib/concerns/kits/Logger.js')
+const LRO = require('./lib/concerns/libs/LRO.js')
 
 class MezJobStatus extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ArgObjectId, Client, LRO, ArgNoWait],
+      concerns: [
+        ArgIgnoreBitrateLimit,
+        ArgNoWaitPublish,
+        ArgObjectId,
+        Client,
+        Finalize,
+        Logger,
+        LRO
+      ],
       options: [
         ModOpt('objectId', {ofX: 'mezzanine', demand: true}),
         ModOpt('libraryId', {forX: 'mezzanine'}),
@@ -25,7 +36,7 @@ class MezJobStatus extends Utility {
           implies: 'finalize',
           type: 'boolean'
         }),
-        ModOpt('noWait', {implies: 'finalize'})
+        ModOpt('noWaitPublish', {implies: 'finalize'})
       ]
     }
   }
@@ -35,7 +46,14 @@ class MezJobStatus extends Utility {
     const logger = this.logger
     const lro = this.concerns.LRO
 
-    const {finalize, libraryId, objectId, force} = await this.concerns.ArgObjectId.argsProc()
+    const {
+      finalize,
+      force,
+      ignoreBitrateLimit,
+      libraryId,
+      noWaitPublish,
+      objectId,
+    } = await this.concerns.ArgObjectId.argsProc()
     //const offeringKey = this.args.offeringKey;
 
     let statusReport
@@ -78,7 +96,7 @@ class MezJobStatus extends Utility {
         logger.log('Finalizing mezzanine...')
       }
 
-      const finalizeResponse = await client.FinalizeABRMezzanine({libraryId, objectId})
+      const finalizeResponse = await client.FinalizeABRMezzanine({libraryId, objectId, ignoreBitrateLimit})
       const latestHash = finalizeResponse.hash
       logger.logList(
         '',
@@ -90,7 +108,7 @@ class MezJobStatus extends Utility {
       logger.data('version_hash', latestHash)
       logger.data('finalized', true)
 
-      await this.concerns.ArgNoWait.waitUnlessNo({libraryId, objectId, latestHash})
+      if (!noWaitPublish) await this.concerns.Finalize.waitForPublish({latestHash, libraryId, objectId})
     }
   }
 

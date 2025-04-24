@@ -1,3 +1,5 @@
+// code related to --filePath arg
+'use strict'
 const FabricFilePathModel = require('../../models/FabricFilePathModel')
 
 const {NewOpt} = require('../../options')

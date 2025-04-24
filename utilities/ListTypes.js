@@ -1,9 +1,10 @@
 // List all content types visible to the current private key
+'use strict'
 
 const Utility = require('./lib/Utility')
 
 const ContentType = require('./lib/concerns/ContentType')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 
 class ListTypes extends Utility {
   static blueprint() {

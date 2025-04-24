@@ -1,4 +1,5 @@
 // Copy an existing variant
+'use strict'
 
 const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')

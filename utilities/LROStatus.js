@@ -1,12 +1,13 @@
 // Get detailed status info for 1 LRO
+'use strict'
 
 const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ArgLroId = require('./lib/concerns/ArgLroId')
 const ArgNodeUrl = require('./lib/concerns/ArgNodeUrl')
-const ArgWriteToken = require('./lib/concerns/ArgWriteToken')
-const LRO = require('./lib/concerns/LRO')
+const ArgWriteToken = require('./lib/concerns/args/ArgWriteToken')
+const LRO = require('./lib/concerns/libs/LRO.js')
 
 class LROStatus extends Utility {
   static blueprint() {

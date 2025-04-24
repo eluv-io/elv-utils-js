@@ -1,10 +1,10 @@
 const {NewOpt} = require('../options')
 
-const JSON = require('./JSON')
+const ProcessJSON = require('./libs/ProcessJSON.js')
 
 const blueprint = {
   name: 'ArgMetadata',
-  concerns: [JSON],
+  concerns: [ProcessJSON],
   options: [
     NewOpt('metadata', {
       descTemplate: 'Either a JSON string for metadata, or the path to a JSON file containing the metadata{X}',
@@ -18,7 +18,7 @@ const New = context => {
 
   // convert --metadata argument to object (either literal JSON or filePath)
   const asObject = () => argMetadata
-    ? context.concerns.JSON.parseStringOrFile({strOrPath: argMetadata})
+    ? context.concerns.ProcessJSON.parseStringOrFile({strOrPath: argMetadata})
     : null
 
   // instance interface

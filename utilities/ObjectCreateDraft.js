@@ -1,4 +1,5 @@
 // Start a draft on an existing object
+'use strict'
 
 const Utility = require('./lib/Utility')
 

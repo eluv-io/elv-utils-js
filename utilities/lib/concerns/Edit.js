@@ -2,8 +2,8 @@
 const kindOf = require('kind-of')
 
 const Client = require('./Client')
-const Finalize = require('./Finalize')
-const Logger = require('./Logger')
+const Finalize = require('./libs/Finalize.js')
+const Logger = require('./kits/Logger.js')
 
 const blueprint = {
   name: 'Edit',

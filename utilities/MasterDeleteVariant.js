@@ -1,4 +1,5 @@
 // Remove an existing variant from a production master
+'use strict'
 
 const Utility = require('./lib/Utility')
 const {ModOpt} = require('./lib/options')

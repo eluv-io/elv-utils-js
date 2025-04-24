@@ -1,4 +1,5 @@
 // Delete a metadata path from an object
+'use strict'
 const objectPath = require('object-path')
 const R = require('@eluvio/ramda-fork')
 

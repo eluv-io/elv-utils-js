@@ -1,4 +1,5 @@
 // Stop 1 LRO
+'use strict'
 
 const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
@@ -6,7 +7,7 @@ const Utility = require('./lib/Utility')
 const Client = require('./lib/concerns/Client')
 const ArgLroId = require('./lib/concerns/ArgLroId')
 const ArgNodeUrl = require('./lib/concerns/ArgNodeUrl')
-const ArgWriteToken = require('./lib/concerns/ArgWriteToken')
+const ArgWriteToken = require('./lib/concerns/args/ArgWriteToken')
 
 class LROStop extends Utility {
   static blueprint() {

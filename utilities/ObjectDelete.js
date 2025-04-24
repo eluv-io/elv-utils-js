@@ -1,4 +1,5 @@
 // Delete a single object
+'use strict'
 
 const Utility = require('./lib/Utility')
 

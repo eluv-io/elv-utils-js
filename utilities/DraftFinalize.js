@@ -1,4 +1,5 @@
 // Finalize an existing draft
+'use strict'
 
 const Utility = require('./lib/Utility')
 

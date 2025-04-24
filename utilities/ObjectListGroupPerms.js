@@ -1,4 +1,5 @@
 // List group permissions on an object
+'use strict'
 const {ModOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
@@ -6,7 +7,7 @@ const Utility = require('./lib/Utility')
 const AccessGroup = require('./lib/concerns/AccessGroup')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 
 class ObjectListGroupPerms extends Utility {
   static blueprint() {

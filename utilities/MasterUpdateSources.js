@@ -1,4 +1,5 @@
 // Probe file in object for media structure
+'use strict'
 const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 const isEquivalent = require('@eluvio/elv-js-helpers/Boolean/isEquivalent')
 const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
@@ -7,7 +8,7 @@ const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
-const CloudAccess = require('./lib/concerns/CloudAccess')
+const CloudAccess = require('./lib/concerns/kits/CloudAccess')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const FabricFile = require('./lib/concerns/FabricFile.js')
 const Metadata = require('./lib/concerns/Metadata')
@@ -29,7 +30,7 @@ class MasterUpdateSources extends Utility {
   async body() {
     const {files} = this.args
 
-    const access = this.concerns.CloudAccess.credentialSet(false)
+    const access = this.concerns.CloudAccess.remoteAccessList(false)
 
     const {libraryId, objectId, versionHash} = await this.concerns.ExistObj.argsProc()
 

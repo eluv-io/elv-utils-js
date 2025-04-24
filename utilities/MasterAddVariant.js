@@ -1,4 +1,5 @@
 // Add a new variant to a production master
+'use strict'
 const {MasterModel} = require('./lib/models/Master')
 const {VariantModel} = require('./lib/models/Variant')
 
@@ -8,12 +9,12 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const ArgVariantKey = require('./lib/concerns/ArgVariantKey')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const JSON = require('./lib/concerns/JSON')
+const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')
 
 class MasterAddVariant extends Utility {
   static blueprint() {
     return {
-      concerns: [ArgVariantKey, ExistObj, Edit, JSON],
+      concerns: [ArgVariantKey, ExistObj, Edit, ProcessJSON],
       options: [
         ModOpt('variantKey', {
           default: null,
@@ -34,7 +35,7 @@ class MasterAddVariant extends Utility {
 
     const {variantKey} = this.args
 
-    const streams = this.concerns.JSON.parseStringOrFile({strOrPath: this.args.streams})
+    const streams = this.concerns.ProcessJSON.parseStringOrFile({strOrPath: this.args.streams})
     const variant = {streams}
     VariantModel(variant)
 

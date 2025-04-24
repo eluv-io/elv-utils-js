@@ -1,5 +1,6 @@
+// code related to --confs arg
 // NOTE: This is included automatically in all utility scripts by Utility.js
-
+'use strict'
 const {NewOpt} = require('../../options')
 
 const blueprint = {

@@ -1,4 +1,5 @@
 // Retrieve part list from object
+'use strict'
 const Utility = require('./lib/Utility')
 
 const ExistVer = require('./lib/concerns/kits/ExistVer')

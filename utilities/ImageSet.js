@@ -1,4 +1,5 @@
 // Set display image for an object
+'use strict'
 
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')

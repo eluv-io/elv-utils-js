@@ -5,7 +5,7 @@ const fracStrToNum = require('@eluvio/elv-js-helpers/Conversion/fracStrToNum')
 
 const compare = require('@eluvio/elv-js-helpers/Functional/compare')
 
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger.js')
 
 const blueprint = {
   name: 'Offering',

@@ -14,6 +14,7 @@
     "check-dependency-updates": "echo 'Checking dependencies in package.json for updates...' && npx npm-check-updates",
     "release": "echo 'Incrementing version and publishing to npmjs.com...' && cp package.json ./build/package.json && np --no-2fa",
     "test": "mocha --recursive \"./test/unit/**/*.test.js\"",
+    "integration-tests": "mocha --recursive \"./test/integration/utilities/**/*.test.js\"",
     "version": "echo 'Executing npm publish hook: version... (rebuilds ./build/dist)' &&  npm run build || true"
   },
   "repository": {
@@ -27,9 +28,9 @@
   },
   "homepage": "https://github.com/eluv-io/elv-utils-js#readme",
   "dependencies": {
-    "@eluvio/elv-abr-profile": "^1.0.1",
-    "@eluvio/elv-client-js": "^4.0.85",
-    "@eluvio/elv-js-helpers": "^6.3.1",
+    "@eluvio/elv-abr-profile": "^1.0.2",
+    "@eluvio/elv-client-js": "^4.0.126",
+    "@eluvio/elv-js-helpers": "^6.3.8",
     "@eluvio/elv-lro-status": "^3.0.7",
     "@eluvio/ramda-fork": "^0.28.1",
     "airtable": "^0.11.6",
@@ -38,7 +39,7 @@
     "crocks": "^0.12.4",
     "ellipsize": "^0.5.1",
     "fraction.js": "^4.3.7",
-    "jsonpath-plus": "^7.2.0",
+    "jsonpath-plus": "^10.3.0",
     "kind-of": "^6.0.3",
     "mime-types": "^2.1.35",
     "moment": "^2.30.1",

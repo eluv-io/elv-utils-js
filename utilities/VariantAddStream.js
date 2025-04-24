@@ -1,4 +1,5 @@
 // Add a stream to an existing variant
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const {MasterModel} = require('./lib/models/Master')
@@ -7,7 +8,7 @@ const {VariantModel} = require('./lib/models/Variant')
 const Utility = require('./lib/Utility')
 const {ModOpt} = require('./lib/options')
 
-const VariantStreamArgs = require('./lib/concerns/VariantStreamArgs')
+const VariantStreamArgs = require('./lib/concerns/kits/VariantStreamArgs.js')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 

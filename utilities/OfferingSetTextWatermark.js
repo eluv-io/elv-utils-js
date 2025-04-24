@@ -1,5 +1,5 @@
 // Set or clear text watermark for an offering
-
+'use strict'
 const Utility = require('./lib/Utility')
 
 const TextWatermarkModel = require('./lib/models/TextWatermarkModel')

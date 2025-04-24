@@ -1,5 +1,6 @@
 // Just create default variant (without deleting other variants)
 // Do not scan files
+'use strict'
 
 const kindOf = require('kind-of')
 

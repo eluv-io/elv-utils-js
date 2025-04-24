@@ -2,7 +2,7 @@
 const sortBy = require('@eluvio/elv-js-helpers/Functional/sortBy')
 
 const Client = require('./Client')
-const Logger = require('./Logger')
+const Logger = require('./kits/Logger.js')
 
 const blueprint = {
   name: 'AccessGroup',

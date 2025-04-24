@@ -1,4 +1,5 @@
 // List all object IDs in a library
+'use strict'
 
 const R = require('@eluvio/ramda-fork')
 
@@ -8,7 +9,7 @@ const Utility = require('./lib/Utility')
 
 const {PublicMetadataPathArrayModel} = require('./lib/models/PublicMetadataPath')
 
-const JSON = require('./lib/concerns/JSON')
+const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')
 const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
 const Metadata = require('./lib/concerns/Metadata')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
@@ -16,7 +17,7 @@ const FabricObject = require('./lib/concerns/libs/FabricObject')
 class LibraryListObjects extends Utility {
   static blueprint() {
     return {
-      concerns: [JSON, ArgLibraryId, Metadata, FabricObject],
+      concerns: [ProcessJSON, ArgLibraryId, Metadata, FabricObject],
       options: [
         ModOpt('libraryId', {demand: true}),
         NewOpt('filter', {
@@ -51,7 +52,7 @@ class LibraryListObjects extends Utility {
 
   async body() {
     const logger = this.logger
-    const filter = this.args.filter && this.concerns.JSON.parseStringOrFile({strOrPath: this.args.filter})
+    const filter = this.args.filter && this.concerns.ProcessJSON.parseStringOrFile({strOrPath: this.args.filter})
 
     if(!this.args.fields) this.args.fields = []
 

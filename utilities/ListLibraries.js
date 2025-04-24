@@ -1,10 +1,11 @@
 // List all libraries visible to the current private key
+'use strict'
 
 const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const Library = require('./lib/concerns/libs/Library')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 
 class ListLibraries extends Utility {
   static blueprint() {

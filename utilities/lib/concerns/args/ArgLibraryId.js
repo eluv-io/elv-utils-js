@@ -1,4 +1,5 @@
 // code related to --libraryId
+'use strict'
 
 const {NewOpt} = require('../../options')
 

@@ -1,3 +1,5 @@
+// code related to --destDir arg
+'use strict'
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 
 const {NewOpt} = require('../../options')

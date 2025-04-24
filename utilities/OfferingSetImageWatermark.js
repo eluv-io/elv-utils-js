@@ -1,5 +1,5 @@
 // Set or clear image watermark for an offering
-
+'use strict'
 const Utility = require('./lib/Utility')
 
 const ImageWatermarkModel = require('./lib/models/ImageWatermarkModel')

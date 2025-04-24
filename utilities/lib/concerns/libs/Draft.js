@@ -1,5 +1,4 @@
 // for scripts that work with Drafts (new unfinalized objects/versions)
-const CBOR = require('cbor')
 const fetch = require('node-fetch').default
 
 const Utils = require('@eluvio/elv-client-js/src/Utils')
@@ -7,17 +6,19 @@ const Utils = require('@eluvio/elv-client-js/src/Utils')
 const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')
 
 const Client = require('../Client')
-const Logger = require('../Logger')
-const Finalize = require('../Finalize')
+const FabricNode = require('../libs/FabricNode')
+const Logger = require('../kits/Logger.js')
+const Finalize = require('./Finalize.js')
 
 const blueprint = {
   name: 'Draft',
-  concerns: [Client, Logger, Finalize]
+  concerns: [Client, FabricNode, Logger, Finalize]
 }
 
 const New = context => {
   const logger = context.concerns.Logger
 
+  // TODO: deprecate, replace usages with calls to createForExistingObject / createForNewObject instead
   const create = async ({libraryId, objectId, metadata, type}) => {
     if(!libraryId && !objectId) throw Error('Draft.create() - no libraryId or objectId supplied')
     const client = await context.concerns.Client.get()
@@ -45,6 +46,43 @@ const New = context => {
       logger.log(`New object ID: ${response.objectId}`)
     }
 
+    logger.log(`New write token: ${response.writeToken}`)
+    return {
+      objectId: response.objectId,
+      writeToken: response.writeToken,
+      nodeUrl: response.nodeUrl
+    }
+  }
+
+  // creates a new draft for existing object
+  const createForExistingObject = async ({libraryId, objectId}) => {
+    const client = await context.concerns.Client.get()
+    // create new draft version for an existing object
+    logger.log(`Creating new draft version for object ${objectId}...`)
+    const response = await client.EditContentObject({
+      libraryId,
+      objectId
+    })
+    logger.log(`New write token: ${response.writeToken}`)
+    return {
+      objectId: response.objectId,
+      writeToken: response.writeToken,
+      nodeUrl: response.nodeUrl
+    }
+  }
+
+  // creates a new object and leaves unfinalized
+  const createForNewObject = async ({libraryId, metadata, type}) => {
+    const client = await context.concerns.Client.get()
+    logger.log(`Creating new draft object in library ${libraryId}...`)
+    const response = await client.CreateContentObject({
+      libraryId,
+      options: {
+        meta: metadata,
+        type
+      }
+    })
+    logger.log(`New object ID: ${response.objectId}`)
     logger.log(`New write token: ${response.writeToken}`)
     return {
       objectId: response.objectId,
@@ -89,49 +127,58 @@ const New = context => {
     })
   }
 
-  const nodeInfo = async ({writeToken}) => {
-    if(!writeToken) throw Error('Draft.node() - missing writeToken')
-    logger.log(`Getting node info for write token ${writeToken}...`)
-    const {nodeId} = decode({writeToken})
-    const nodeAddress = Utils.HashToAddress(nodeId)
-    const client = await context.concerns.Client.get()
-
-    const numActiveNodes = await client.CallContractMethod({
-      contractAddress: client.contentSpaceAddress,
-      methodName: 'numActiveNodes'
-    })
-
-    for(let i = 0; i < numActiveNodes; i++){
-      const activeNodeAddress = await client.CallContractMethod({
-        contractAddress: client.contentSpaceAddress,
-        methodName: 'activeNodeAddresses',
-        methodArgs: [i]
-      })
-      if(Utils.FormatAddress(activeNodeAddress) === Utils.FormatAddress(nodeAddress)){
-        const nodeInfoCBOR = await client.CallContractMethod({
-          contractAddress: client.contentSpaceAddress,
-          methodName: 'activeNodeLocators',
-          methodArgs: [i]
-        })
-        return CBOR.decodeFirstSync(nodeInfoCBOR.slice(16, nodeInfoCBOR.length))
-      }
-    }
-    throw Error(`No match found for node: ${nodeId} (possibly wrong network - double-check your fabric config url)`)
-  }
+  // const nodeInfo = async ({writeToken}) => {
+  //   if(!writeToken) throw Error('Draft.node() - missing writeToken')
+  //   logger.log(`Getting node info for write token ${writeToken}...`)
+  //   const {nodeId} = decode({writeToken})
+  //   const nodeAddress = Utils.HashToAddress(nodeId)
+  //   const client = await context.concerns.Client.get()
+  //
+  //   const numActiveNodes = await client.CallContractMethod({
+  //     contractAddress: client.contentSpaceAddress,
+  //     methodName: 'numActiveNodes'
+  //   })
+  //
+  //   for(let i = 0; i < numActiveNodes; i++){
+  //     const activeNodeAddress = await client.CallContractMethod({
+  //       contractAddress: client.contentSpaceAddress,
+  //       methodName: 'activeNodeAddresses',
+  //       methodArgs: [i]
+  //     })
+  //     if(Utils.FormatAddress(activeNodeAddress) === Utils.FormatAddress(nodeAddress)){
+  //       const nodeInfoCBOR = await client.CallContractMethod({
+  //         contractAddress: client.contentSpaceAddress,
+  //         methodName: 'activeNodeLocators',
+  //         methodArgs: [i]
+  //       })
+  //       return CBOR.decodeFirstSync(nodeInfoCBOR.slice(16, nodeInfoCBOR.length))
+  //     }
+  //   }
+  //   throw Error(`No match found for node: ${nodeId} (possibly wrong network - double-check your fabric config url)`)
+  // }
 
   const nodeURL = async ({writeToken}) => {
-    const info = await nodeInfo({writeToken})
-    const fabricInfo = info.fab[0]
-    const url = new URL('https://dummy')
-    url.protocol = fabricInfo.scheme
-    url.hostname = fabricInfo.host
-    if(fabricInfo.port !== '') {
-      url.port = parseInt(fabricInfo.port)
-    }
-    const nodeUrl = url.href
+    if(!writeToken) throw Error('Draft.nodeURL() - missing writeToken')
+    const list = await context.concerns.FabricNode.list({writeToken})
+    if (list.length !== 1) throwError(`Unexpected number of nodes found (${list.length})`)
+    const nodeUrl = list[0].services.fabric_api.urls[0]
     await recordWriteTokenNodeURL({writeToken, nodeUrl})
     return nodeUrl
   }
+
+  // const nodeURL = async ({writeToken}) => {
+  //   const info = await nodeInfo({writeToken})
+  //   const fabricInfo = info.fab[0]
+  //   const url = new URL('https://dummy')
+  //   url.protocol = fabricInfo.scheme
+  //   url.hostname = fabricInfo.host
+  //   if(fabricInfo.port !== '') {
+  //     url.port = parseInt(fabricInfo.port)
+  //   }
+  //   const nodeUrl = url.href
+  //   await recordWriteTokenNodeURL({writeToken, nodeUrl})
+  //   return nodeUrl
+  // }
 
   const nodeURLValidate = async ({nodeUrl, writeToken}) => {
     if(!nodeUrl) throw Error('Draft.nodeURLValidate() - nodeUrl missing')
@@ -179,11 +226,13 @@ const New = context => {
   // instance interface
   return {
     create,
+    createForExistingObject,
+    createForNewObject,
     decode,
     finalize,
     info,
     metadata,
-    nodeInfo,
+    // nodeInfo,
     nodeURL,
     nodeURLValidate,
     objectId,

@@ -5,9 +5,9 @@ const uniq = require('@eluvio/elv-js-helpers/Functional/uniq')
 
 const Client = require('../Client')
 const Draft = require('./Draft')
-const Finalize = require('../Finalize')
+const Finalize = require('./Finalize.js')
 const Library = require('./Library')
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger.js')
 const Metadata = require('../Metadata')
 const Part = require('../Part')
 const Version = require('./Version')
@@ -20,17 +20,21 @@ const blueprint = {
 const New = context => {
   const logger = context.concerns.Logger
 
-  const create = async ({libraryId, metadata, noWait, type, commitMessage = 'Create object'}) => {
+  const create = async ({libraryId, metadata, noFinalize, noWait, type, commitMessage = 'Create object'}) => {
     if(!libraryId) throw Error('FabricObject.create() - missing libraryId')
     const {objectId, writeToken} = await context.concerns.Draft.create({libraryId, metadata, type})
-    const versionHash = await context.concerns.Finalize.finalize({
-      libraryId,
-      noWait,
-      objectId,
-      writeToken,
-      commitMessage
-    })
-    return {objectId, versionHash}
+    if (noFinalize) {
+      return {objectId, writeToken}
+    } else {
+      const versionHash = await context.concerns.Finalize.finalize({
+        libraryId,
+        noWait,
+        objectId,
+        writeToken,
+        commitMessage
+      })
+      return {objectId, versionHash}
+    }
   }
 
   // named 'del' instead of 'delete' because Javascript keyword

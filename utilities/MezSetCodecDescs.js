@@ -1,4 +1,5 @@
 // Set codec descriptor strings for video stream representations
+'use strict'
 
 const {fabricItemDesc} = require('./lib/helpers')
 const {NewOpt} = require('./lib/options')

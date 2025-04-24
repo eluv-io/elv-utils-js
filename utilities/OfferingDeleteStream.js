@@ -1,3 +1,5 @@
+// Delete an existing stream from an Offering
+'use strict'
 const isEmpty = require('@eluvio/elv-js-helpers/Boolean/isEmpty')
 const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
 
@@ -5,7 +7,7 @@ const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
+const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey.js')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
 
 class OfferingDeleteStream extends Utility {

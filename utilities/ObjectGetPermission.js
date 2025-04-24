@@ -1,10 +1,11 @@
 // Get permission setting of an object
+'use strict'
 const {ModOpt} = require('./lib/options')
 
 const Utility = require('./lib/Utility')
 
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 
 class ObjectGetPermission extends Utility {
   static blueprint() {

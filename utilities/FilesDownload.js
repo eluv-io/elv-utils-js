@@ -1,4 +1,5 @@
 // Download file(s) from object
+'use strict'
 const fs = require('fs')
 const path = require('path')
 
@@ -9,7 +10,7 @@ const Utility = require('./lib/Utility')
 
 const ExistObjOrVer = require('./lib/concerns/kits/ExistObjOrVer')
 const Client = require('./lib/concerns/Client')
-const Logger = require('./lib/concerns/Logger')
+const Logger = require('./lib/concerns/kits/Logger.js')
 const Metadata = require('./lib/concerns/Metadata')
 
 class FilesDownload extends Utility {

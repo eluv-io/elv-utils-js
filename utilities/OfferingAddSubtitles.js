@@ -1,3 +1,5 @@
+// Add a subtitle stream to one Offering
+'use strict'
 const fs = require('fs')
 const path = require('path')
 
@@ -15,13 +17,13 @@ const ArgLabel = require('./lib/concerns/args/ArgLabel')
 const ArgLanguage = require('./lib/concerns/args/ArgLanguage')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
 const ArgStoreClear = require('./lib/concerns/args/ArgStoreClear')
-const ArgStreamKey = require('./lib/concerns/ArgStreamKey')
-const ArgTimeShift = require('./lib/concerns/ArgTimeShift')
+const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey.js')
+const ArgTimeShift = require('./lib/concerns/args/ArgTimeShift.js')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const Metadata = require('./lib/concerns/Metadata')
 const Part = require('./lib/concerns/Part')
-const Subtitle = require('./lib/concerns/Subtitle')
+const Subtitle = require('./lib/concerns/libs/Subtitle.js')
 
 class OfferingAddSubtitles extends Utility {
   static blueprint() {

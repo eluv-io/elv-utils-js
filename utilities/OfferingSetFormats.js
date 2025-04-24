@@ -1,3 +1,5 @@
+// Set playout formats (DASH/HLS, DRM) for an existing Offering
+'use strict'
 const isEmpty = require('@eluvio/elv-js-helpers/Boolean/isEmpty')
 const isNil = require('@eluvio/elv-js-helpers/Boolean/isNil')
 

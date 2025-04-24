@@ -12,7 +12,7 @@ const ObjectIdModel = require('../models/ObjectIdModel')
 const VersionHashModel = require('../models/VersionHashModel')
 
 const Client = require('./Client')
-const Logger = require('./Logger')
+const Logger = require('./kits/Logger.js')
 const Metadata = require('./Metadata')
 
 const blueprint = {
@@ -82,22 +82,23 @@ const New = context => {
     return entry !== undefined
   }
 
-  const fileList = async ({libraryId, objectId, versionHash}) => {
-    const fMap = await filesMap({libraryId, objectId, versionHash})
+  const fileList = async ({libraryId, objectId, versionHash, writeToken}) => {
+    const fMap = await filesMap({libraryId, objectId, versionHash, writeToken})
     return mapToList(fMap)
   }
 
-  const filesMap = async ({libraryId, objectId, versionHash}) => {
+  const filesMap = async ({libraryId, objectId, versionHash, writeToken}) => {
     const client = await context.concerns.Client.get()
     try {
       return await client.ListFiles({
         libraryId,
         objectId,
-        versionHash
+        versionHash,
+        writeToken
       })
     } catch (e) {
       // try retrieving all metadata, so we can get better error if e.g. object not found
-      const objMetadata = await context.concerns.Metadata.get({libraryId, objectId, versionHash})
+      const objMetadata = await context.concerns.Metadata.get({libraryId, objectId, versionHash, writeToken})
       if(Object.keys(objMetadata).includes('files')) {
         // should never be the case, but return anyway if somehow found
         return objMetadata.files

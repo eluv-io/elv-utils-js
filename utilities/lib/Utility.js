@@ -44,7 +44,7 @@ const ArgPresets = require('./concerns/args/ArgPresets')
 const ArgConfs = require('./concerns/args/ArgConfs')
 const Configs = require('./configs')
 
-const Logger = require('./concerns/Logger')
+const Logger = require('./concerns/kits/Logger.js')
 
 const addUniversalItems = (blueprint) => {
   return {
@@ -132,6 +132,7 @@ module.exports = class Utility {
     return NewOpt(optName, newOptDef)
   }
 
+  //
   constructor(params) {
     const blueprintFinal = this.constructor.blueprintFinal()
     this.widget = this.constructor.buildWidget(blueprintFinal)
@@ -154,7 +155,7 @@ module.exports = class Utility {
         if (this.context.mode === 'cmd') console.warn(`--confs option specified, loading config(s) from: ${conf.join(', ')}`)
         confFilePaths = confFilePaths.concat(conf)
       }
-      if (this.context.mode === 'cmd') console.warn()
+
       const mergedContext = Configs.contextMerge(
         {
           confFilePaths,
@@ -168,6 +169,7 @@ module.exports = class Utility {
       )
       this.context.env = mergedContext.mergedEnv
       this.context.argList = mergedContext.mergedArgList
+      this.context.resolvedConf = mergedContext.resolvedConf
     }
 
     let yargsParser = yargs()
@@ -206,7 +208,11 @@ module.exports = class Utility {
     this.argList = this.context.argList
     this.env = this.context.env
     this.logger = this.concerns.Logger
+    this.resolvedConf = this.context.resolvedConf
+
+    // Make args and conf available to JSON output
     this.logger.args(this.args)
+    this.logger.resolvedConf(this.resolvedConf)
   }
 
   blueprint() {
@@ -245,15 +251,23 @@ module.exports = class Utility {
       return this.logger.allInfoGet()
     }, failureReason => {
       this.logger.error(failureReason)
-      if(failureReason?.message) this.logger.error(failureReason?.message)
+      if (failureReason.stack) this.logger.error(failureReason.stack)
+      this.logger.failureReason(failureReason)
+      if(failureReason?.message) {
+        this.logger.error(failureReason.message)
+        this.logger.failureReason(failureReason.message)
+      }
       if(failureReason?.url) this.logger.error(failureReason?.url)
-      if(isArray(failureReason?.body?.errors)) this.logger.error(failureReason?.body?.errors.map(e => e.reason || `${e}`))
+      if(isArray(failureReason?.body?.errors)) this.logger.error(failureReason.body.errors.map(e => e.reason || JSON.stringify(e, null, 2)))
 
       this.logger.log()
-      if(this.env.ELVUTILS_THROW) throw Error(failureReason)
+      if(this.env.ELVUTILS_THROW) {
+        console.log(JSON.stringify(failureReason,null,2))
+        throw Error(failureReason)
+      }
       if(!process.exitCode) process.exitCode = 1
       this.logger.exitCode(process.exitCode)
-      this.logger.failureReason(failureReason)
+
       this.logger.outputJSON()
       this.logger.error('FAILED!')
       this.logger.log('')

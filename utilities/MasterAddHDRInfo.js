@@ -1,5 +1,6 @@
 // Edit an existing stream in an existing variant
-const JSON = require('./lib/concerns/JSON')
+'use strict'
+const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')
 
 const isNumber = require('@eluvio/elv-js-helpers/Boolean/isNumber')
 const NonNegativeIntModel = require('@eluvio/elv-js-helpers/Model/NonNegativeIntModel')
@@ -16,7 +17,7 @@ const ExistObj = require('./lib/concerns/kits/ExistObj')
 class MasterAddHDRInfo extends Utility {
   static blueprint() {
     return {
-      concerns: [ExistObj, Edit, JSON],
+      concerns: [ExistObj, Edit, ProcessJSON],
       options: [
         NewOpt('file', {
           descTemplate: 'File within master object that contains HDR video stream',
@@ -42,7 +43,7 @@ class MasterAddHDRInfo extends Utility {
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
 
     const {file, info, streamIndex} = this.args
-    const hdrInfo = this.concerns.JSON.parseStringOrFile({strOrPath: info})
+    const hdrInfo = this.concerns.ProcessJSON.parseStringOrFile({strOrPath: info})
 
     // get production_master metadata
     const sources = await this.concerns.ExistObj.metadata({subtree: '/production_master/sources'})

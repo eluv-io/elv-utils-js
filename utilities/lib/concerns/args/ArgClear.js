@@ -1,7 +1,8 @@
 // code related to --clear arg
+'use strict'
 const {NewOpt} = require('../../options')
 
-const Logger = require('../Logger')
+const Logger = require('../kits/Logger.js')
 
 const blueprint = {
   name: 'ArgClear',

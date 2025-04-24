@@ -1,4 +1,5 @@
 // code related to --alternateFor
+'use strict'
 const {NewOpt} = require('../../options')
 
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
