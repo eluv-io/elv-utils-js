@@ -87,8 +87,12 @@ class MetaSet extends Utility {
       targetPath: path
     })
 
-    const revisedMetadata = clone(currentMetadata)
-    objectPath.set(revisedMetadata, Metadata.pathToArray({path}), metadataFromArg)
+    let revisedMetadata = clone(currentMetadata)
+    if (path === '/') {
+      revisedMetadata = clone(metadataFromArg)
+    } else {
+      objectPath.set(revisedMetadata, Metadata.pathToArray({path}), metadataFromArg)
+    }
 
     // Write back metadata
     await this.concerns.Metadata.write({
