@@ -28,7 +28,7 @@
   "homepage": "https://github.com/eluv-io/elv-utils-js#readme",
   "dependencies": {
     "@eluvio/elv-abr-profile": "^1.0.1",
-    "@eluvio/elv-client-js": "4.0.135",
+    "@eluvio/elv-client-js": "^4.0.147",
     "@eluvio/elv-js-helpers": "^6.3.1",
     "@eluvio/elv-lro-status": "^3.0.7",
     "@eluvio/ramda-fork": "^0.28.1",
