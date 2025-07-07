@@ -118,6 +118,7 @@ const VariantStreamModel = defObjectModel(
     role: [NonBlankStrModel],
     sources: VariantStreamSourceArrayModel,
     target_frame_rate: [FractionStrModel],
+    target_timebase: [FractionStrModel],
     type: [StreamTypeModel] // older objects may not have a type field
   }
 )
