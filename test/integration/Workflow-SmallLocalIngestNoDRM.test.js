@@ -8,7 +8,7 @@ const {runUtility} = require('../../utilities/lib/helpers')
 
 const {exampleABRProfilePath, exampleVideoPath, utilityPath} = require('../test-helpers')
 
-const MasterCreate = require(utilityPath('MasterCreate.test.js'))
+const MasterCreate = require(utilityPath('MasterCreate.js'))
 const MezCreate = require(utilityPath('MezCreate.js'))
 
 const SmallLocalIngestNoDRM = async ({
