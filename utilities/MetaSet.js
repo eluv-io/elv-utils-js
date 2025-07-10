@@ -74,18 +74,32 @@ class MetaSet extends Utility {
     })
 
     const revisedMetadata = R.clone(currentMetadata)
+
     objectPath.set(revisedMetadata, Metadata.pathToArray({path}), metadataFromArg)
 
-    // Write back metadata
-    const newHash = await this.concerns.Metadata.write({
-      commitMessage,
-      libraryId,
-      metadata: revisedMetadata,
-      objectId,
-      writeToken
-    })
 
-    if (!writeToken) this.logger.data('version_hash', newHash)
+    if(path === '/') {
+      // Write back metadata
+      const newHash = await this.concerns.Metadata.write({
+        commitMessage,
+        libraryId,
+        metadata: metadataFromArg,
+        objectId,
+        writeToken
+      })
+      if (!writeToken) this.logger.data('version_hash', newHash)
+    } else {
+      // Write back metadata
+      const newHash = await this.concerns.Metadata.write({
+        commitMessage,
+        libraryId,
+        metadata: revisedMetadata,
+        objectId,
+        writeToken
+      })
+
+      if (!writeToken) this.logger.data('version_hash', newHash)
+    }
   }
 
   header() {
