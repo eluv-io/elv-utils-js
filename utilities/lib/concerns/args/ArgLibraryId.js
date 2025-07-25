@@ -2,6 +2,7 @@
 'use strict'
 
 const {NewOpt} = require('../../options')
+const LibraryIdModel = require('../../models/LibraryIdModel.js')
 
 const blueprint = {
   name: 'ArgLibraryId',
@@ -9,6 +10,7 @@ const blueprint = {
     NewOpt('libraryId',
       {
         descTemplate: 'Library ID{X} (should start with \'ilib\')',
+        coerce: LibraryIdModel,
         type: 'string'
       }
     )

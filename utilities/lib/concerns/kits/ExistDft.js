@@ -35,8 +35,8 @@ const New = context => {
 
   const info = async() => await context.concerns.Draft.info(await relevantArgs())
 
-  const metadata = async ({subtree} = {}) => await context.concerns.Draft.metadata(
-    mergeRight({subtree}, await relevantArgs())
+  const metadata = async (options = {}) => await context.concerns.Draft.metadata(
+    mergeRight(options, await relevantArgs())
   )
 
   const partList = async () => await context.concerns.Draft.partList(await relevantArgs())

@@ -6,7 +6,7 @@ const {VariantModel} = require('./lib/models/Variant')
 const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
 
-const ArgVariantKey = require('./lib/concerns/ArgVariantKey')
+const ArgVariantKey = require('./lib/concerns/args/ArgVariantKey.js')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')

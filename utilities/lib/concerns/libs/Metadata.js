@@ -4,12 +4,12 @@ const R = require('@eluvio/ramda-fork')
 
 const isString = require('@eluvio/elv-js-helpers/Boolean/isString')
 
-const {fabricItemDesc} = require('../helpers')
+const {fabricItemDesc} = require('../../helpers.js')
 
-const Client = require('./Client')
-const Edit = require('./Edit')
-const ProcessJSON = require('./libs/ProcessJSON')
-const Logger = require('./kits/Logger.js')
+const Client = require('../Client.js')
+const Edit = require('../Edit.js')
+const ProcessJSON = require('./ProcessJSON.js')
+const Logger = require('../kits/Logger.js')
 
 const pathRegex = /^(\/[^/]+)+$/
 
@@ -153,13 +153,15 @@ const New = context => {
     })
   }
 
-  const get = async ({libraryId, subtree, objectId, versionHash, writeToken}) => {
+  const get = async ({libraryId, subtree, objectId, ignoreResolveErrors, resolveLinks, versionHash, writeToken}) => {
     const client = await context.concerns.Client.get()
     logger.log(`Retrieving metadata ${pathDesc(subtree)}from ${fabricItemDesc({objectId, versionHash, writeToken})}...`)
     return await client.ContentObjectMetadata({
       libraryId,
       metadataSubtree: subtree,
       objectId,
+      resolveIgnoreErrors: ignoreResolveErrors,
+      resolveLinks,
       versionHash,
       writeToken
     })

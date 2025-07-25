@@ -15,7 +15,7 @@ const WriteTokenModel = require('../../models/WriteTokenModel')
 
 const Client = require('../Client')
 const Logger = require('../kits/Logger')
-const Metadata = require('../Metadata')
+const Metadata = require('./Metadata.js')
 
 const blueprint = {
   name: 'FabricFile',

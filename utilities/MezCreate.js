@@ -6,7 +6,7 @@ const {seconds} = require('./lib/helpers')
 const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
-const AssetMetadata = require('./lib/concerns/AssetMetadata')
+const AssetMetadata = require('./lib/concerns/kits/AssetMetadata.js')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
 const ArgObjectId = require('./lib/concerns/ArgObjectId')
 const ArgType = require('./lib/concerns/ArgType')
@@ -140,7 +140,7 @@ class MezCreate extends Utility {
 
     const metadataFromArg =  this.concerns.ArgMetadata.asObject() || {}
 
-    let access = this.concerns.CloudAccess.remoteAccessList(false)
+    let access = this.args.s3Credentials ? this.concerns.CloudAccess.remoteAccessList(false) : []
 
     // operations that may need to wait on network access
     // ----------------------------------------------------

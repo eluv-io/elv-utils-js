@@ -6,7 +6,7 @@ const Utility = require('./lib/Utility')
 
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const FabricFile = require('./lib/concerns/FabricFile')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 const ArgFilePath = require('./lib/concerns/args/ArgFilePath')
 
 const chkNoClearOrFilePath = (argv) => {

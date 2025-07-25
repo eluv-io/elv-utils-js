@@ -22,11 +22,6 @@ const StandardOptions = {
     type: 'string'
   },
 
-  name: {
-    descTemplate: 'Name{X}',
-    type: 'string'
-  },
-
   objectId: {
     descTemplate: 'Object ID{X} (should start with \'iq__\')',
     type: 'string'

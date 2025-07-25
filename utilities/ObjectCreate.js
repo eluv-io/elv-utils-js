@@ -2,12 +2,15 @@
 'use strict'
 const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
 
-const {ModOpt, StdOpt} = require('./lib/options')
+const {ModOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
+const ArgCreateKMSConk = require('./lib/concerns/args/ArgCreateKMSConk')
 const ArgLibraryId = require('./lib/concerns/args/ArgLibraryId')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
+const ArgName = require('./lib/concerns/args/ArgName')
+const ArgNoEncryptionConk = require('./lib/concerns/args/ArgNoEncryptionConk')
 const ArgNoFinalize = require('./lib/concerns/args/ArgNoFinalize')
 const ArgType = require('./lib/concerns/ArgType')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
@@ -17,15 +20,18 @@ class ObjectCreate extends Utility {
     return {
       concerns: [
         ArgCommitMsg,
+        ArgCreateKMSConk,
         ArgLibraryId,
         ArgMetadata,
+        ArgName,
+        ArgNoEncryptionConk,
         ArgNoFinalize,
         ArgType,
         FabricObject
       ],
       options: [
         ModOpt('libraryId', {demand: true}),
-        StdOpt('name',
+        ModOpt('name',
           {
             demand: true,
             forX: 'new object'

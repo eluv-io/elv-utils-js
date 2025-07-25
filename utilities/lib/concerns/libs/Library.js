@@ -87,10 +87,18 @@ const New = context => {
 
   }
 
-  const metadata = async({libraryId}) => {
+  const metadata = async({libraryId, ignoreResolveErrors, resolveLinks, subtree}) => {
     const objectId = await libObjectId({libraryId})
     const client = await context.concerns.Client.get()
-    return await client.ContentObjectMetadata({libraryId, objectId})
+    return await client.ContentObjectMetadata(
+      {
+        ignoreResolveErrors,
+        libraryId,
+        objectId,
+        resolveLinks,
+        subtree
+      }
+    )
   }
 
   const name = async({libraryId}) => {

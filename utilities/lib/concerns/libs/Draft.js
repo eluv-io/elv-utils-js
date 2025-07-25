@@ -117,11 +117,13 @@ const New = context => {
     })
   }
 
-  const metadata = async ({libraryId, objectId, subtree, writeToken}) => {
+  const metadata = async ({libraryId, objectId, ignoreResolveErrors, resolveLinks, subtree, writeToken}) => {
     if(!writeToken) throw Error('Draft.metadata() - missing writeToken')
     return await context.concerns.Metadata.get({
+      ignoreResolveErrors,
       libraryId,
       objectId,
+      resolveLinks,
       subtree,
       writeToken
     })

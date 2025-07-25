@@ -21,7 +21,7 @@ const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey.js')
 const ArgTimeShift = require('./lib/concerns/args/ArgTimeShift.js')
 const Edit = require('./lib/concerns/Edit')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 const Part = require('./lib/concerns/Part')
 const Subtitle = require('./lib/concerns/libs/Subtitle.js')
 

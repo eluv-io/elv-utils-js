@@ -8,7 +8,7 @@ const Draft = require('./Draft')
 const Finalize = require('./Finalize.js')
 const Library = require('./Library')
 const Logger = require('../kits/Logger.js')
-const Metadata = require('../Metadata')
+const Metadata = require('./Metadata.js')
 const Part = require('../Part')
 const Version = require('./Version')
 
@@ -75,11 +75,13 @@ const New = context => {
     return await context.concerns.Library.forObject({objectId})
   }
 
-  const metadata = async ({libraryId, objectId, subtree}) => {
+  const metadata = async ({libraryId, objectId, ignoreResolveErrors, resolveLinks, subtree}) => {
     if(!objectId) throw Error('FabricObject.metadata() - missing objectId')
     return await context.concerns.Metadata.get({
+      ignoreResolveErrors,
       libraryId,
       objectId,
+      resolveLinks,
       subtree
     })
   }

@@ -11,7 +11,7 @@ const Utility = require('./lib/Utility')
 const ArgMetadata = require('./lib/concerns/ArgMetadata')
 const ArgPath = require('./lib/concerns/args/ArgPath')
 const ExistLibOrObjOrDft = require('./lib/concerns/kits/ExistLibOrObjOrDft')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 const Write = require('./lib/concerns/kits/Write')
 
 class MetaSet extends Utility {

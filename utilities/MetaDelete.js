@@ -10,7 +10,7 @@ const Utility = require('./lib/Utility')
 
 const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
 const ExistLibOrObjOrDft = require('./lib/concerns/kits/ExistLibOrObjOrDft')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 
 class MetaDelete extends Utility {
   static blueprint() {

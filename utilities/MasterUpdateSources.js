@@ -11,7 +11,7 @@ const Client = require('./lib/concerns/Client')
 const CloudAccess = require('./lib/concerns/kits/CloudAccess')
 const ExistObj = require('./lib/concerns/kits/ExistObj')
 const FabricFile = require('./lib/concerns/FabricFile.js')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 
 class MasterUpdateSources extends Utility {
   static blueprint() {

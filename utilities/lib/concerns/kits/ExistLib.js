@@ -24,14 +24,21 @@ const New = context => {
 
   const info = async () => await context.concerns.Library.info(await relevantArgs())
 
-  const metadata = async ({subtree} = {}) => await context.concerns.Library.metadata(
-    mergeRight({subtree}, await relevantArgs())
+  const metadata = async (options = {}) => await context.concerns.Library.metadata(
+    mergeRight(options, await relevantArgs())
   )
+
+  const objectList = async () => await context.concerns.Library.objectList()
 
   const partList = async () => await context.concerns.Library.partList(await relevantArgs())
 
   // Extract out just the (processed) args needed to specify draft in ElvClient calls
-  const relevantArgs = async () => (pick(['libraryId'], await argsProc()))
+  const relevantArgs = async () => (
+    pick(
+      ['libraryId'],
+      await argsProc()
+    )
+  )
 
   const typeHash = async () => await context.concerns.Library.typeHash(await relevantArgs())
 
@@ -39,6 +46,7 @@ const New = context => {
     argsProc,
     info,
     metadata,
+    objectList,
     partList,
     typeHash
   }

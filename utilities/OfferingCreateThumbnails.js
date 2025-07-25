@@ -12,7 +12,7 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const Client = require('./lib/concerns/Client')
 const Edit = require('./lib/concerns/Edit')
 const ExistVer = require('./lib/concerns/kits/ExistVer')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey.js')
 const ArgStreamKey = require('./lib/concerns/args/ArgStreamKey.js')
 

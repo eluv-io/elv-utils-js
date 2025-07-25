@@ -13,7 +13,7 @@ const VersionHashModel = require('../models/VersionHashModel')
 
 const Client = require('./Client')
 const Logger = require('./kits/Logger.js')
-const Metadata = require('./Metadata')
+const Metadata = require('./libs/Metadata.js')
 
 const blueprint = {
   name: 'FabricFile',

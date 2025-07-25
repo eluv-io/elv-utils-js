@@ -5,7 +5,7 @@ const Utils = require('@eluvio/elv-client-js/src/Utils')
 
 const Client = require('../Client')
 const Logger = require('../kits/Logger.js')
-const Metadata = require('../Metadata')
+const Metadata = require('./Metadata.js')
 const Part = require('../Part')
 
 const blueprint = {
@@ -50,11 +50,13 @@ const New = context => {
     return response.versions.map(pick(['hash', 'type']))
   }
 
-  const metadata = async ({libraryId, objectId, subtree, versionHash}) => {
+  const metadata = async ({libraryId, objectId, ignoreResolveErrors, resolveLinks, subtree, versionHash}) => {
     if(!versionHash) throw Error('Version.metadata() - missing versionHash')
     return await context.concerns.Metadata.get({
+      ignoreResolveErrors,
       libraryId,
       objectId,
+      resolveLinks,
       subtree,
       versionHash
     })

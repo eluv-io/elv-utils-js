@@ -9,16 +9,16 @@ const Utility = require('./lib/Utility')
 const ABR = require('@eluvio/elv-abr-profile')
 
 const Client = require('./lib/concerns/Client')
+const ExistLib = require('./lib/concerns/kits/ExistLib')
 const Finalize = require('./lib/concerns/libs/Finalize.js')
 const LocalFile = require('./lib/concerns/kits/LocalFile')
 const LRO = require('./lib/concerns/libs/LRO.js')
-const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
 const {seconds} = require('./lib/helpers')
 
 class SimpleIngest extends Utility {
   static blueprint() {
     return {
-      concerns: [Client, Finalize, LocalFile, ArgLibraryId, LRO],
+      concerns: [Client, ExistLib, Finalize, LocalFile, LRO],
       options: [
         ModOpt('libraryId', {demand: true, forX: 'new media object'}),
         NewOpt('title', {
@@ -47,7 +47,7 @@ class SimpleIngest extends Utility {
     const client = await this.concerns.Client.get()
 
     // get metadata from Library
-    const libInfo = await this.concerns.ArgLibraryId.libInfo()
+    const libInfo = await this.concerns.ExistLib.info()
 
     const type = R.path(['metadata', 'abr', 'mez_content_type'], libInfo)
     if(R.isNil(type)) throw Error('Library does not specify content type for simple ingests')

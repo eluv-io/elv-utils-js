@@ -3,23 +3,22 @@
 
 const R = require('@eluvio/ramda-fork')
 
-const {ModOpt, NewOpt} = require('./lib/options')
+const {NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 
 const {PublicMetadataPathArrayModel} = require('./lib/models/PublicMetadataPath')
 
-const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')
-const ArgLibraryId = require('./lib/concerns/ArgLibraryId')
-const Metadata = require('./lib/concerns/Metadata')
+const ExistLib = require('./lib/concerns/kits/ExistLib')
+const ProcessJSON = require('./lib/concerns/libs/ProcessJSON')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 const FabricObject = require('./lib/concerns/libs/FabricObject')
 
 class LibraryListObjects extends Utility {
   static blueprint() {
     return {
-      concerns: [ProcessJSON, ArgLibraryId, Metadata, FabricObject],
+      concerns: [ExistLib, ProcessJSON, Metadata, FabricObject],
       options: [
-        ModOpt('libraryId', {demand: true}),
         NewOpt('filter', {
           descTemplate: 'JSON expression (or path to JSON file if starting with \'@\') to filter objects by (public) metadata',
           type: 'string'
@@ -53,12 +52,13 @@ class LibraryListObjects extends Utility {
   async body() {
     const logger = this.logger
     const filter = this.args.filter && this.concerns.ProcessJSON.parseStringOrFile({strOrPath: this.args.filter})
+    const {libraryId} = await this.concerns.ExistLib.argsProc()
 
     if(!this.args.fields) this.args.fields = []
 
     const select = ['/public/name', ...this.args.fields]
 
-    const objectList = await this.concerns.ArgLibraryId.libObjectList(
+    const objectList = await this.concerns.ExistLib.objectList(
       {
         filterOptions: {
           select,
@@ -71,7 +71,6 @@ class LibraryListObjects extends Utility {
     this.logger.log(`Found ${objectList.length} object(s)`)
     for(let i = 0; i < objectList.length; i++) {
       const e = objectList[i]
-      const libraryId = this.args.libraryId
       const objectId = e.objectId
       // console.log(JSON.stringify(e,null,2));
       const formattedObj = {objectId: e.objectId}

@@ -36,7 +36,7 @@ const New = context => {
 
   const libraryId = async () => await relevantConcern.libraryId()
 
-  const metadata = async ({subtree} = {}) => await relevantConcern.metadata({subtree})
+  const metadata = async (options = {}) => await relevantConcern.metadata(options)
 
   const partList = async () => await relevantConcern.partList()
 

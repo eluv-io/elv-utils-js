@@ -12,7 +12,7 @@ const ArgDeinterlace = require('../args/ArgDeinterlace.js')
 const ArgIsDefault = require('../args/ArgIsDefault.js')
 const ArgRole = require('../args/ArgRole.js')
 const ArgStreamKey = require('../args/ArgStreamKey.js')
-const ArgVariantKey = require('../ArgVariantKey.js')
+const ArgVariantKey = require('../args/ArgVariantKey.js')
 
 const blueprint = {
   name: 'VariantStreamArgs',

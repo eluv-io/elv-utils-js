@@ -6,7 +6,7 @@ const isEmpty = require('@eluvio/elv-js-helpers/Boolean/isEmpty')
 const Utility = require('./lib/Utility')
 
 const ExistObj = require('./lib/concerns/kits/ExistObj')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
 
 class MezUnifyAudioDrmKeys extends Utility {
   static blueprint() {

@@ -7,14 +7,16 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const JPath = require('./lib/concerns/JPath')
-const Metadata = require('./lib/concerns/Metadata')
+const Metadata = require('./lib/concerns/libs/Metadata.js')
+const ArgResolveLinks = require('./lib/concerns/args/ArgResolveLinks')
+const ArgIgnoreResolveErrors = require('./lib/concerns/args/ArgIgnoreResolveErrors')
 const ExistLibOrObjOrVerOrDft = require('./lib/concerns/kits/ExistLibOrObjOrVerOrDft')
 const WriteLocalFile = require('./lib/concerns/kits/WriteLocalFile.js')
 
 class MetaGet extends Utility {
   static blueprint() {
     return {
-      concerns: [JPath, ExistLibOrObjOrVerOrDft, WriteLocalFile],
+      concerns: [ArgIgnoreResolveErrors, ArgResolveLinks, JPath, ExistLibOrObjOrVerOrDft, WriteLocalFile],
       options: [
         ModOpt('jpath', {X: 'to extract'}),
         NewOpt('path', {
@@ -26,14 +28,14 @@ class MetaGet extends Utility {
   }
 
   async body() {
-    const {path, outfile} = this.args
+    const {path, outfile, ignoreResolveErrors, resolveLinks} = this.args
 
     // Check that keys are valid path strings
     if (path) Metadata.validatePathFormat({path})
 
     await this.concerns.ExistLibOrObjOrVerOrDft.argsProc()
 
-    const metadata = await this.concerns.ExistLibOrObjOrVerOrDft.metadata({subtree: path})
+    const metadata = await this.concerns.ExistLibOrObjOrVerOrDft.metadata({subtree: path, resolveLinks, ignoreResolveErrors})
     if (isUndefined(metadata)) throw Error('no metadata found')
     const filteredMetadata = this.args.jpath
       ? this.concerns.JPath.match({metadata})

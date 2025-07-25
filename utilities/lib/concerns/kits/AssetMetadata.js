@@ -3,9 +3,10 @@ const kindOf = require('kind-of')
 const R = require('@eluvio/ramda-fork')
 const slugify = require('@sindresorhus/slugify')
 
-const {throwError} = require('../helpers')
-const {NonBlankString} = require('../models/Models')
-const {NewOpt, StdOpt} = require('../options')
+const {throwError} = require('../../helpers.js')
+const {NonBlankString} = require('../../models/Models.js')
+const {NewOpt, ModOpt} = require('../../options.js')
+const ArgName = require('../args/ArgName.js')
 
 const coerceAssetMetadata = arg => kindOf(arg) === 'object'
   ? arg
@@ -13,6 +14,7 @@ const coerceAssetMetadata = arg => kindOf(arg) === 'object'
 
 const blueprint = {
   name: 'AssetMetadata',
+  concerns: [ArgName],
   options: [
     NewOpt('assetMetadata', {
       coerce: coerceAssetMetadata,
@@ -29,7 +31,7 @@ const blueprint = {
       group: 'Asset',
       type: 'string'
     }),
-    StdOpt('name', {
+    ModOpt('name', {
       descTemplate: 'Object name (derived from ipTitleId and title if not specified)',
       group: 'Asset'
     }),
