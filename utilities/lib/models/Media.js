@@ -11,6 +11,8 @@ const PositiveIntModel = require('@eluvio/elv-js-helpers/Model/PositiveIntModel'
 const PositiveNumModel = require('@eluvio/elv-js-helpers/Model/PositiveNumModel')
 const reduce = require('@eluvio/elv-js-helpers/Functional/reduce')
 
+const {TagsOptionalModel} = require('./Tags.js')
+
 const HDRFieldsModel = defSealedObjModel('HDRFields',{
   master_display: String,
   max_cll: String
@@ -22,7 +24,8 @@ const MediaContainerFormatModel = defSealedObjModel('MediaContainerFormat', {
   duration: NonNegativeNumModel,
   filename: String,
   format_name: String,
-  start_time: 0
+  start_time: 0,
+  tags: TagsOptionalModel
 })
 
 const MEDIA_STREAM_TYPE_AUDIO = 'StreamAudio'
@@ -43,7 +46,7 @@ const MS_STREAM_COMMON_FIELDS = ({
   codec_name: String,
   language: String,
   side_data_list: [null, Array, undefined],
-  tags: [null, Object, undefined]
+  tags: TagsOptionalModel
 })
 
 const MS_STREAM_DIMENSION_FIELDS = ({
