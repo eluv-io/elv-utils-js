@@ -12,7 +12,7 @@ const ImageWatermarkModel = defSealedObjModel(
     image: FabricFilePathModel,
     margin_h: NonBlankStrModel,
     margin_v: NonBlankStrModel,
-    target_video_height: PositiveIntModel
+    target_video_height: [PositiveIntModel]
   }
 )
 
