@@ -1,4 +1,5 @@
 // Validator for public metadata paths /public/...
+'use strict'
 
 const {
   BasicModel,

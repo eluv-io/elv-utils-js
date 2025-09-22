@@ -1,4 +1,5 @@
 // Code to factor out commonalities in dealing with library vs. object vs. version vs. draft
+'use strict'
 
 const Client = require('./Client')
 const Logger = require('./kits/Logger.js')

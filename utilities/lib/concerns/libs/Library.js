@@ -1,4 +1,6 @@
 // code related to libraries / library IDs
+'use strict'
+
 const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight')
 
 const Client = require('../Client')

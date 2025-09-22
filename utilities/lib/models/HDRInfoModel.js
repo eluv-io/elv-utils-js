@@ -1,3 +1,4 @@
+'use strict'
 const defRegexMatchedStrModel = require('@eluvio/elv-js-helpers/ModelFactory/defRegexMatchedStrModel')
 const defSealedObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defSealedObjModel')
 

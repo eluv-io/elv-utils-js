@@ -1,4 +1,5 @@
 // template for scripts that work with either an object or a draft of an object
+'use strict'
 
 const {ModOpt} = require('../../options')
 

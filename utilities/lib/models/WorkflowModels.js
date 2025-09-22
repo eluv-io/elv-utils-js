@@ -1,3 +1,4 @@
+'use strict'
 // const assertAfterCheck = require('@eluvio/elv-js-helpers/ModelAssertion/assertAfterCheck')
 const defBasicModel = require('@eluvio/elv-js-helpers/ModelFactory/defBasicModel')
 const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')

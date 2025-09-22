@@ -1,5 +1,6 @@
 // Add-on for scripts that do logging
 // (This concern is automatically added by Utility.js to all utility scripts)
+'use strict'
 
 const util = require('util')
 

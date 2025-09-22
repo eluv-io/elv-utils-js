@@ -1,4 +1,5 @@
 // Integration test for new video profile / levels (plus audio always clear)
+'use strict'
 
 if (!process.env.ELVUTILS_CONFIG) throw Error('Env variable ELVUTILS_CONFIG must be set to run integration test')
 

@@ -1,3 +1,4 @@
+'use strict'
 const Utils = require('@eluvio/elv-client-js/src/Utils')
 
 const assertAfterCheck = require('@eluvio/elv-js-helpers/ModelAssertion/assertAfterCheck')

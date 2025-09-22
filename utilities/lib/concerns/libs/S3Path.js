@@ -1,4 +1,5 @@
 // code related to working with S3 file paths
+'use strict'
 const URI = require('./URI')
 
 const throwError = require('@eluvio/elv-js-helpers/Misc/throwError')

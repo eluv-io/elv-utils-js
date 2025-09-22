@@ -1,3 +1,4 @@
+'use strict'
 const {NewOpt} = require('../options')
 
 const ProcessJSON = require('./libs/ProcessJSON.js')

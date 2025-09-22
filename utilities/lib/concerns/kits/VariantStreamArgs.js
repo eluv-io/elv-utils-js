@@ -1,4 +1,5 @@
 // arguments for adding variant streams
+'use strict'
 
 const isEmpty = require('@eluvio/elv-js-helpers/Boolean/isEmpty')
 const pick = require('@eluvio/elv-js-helpers/Functional/pick')

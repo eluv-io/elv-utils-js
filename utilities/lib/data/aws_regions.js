@@ -1,3 +1,4 @@
+'use strict'
 const aws_regions = {
   'af-south-1': 'Africa (Cape Town)',
   'ap-east-1': 'Asia Pacific (Hong Kong)',

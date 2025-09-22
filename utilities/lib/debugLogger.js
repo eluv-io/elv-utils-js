@@ -2,6 +2,7 @@
 
 // A logger dedicated to local debugging, with redacted output.
 // Used primarily for debugging config processing
+'use strict'
 
 const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')
 const FunctionModel = require('@eluvio/elv-js-helpers/Model/FunctionModel')

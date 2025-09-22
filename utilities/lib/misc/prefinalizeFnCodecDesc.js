@@ -1,3 +1,4 @@
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const Utils = require('@eluvio/elv-client-js/src/Utils')

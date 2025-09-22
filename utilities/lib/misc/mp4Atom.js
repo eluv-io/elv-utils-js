@@ -1,3 +1,4 @@
+'use strict'
 const curry = require('crocks/helpers/curry')
 
 const {

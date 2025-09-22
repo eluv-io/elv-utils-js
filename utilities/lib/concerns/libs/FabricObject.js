@@ -1,6 +1,6 @@
-'use strict'
 // Code relating to working with fabric objects.
 // Named 'FabricObject' instead of 'Object' to prevent conflicts with built-in JS 'Object'
+'use strict'
 
 const uniq = require('@eluvio/elv-js-helpers/Functional/uniq')
 

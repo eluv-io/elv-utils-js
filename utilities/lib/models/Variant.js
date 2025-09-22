@@ -1,4 +1,5 @@
 // Validators used for Production Master Variants
+'use strict'
 
 const R = require('@eluvio/ramda-fork')
 

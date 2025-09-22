@@ -1,4 +1,5 @@
 // code related to adding S3 files to fabric
+'use strict'
 const path = require('path')
 
 const groupBy = require('@eluvio/elv-js-helpers/Functional/groupBy')

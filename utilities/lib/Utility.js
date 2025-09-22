@@ -1,4 +1,5 @@
 // base class for utility scripts
+'use strict'
 
 // ==================================
 // Check node.js version

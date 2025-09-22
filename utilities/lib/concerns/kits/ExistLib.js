@@ -1,4 +1,5 @@
 // template for scripts that work with a library
+'use strict'
 
 const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
 const pick = require('@eluvio/elv-js-helpers/Functional/pick')

@@ -1,4 +1,5 @@
 // code related to working with Content Fabric encryption
+'use strict'
 
 const Logger = require('../kits/Logger')
 

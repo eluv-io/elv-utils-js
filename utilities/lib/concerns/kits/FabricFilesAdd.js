@@ -1,4 +1,5 @@
 // groups arguments related to adding files to an object
+'use strict'
 const {ModOpt} = require('../../options')
 
 const ArgDestDir = require('../args/ArgDestDir')

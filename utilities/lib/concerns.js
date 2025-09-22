@@ -1,3 +1,4 @@
+'use strict'
 const loadConcerns = (context, concerns) => {
   for(const concern of concerns) {
     // if not already loaded into context

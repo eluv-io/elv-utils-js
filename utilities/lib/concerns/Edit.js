@@ -1,4 +1,5 @@
 // code related to editing fabric objects
+'use strict'
 const kindOf = require('kind-of')
 
 const Client = require('./Client')

@@ -1,4 +1,5 @@
 // Defines basic data validation models used to build more complex validators
+'use strict'
 
 const curry = require('crocks/helpers/curry')
 const Result = require('crocks/Result')

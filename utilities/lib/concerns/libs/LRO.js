@@ -1,3 +1,4 @@
+'use strict'
 const isUndefined = require('@eluvio/elv-js-helpers/Boolean/isUndefined')
 
 const enhanceLROStatus = require('@eluvio/elv-lro-status/enhanceLROStatus')

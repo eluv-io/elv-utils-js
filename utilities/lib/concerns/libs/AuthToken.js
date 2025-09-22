@@ -1,4 +1,5 @@
 // code related to working with auth tokens
+'use strict'
 
 const Client = require('../Client')
 const Logger = require('../kits/Logger')

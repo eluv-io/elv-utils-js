@@ -1,4 +1,5 @@
 // code related to --streamKey
+'use strict'
 const {NewOpt} = require('../../options.js')
 
 const blueprint = {

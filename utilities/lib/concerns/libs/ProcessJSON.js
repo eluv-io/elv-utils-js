@@ -1,4 +1,5 @@
 // code related to loading / parsing JSON
+'use strict'
 const {JSONPath} = require('jsonpath-plus')
 
 const {ellipsize, readFile, stringOrFileContents} = require('../../helpers')

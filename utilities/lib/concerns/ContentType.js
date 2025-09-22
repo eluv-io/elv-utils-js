@@ -1,4 +1,5 @@
 // code related to Content Types
+'use strict'
 const compare = require('@eluvio/elv-js-helpers/Functional/compare')
 const pick = require('@eluvio/elv-js-helpers/Functional/pick')
 

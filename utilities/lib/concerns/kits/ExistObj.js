@@ -1,4 +1,5 @@
 // template for scripts that work with an existing fabric object
+'use strict'
 
 const pick = require('@eluvio/elv-js-helpers/Functional/pick')
 const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')

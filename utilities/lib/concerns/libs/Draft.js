@@ -1,5 +1,5 @@
-'use strict'
 // for scripts that work with Drafts (new unfinalized objects/versions)
+'use strict'
 const fetch = require('node-fetch').default
 
 const Utils = require('@eluvio/elv-client-js/src/Utils')

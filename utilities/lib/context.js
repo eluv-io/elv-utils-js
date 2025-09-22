@@ -1,3 +1,4 @@
+'use strict'
 const kindOf = require('kind-of')
 const R = require('@eluvio/ramda-fork')
 

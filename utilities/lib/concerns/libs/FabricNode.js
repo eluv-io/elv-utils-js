@@ -1,4 +1,5 @@
 // code related to working with nodes
+'use strict'
 
 const AuthToken = require('../libs/AuthToken')
 const Client = require('../Client')

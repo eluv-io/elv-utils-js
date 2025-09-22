@@ -1,4 +1,5 @@
 // Code relating to working with a specific fabric object version
+'use strict'
 const pick = require('@eluvio/elv-js-helpers/Functional/pick')
 
 const Utils = require('@eluvio/elv-client-js/src/Utils')

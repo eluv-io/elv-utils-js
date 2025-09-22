@@ -1,4 +1,5 @@
 // code related to --variantKey
+'use strict'
 const {NewOpt} = require('../../options.js')
 
 const blueprint = {

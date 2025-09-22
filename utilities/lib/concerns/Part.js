@@ -1,4 +1,5 @@
 // code related to working with a specific content part
+'use strict'
 const isString = require('@eluvio/elv-js-helpers/Boolean/isString')
 
 const {fabricItemDesc} = require('../helpers')

@@ -1,4 +1,5 @@
 // code related to offering playout formats
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const blueprint = {

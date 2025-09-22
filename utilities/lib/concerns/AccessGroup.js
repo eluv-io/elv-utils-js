@@ -1,4 +1,5 @@
 // code related to Access Groups
+'use strict'
 const sortBy = require('@eluvio/elv-js-helpers/Functional/sortBy')
 
 const Client = require('./Client')

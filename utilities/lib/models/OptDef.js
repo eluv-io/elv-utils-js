@@ -1,4 +1,5 @@
 // Validators used when defining and processing options
+'use strict'
 
 const R = require('@eluvio/ramda-fork')
 

@@ -1,4 +1,5 @@
 // Integration test - performing multiple operations on a single write token
+'use strict'
 
 if (!process.env.ELVUTILS_CONFIG) throw Error('Env variable ELVUTILS_CONFIG must be set to run integration test')
 

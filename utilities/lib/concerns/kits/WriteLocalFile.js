@@ -1,4 +1,5 @@
 // code related to writing results to a local file
+'use strict'
 const fs = require('fs')
 
 const columnify = require('columnify')

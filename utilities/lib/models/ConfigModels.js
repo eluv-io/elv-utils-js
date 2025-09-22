@@ -29,6 +29,7 @@ Many of the models have variations to allow validation of intermediate results d
 
 
 */
+'use strict'
 
 const assertAfterCheck = require('@eluvio/elv-js-helpers/ModelAssertion/assertAfterCheck')
 const assertionErrMsg = require('@eluvio/elv-js-helpers/ModelAssertion/assertionErrMsg')

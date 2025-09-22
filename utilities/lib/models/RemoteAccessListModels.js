@@ -1,4 +1,5 @@
 // Holds sets of remote access credentials for S3, along with path matching rules
+'use strict'
 
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 

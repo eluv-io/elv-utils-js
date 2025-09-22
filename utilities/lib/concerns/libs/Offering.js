@@ -1,5 +1,5 @@
-'use strict'
 // code related to working with offerings
+'use strict'
 
 const compare = require('@eluvio/elv-js-helpers/Functional/compare')
 const fraction = require('@eluvio/elv-js-helpers/Conversion/fraction')

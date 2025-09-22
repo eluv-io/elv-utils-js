@@ -1,4 +1,5 @@
 // code related to working with subtitles/captions
+'use strict'
 const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 
 const Logger = require('../kits/Logger.js')

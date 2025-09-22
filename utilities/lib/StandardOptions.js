@@ -1,3 +1,4 @@
+'use strict'
 const {OptDefMapModel} = require('./models/OptDef')
 
 const StandardOptions = {

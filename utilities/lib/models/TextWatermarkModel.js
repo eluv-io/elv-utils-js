@@ -1,3 +1,4 @@
+'use strict'
 const defBoundedNumModel = require('@eluvio/elv-js-helpers/ModelFactory/defBoundedNumModel')
 const defSealedObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defSealedObjModel')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')

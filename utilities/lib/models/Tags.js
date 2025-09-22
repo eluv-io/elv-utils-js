@@ -1,4 +1,5 @@
 // Tags for media
+'use strict'
 const defBasicModel = require('@eluvio/elv-js-helpers/ModelFactory/defBasicModel')
 const defTypedKVObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defTypedKVObjModel')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')

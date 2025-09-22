@@ -1,5 +1,6 @@
 // options and arguments related to writing to fabric,
 // starting edits, finalizing, waiting for publish
+'use strict'
 
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 

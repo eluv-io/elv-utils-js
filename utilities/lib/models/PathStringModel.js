@@ -1,3 +1,4 @@
+'use strict'
 const assertMatchesRegex = require('@eluvio/elv-js-helpers/ModelAssertion/assertMatchesRegex')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 

@@ -1,3 +1,4 @@
+'use strict'
 const util = require('util')
 
 const defBasicModel = require('@eluvio/elv-js-helpers/ModelFactory/defBasicModel')

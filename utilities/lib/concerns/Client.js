@@ -1,3 +1,4 @@
+'use strict'
 const passesModelCheck = require('@eluvio/elv-js-helpers/Boolean/passesModelCheck')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 

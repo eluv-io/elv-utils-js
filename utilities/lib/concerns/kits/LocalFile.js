@@ -1,4 +1,5 @@
 // code related to adding local files to fabric
+'use strict'
 const fs = require('fs')
 const path = require('path')
 const mime = require('mime-types')

@@ -1,4 +1,5 @@
 // Specifies concerns, options and checksMap for a Concern or Script
+'use strict'
 
 const {
   CheckedResult,

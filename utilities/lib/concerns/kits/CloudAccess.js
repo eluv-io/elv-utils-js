@@ -1,3 +1,4 @@
+'use strict'
 const {CheckedRemoteAccessList, RemoteAccessListModel} = require('../../models/RemoteAccessListModels')
 
 const ArgS3Credentials = require('../args/ArgS3Credentials')

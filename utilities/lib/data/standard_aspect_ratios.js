@@ -2,6 +2,7 @@
 // see https://en.wikipedia.org/wiki/Aspect_ratio_(image)
 //
 // (portrait modes omitted)
+'use strict'
 
 const SARs = [
   {rat: '69/25', desc: '2.76:1 Ultra Panavision 70'},

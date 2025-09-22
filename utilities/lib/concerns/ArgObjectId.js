@@ -1,4 +1,5 @@
 // code related to --objectId
+'use strict'
 
 const {StdOpt} = require('../options')
 

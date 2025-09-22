@@ -1,4 +1,5 @@
 // code related to working with URIs
+'use strict'
 const urijs = require('urijs')
 
 const Logger = require('../kits/Logger')

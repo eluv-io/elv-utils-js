@@ -1,3 +1,4 @@
+'use strict'
 const {standardUtilityFilenames} = require('../../utilities/lib/helpers')
 
 const TH = require('../test-helpers')

@@ -1,3 +1,4 @@
+'use strict'
 const child_process = require('child_process')
 
 const throwError = require('@eluvio/elv-js-helpers/Misc/throwError.js')

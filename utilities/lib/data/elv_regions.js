@@ -1,3 +1,4 @@
+'use strict'
 const elv_regions = {
   'as-east': 'Asia East',
   'au-east': 'Australia East',

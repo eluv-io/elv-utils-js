@@ -1,4 +1,5 @@
 // helpers to reduce boilerplate in tests
+'use strict'
 
 const path = require('path')
 

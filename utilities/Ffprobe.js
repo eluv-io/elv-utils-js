@@ -1,5 +1,5 @@
-'use strict'
 // ffprobe a file
+'use strict'
 
 const Utility = require('./lib/Utility')
 const {ModOpt} = require('./lib/options')

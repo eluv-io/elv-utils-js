@@ -1,4 +1,5 @@
 // Validator used when processing Blueprints
+'use strict'
 
 const {
   ObjectModel,

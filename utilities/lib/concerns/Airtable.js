@@ -1,3 +1,4 @@
+'use strict'
 const Airtable = require('airtable')
 
 const Logger = require('./kits/Logger.js')

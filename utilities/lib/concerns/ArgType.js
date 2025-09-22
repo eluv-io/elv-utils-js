@@ -1,4 +1,5 @@
 // code related to --type
+'use strict'
 const {NewOpt} = require('../options')
 
 const ContentType = require('./ContentType')

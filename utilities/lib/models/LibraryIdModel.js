@@ -1,3 +1,4 @@
+'use strict'
 const assertAfterCheck = require('@eluvio/elv-js-helpers/ModelAssertion/assertAfterCheck')
 const base58Decode = require('@eluvio/elv-js-helpers/Conversion/base58Decode')
 const isBase58String = require('@eluvio/elv-js-helpers/Boolean/isBase58String')

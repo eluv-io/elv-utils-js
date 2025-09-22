@@ -41,6 +41,7 @@ Self-signed URLs do not need AWS_KEY / AWS_SECRET / AWS_BUCKET / AWS_REGION but 
   ]
 
  */
+'use strict'
 
 
 const curry = require('@eluvio/elv-js-helpers/Functional/curry')

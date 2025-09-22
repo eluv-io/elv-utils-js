@@ -29,6 +29,7 @@
 //
 // Substituted: Any substitution variables have been replaced by what they referred to.
 //
+'use strict'
 
 const path = require('path')
 

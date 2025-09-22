@@ -1,3 +1,4 @@
+'use strict'
 const R = require('@eluvio/ramda-fork')
 
 const assign = require('crocks/helpers/assign')

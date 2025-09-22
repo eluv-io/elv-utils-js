@@ -1,3 +1,4 @@
+'use strict'
 const {seconds} = require('../../helpers.js')
 
 const Client = require('../Client.js')

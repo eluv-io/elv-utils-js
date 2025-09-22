@@ -1,4 +1,5 @@
 // Holds sets of credentials for S3, along with path matching rules
+'use strict'
 
 const awsRegions = require('../data/aws_regions')
 const awsRegionNames = Object.keys(awsRegions)
