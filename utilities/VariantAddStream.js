@@ -6,16 +6,19 @@ const {MasterModel} = require('./lib/models/Master')
 const {VariantModel} = require('./lib/models/Variant')
 
 const Utility = require('./lib/Utility')
+
+const {fabricItemDesc} = require('./lib/helpers')
 const {ModOpt} = require('./lib/options')
 
 const VariantStreamArgs = require('./lib/concerns/kits/VariantStreamArgs.js')
-const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
+const Write = require('./lib/concerns/kits/Write')
+const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 
 class VariantAddStream extends Utility {
   static blueprint() {
     return {
-      concerns: [VariantStreamArgs, ExistObj, Edit],
+      concerns: [VariantStreamArgs, ExistObjOrDft, Write],
       options: [
         ModOpt('streamKey', {
           demand: true,
@@ -34,7 +37,7 @@ class VariantAddStream extends Utility {
   }
 
   async body() {
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    const processedArgs = await this.concerns.ExistObjOrDft.argsProc()
 
     const streamOpts = R.pick(
       [
@@ -55,13 +58,30 @@ class VariantAddStream extends Utility {
     const {streamKey, variantKey} = this.args
 
     // get production_master metadata
-    const master = await this.concerns.ExistObj.metadata({subtree: '/production_master'})
+    const master = await this.concerns.ExistObjOrDft.metadata({subtree: '/production_master'})
 
     if(!master.variants[variantKey]) throw Error(`Variant '${variantKey}' not found`)
     const variant = master.variants[variantKey]
     const sources = master.sources
 
     if(variant.streams[streamKey]) throw Error(`Stream '${streamKey}' already exists in variant '${variantKey}'`)
+
+    // create a write token if needed
+    const writeInfo = await this.concerns.Write.prepare(processedArgs)
+
+    const {
+      commitMsg,
+      finalize,
+      libraryId,
+      newDraftCreated,
+      noFinalize,
+      noWaitPublish,
+      objectId,
+      writeToken
+    } = Object.assign(
+      clone(processedArgs),
+      writeInfo
+    )
 
     // create and add stream
     const stream  = this.context.concerns.VariantStreamArgs.streamFromOpts(sources, streamOpts)
@@ -73,19 +93,30 @@ class VariantAddStream extends Utility {
 
     this.logger.log('Saving changes...')
     // write metadata back
-    const newHash = await this.concerns.Metadata.write({
-      commitMessage: `Add stream '${streamKey}' to variant '${variantKey}'`,
+    await this.concerns.Metadata.write({
       libraryId,
       metadata: stream,
       objectId,
-      subtree: `/production_master/variants/${variantKey}/streams/${streamKey}`
+      subtree: `/production_master/variants/${variantKey}/streams/${streamKey}`,
+      writeToken
     })
-    this.logger.data('version_hash', newHash)
-    this.logger.log(`New version hash: ${newHash}`)
+
+    await this.concerns.Write.conclude({
+      commitMsg,
+      defaultCommitMsg: `Add stream '${streamKey}' to variant '${variantKey}'`,
+      finalize,
+      libraryId,
+      newDraftCreated,
+      noFinalize,
+      noWaitPublish,
+      objectId,
+      writeToken
+    })
+
   }
 
   header() {
-    return `Add stream '${this.args.streamKey}' to variant '${this.args.variantKey}' of production master: ${this.args.objectId}`
+    return `Add stream '${this.args.streamKey}' to variant '${this.args.variantKey}' of production master: ${fabricItemDesc(this.args)}`
   }
 }
 

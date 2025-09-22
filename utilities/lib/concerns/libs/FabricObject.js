@@ -1,3 +1,4 @@
+'use strict'
 // Code relating to working with fabric objects.
 // Named 'FabricObject' instead of 'Object' to prevent conflicts with built-in JS 'Object'
 

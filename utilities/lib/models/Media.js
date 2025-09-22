@@ -44,7 +44,7 @@ const MediaStreamTypeModel = defBasicModel('MediaStreamType', [
 
 const MS_STREAM_COMMON_FIELDS = ({
   codec_name: String,
-  language: String,
+  language: [String],
   side_data_list: [null, Array, undefined],
   tags: TagsOptionalModel
 })

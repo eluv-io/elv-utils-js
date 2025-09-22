@@ -1,3 +1,4 @@
+'use strict'
 const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')
 const defTypedKVObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defTypedKVObjModel')
 const {VariantModel} = require('./Variant')

@@ -4,8 +4,8 @@ const {throwError} = require('../../helpers')
 
 const {NewOpt} = require('../../options')
 
-// const ArgLibraryId = require('./ArgLibraryId')
-// const ArgObjectId = require('./ArgObjectId')
+const ArgLibraryId = require('./ArgLibraryId')
+const ArgObjectId = require('./ArgObjectId')
 const Draft = require('../libs/Draft')
 const FabricNode = require('../libs/FabricNode')
 const FabricObject = require('../libs/FabricObject')
@@ -13,7 +13,7 @@ const Logger = require('../kits/Logger.js')
 
 const blueprint = {
   name: 'ArgWriteToken',
-  concerns: [Draft, FabricNode, FabricObject, Logger],
+  concerns: [ArgLibraryId, ArgObjectId, Draft, FabricNode, FabricObject, Logger],
   options: [
     NewOpt('writeToken', {
       conflicts: 'versionHash',
@@ -27,27 +27,22 @@ const New = context => {
 
   let argsProcMemo
 
-
   // fill in implied missing args
   const argsProc = async () => {
     if(!argsProcMemo) {
       const foundObjectId = context.concerns.Draft.objectId({writeToken: context.args.writeToken})
       const foundLibId = await context.concerns.FabricObject.libraryId({objectId: foundObjectId})
 
-      if (context.concerns.ArgObjectId) {
-        if(context.args.objectId) {
-          if(context.args.objectId !== foundObjectId) throw Error(`--objectId ${context.args.objectId} supplied, but writeToken ${context.args.writeToken} has object ID: ${foundObjectId}`)
-        } else {
-          context.args.objectId = foundObjectId
-        }
+      if(context.args.objectId) {
+        if(context.args.objectId !== foundObjectId) throw Error(`--objectId ${context.args.objectId} supplied, but writeToken ${context.args.writeToken} has object ID: ${foundObjectId}`)
+      } else {
+        context.args.objectId = foundObjectId
       }
 
-      if (context.concerns.ArgLibraryId) {
-        if(context.args.libraryId) {
-          if(context.args.libraryId !== foundLibId) throw Error(`--libraryId ${context.args.libraryId} supplied, but writeToken ${context.args.writeToken} has library ID: ${foundLibId}`)
-        } else {
-          context.args.libraryId = foundLibId
-        }
+      if(context.args.libraryId) {
+        if(context.args.libraryId !== foundLibId) throw Error(`--libraryId ${context.args.libraryId} supplied, but writeToken ${context.args.writeToken} has library ID: ${foundLibId}`)
+      } else {
+        context.args.libraryId = foundLibId
       }
 
       if(context.args.nodeUrl) {

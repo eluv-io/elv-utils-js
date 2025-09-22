@@ -1,3 +1,4 @@
+'use strict'
 // for scripts that work with Drafts (new unfinalized objects/versions)
 const fetch = require('node-fetch').default
 
@@ -200,9 +201,12 @@ const New = context => {
     }
   }
 
-  const objectId = ({writeToken}) => writeToken
-    ? decode({writeToken}).objectId
-    : throwError('Draft.objectId() - writeToken missing')
+  const objectId = ({writeToken}) => {
+    if (!writeToken) throwError('Draft.objectId() - writeToken not supplied')
+    const decoded = decode({writeToken})
+    if (!decoded.objectId) throwError(`Draft.objectId() - decoded write token does not contain an object ID: \n${JSON.stringify(decoded, null, 2)}\n`)
+    return decoded.objectId
+  }
 
   const partList = async ({libraryId, objectId, writeToken}) => {
     if(!writeToken) throw Error('Draft.partList() - missing writeToken')
