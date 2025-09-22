@@ -1,4 +1,6 @@
 // builds (or rebuilds) the main.js file
+'use strict'
+
 const fs = require('fs')
 const path = require('path')
 
