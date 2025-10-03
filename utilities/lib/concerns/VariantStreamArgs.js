@@ -9,6 +9,7 @@ const ArgAlternateFor = require('./args/ArgAlternateFor')
 const ArgRole = require('./args/ArgRole')
 const ArgStreamKey = require('./ArgStreamKey')
 const ArgVariantKey = require('./ArgVariantKey')
+const throwError = require('@eluvio/elv-js-helpers/Misc/throwError.js')
 const blueprint = {
   name: 'VariantStreamArgs',
   concerns: [ArgAlternateFor, ArgRole, ArgStreamKey, ArgVariantKey],
@@ -148,6 +149,13 @@ const New = () => {
     }
 
     const source = sources[file]
+
+    if(!(source.streams)) throw Error(`Source '${file}' has null or empty streams property.`)
+
+    for(const sIndex of streamIndex) {
+      if(sIndex >= source.streams.length) throwError(`The sourceIndex '${sIndex}' is invalid. (Source '${file}' has only ${source.streams.length} stream(s), and numbering starts at zero)`)
+    }
+
     result.type = source.streams[streamIndex[0]].type
       .replace('Stream','').toLowerCase()
 
