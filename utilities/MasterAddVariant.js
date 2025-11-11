@@ -22,7 +22,7 @@ class MasterAddVariant extends Utility {
         }),
         NewOpt('streams', {
           demand: true,
-          descTemplate:'JSON string (or file path if prefixed with \'@\') containing stream specifications for new variant',
+          descTemplate:'JSON string or path to file containing stream specifications for new variant',
           type: 'string'
         })
       ]
