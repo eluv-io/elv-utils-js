@@ -14,10 +14,6 @@ coverage/
 # installed node modules
 node_modules
 
-# npm recommends including package-lock.json in repo, but it generally causes more problems that it solves
-package-lock.json
-
-
 # IDE
 # =========================
 
