@@ -70,6 +70,7 @@ class LiveAddOfferings extends Utility {
     let newOfferingTemplate = clone(defaultOffering)
     newOfferingTemplate.playout.streams = {}
     newOfferingTemplate.play_mode = 'avtest_live'
+    newOfferingTemplate.offer_as_live = true
 
     let newOfferings = {default: defaultOffering}
 
@@ -121,7 +122,7 @@ class LiveAddOfferings extends Utility {
   }
 
   header() {
-    return `Add live offerings for ${fabricItemDesc(this.args)}`
+    return `Add live offerings to ${fabricItemDesc(this.args)}`
   }
 }
 
