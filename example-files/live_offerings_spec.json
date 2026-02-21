@@ -1,4 +1,18 @@
 {
+    "live_stream_keys":
+    {
+        "audio":
+        [
+            "audio_1",
+            "audio_2",
+            "audio_3",
+            "audio_4"
+        ],
+        "video":
+        [
+            "video"
+        ]
+    },
     "additional_offerings":
     {
         "all_audio":
@@ -61,19 +75,5 @@
                 }
             }
         }
-    },
-    "live_stream_keys":
-    {
-        "audio":
-        [
-            "audio_1",
-            "audio_2",
-            "audio_3",
-            "audio_4"
-        ],
-        "video":
-        [
-            "video"
-        ]
     }
 }
