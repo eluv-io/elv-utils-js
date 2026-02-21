@@ -1,0 +1,79 @@
+{
+    "additional_offerings":
+    {
+        "all_audio":
+        {
+            "streams":
+            {
+                "audio_1":
+                {
+                    "default_for_media_type": true,
+                    "label": "Audio 1",
+                    "live_key": "audio_1"
+                },
+                "audio_2":
+                {
+                    "default_for_media_type": false,
+                    "label": "Audio 2",
+                    "live_key": "audio_2"
+                },
+                "audio_3":
+                {
+                    "default_for_media_type": false,
+                    "label": "Audio 3",
+                    "live_key": "audio_3"
+                },
+                "audio_4":
+                {
+                    "default_for_media_type": false,
+                    "label": "Audio 4",
+                    "live_key": "audio_4"
+                },
+                "video":
+                {
+                    "default_for_media_type": true,
+                    "label": "Video",
+                    "live_key": "video"
+                }
+            }
+        },
+        "audio_3_4":
+        {
+            "streams":
+            {
+                "audio_three":
+                {
+                    "default_for_media_type": true,
+                    "label": "Audio Three",
+                    "live_key": "audio_3"
+                },
+                "audio_four":
+                {
+                    "default_for_media_type": false,
+                    "label": "Audio Four",
+                    "live_key": "audio_4"
+                },
+                "video_standard":
+                {
+                    "default_for_media_type": true,
+                    "label": "Video standard",
+                    "live_key": "video"
+                }
+            }
+        }
+    },
+    "live_stream_keys":
+    {
+        "audio":
+        [
+            "audio_1",
+            "audio_2",
+            "audio_3",
+            "audio_4"
+        ],
+        "video":
+        [
+            "video"
+        ]
+    }
+}
