@@ -9,7 +9,7 @@ const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
-const Metadata = require('./lib/concerns/Metadata')
+const Edit = require('./lib/concerns/Edit')
 const ArgCommitMsg = require('./lib/concerns/args/ArgCommitMsg')
 const NonBlankStrModel = require('@eluvio/elv-js-helpers/Model/NonBlankStrModel')
 
@@ -18,7 +18,7 @@ class LiveAddOfferings extends Utility {
     return {
       concerns: [
         ExistObjOrDft,
-        Metadata,
+        Edit,
         ArgCommitMsg
       ],
       options: [
@@ -107,7 +107,7 @@ class LiveAddOfferings extends Utility {
       console.log()
     } else {
       // Write back metadata
-      const newHash = await this.concerns.Metadata.write({
+      const newHash = await this.concerns.Edit.writeMetadata({
         commitMessage,
         libraryId,
         metadata: newOfferings,
