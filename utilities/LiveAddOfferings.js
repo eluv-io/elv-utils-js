@@ -25,6 +25,10 @@ class LiveAddOfferings extends Utility {
         ModOpt('writeToken', {ofX: ' item to modify'}),
         ModOpt('objectId', {ofX: ' item to modify'}),
         ModOpt('libraryId', {ofX: ' item to modify'}),
+        NewOpt('dryRun', {
+          descTemplate: 'Do not save changes, just print out revised /offerings metadata',
+          type: 'boolean'
+        }),
         NewOpt('specFile', {
           demand: true,
           descTemplate: 'Path to local JSON file defining the live offerings.',
@@ -38,7 +42,7 @@ class LiveAddOfferings extends Utility {
 
   async body() {
     const logger = this.logger
-    const {specFile} = this.args
+    const {dryRun, specFile} = this.args
 
     const commitMessage = this.args.commitMsg || (
       this.args.writeToken
@@ -92,18 +96,28 @@ class LiveAddOfferings extends Utility {
       newOfferings[offeringKey] = offering
     })
 
+    if (dryRun) {
+      console.log('-------------------------------')
+      console.log('New /offerings metadata:')
+      console.log('-------------------------------')
+      console.log()
+      console.log(JSON.stringify(newOfferings,null,2))
+      console.log()
+      console.log('--dryRun specified, changes NOT written back to object')
+      console.log()
+    } else {
+      // Write back metadata
+      const newHash = await this.concerns.Metadata.write({
+        commitMessage,
+        libraryId,
+        metadata: newOfferings,
+        metadataSubtree: '/offerings',
+        objectId,
+        writeToken
+      })
 
-    // Write back metadata
-    const newHash = await this.concerns.Metadata.write({
-      commitMessage,
-      libraryId,
-      metadata: newOfferings,
-      metadataSubtree: '/offerings',
-      objectId,
-      writeToken
-    })
-
-    if (!writeToken) this.logger.data('version_hash', newHash)
+      if (!writeToken) this.logger.data('version_hash', newHash)
+    }
   }
 
   header() {
