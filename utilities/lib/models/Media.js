@@ -4,12 +4,16 @@ const defBasicModel = require('@eluvio/elv-js-helpers/ModelFactory/defBasicModel
 const defNonEmptyArrModel = require('@eluvio/elv-js-helpers/ModelFactory/defNonEmptyArrModel')
 const defObjectModel = require('@eluvio/elv-js-helpers/ModelFactory/defObjectModel')
 const defSealedObjModel = require('@eluvio/elv-js-helpers/ModelFactory/defSealedObjModel')
+const IntegerModel = require('@eluvio/elv-js-helpers/Model/IntegerModel')
 const mergeRight = require('@eluvio/elv-js-helpers/Functional/mergeRight')
 const NonNegativeIntModel = require('@eluvio/elv-js-helpers/Model/NonNegativeIntModel')
 const NonNegativeNumModel = require('@eluvio/elv-js-helpers/Model/NonNegativeNumModel')
 const PositiveIntModel = require('@eluvio/elv-js-helpers/Model/PositiveIntModel')
 const PositiveNumModel = require('@eluvio/elv-js-helpers/Model/PositiveNumModel')
 const reduce = require('@eluvio/elv-js-helpers/Functional/reduce')
+
+const EC3InfoModel = require('./EC3Info')
+const DOVIInfoModel = require('./DOVIInfo')
 
 const HDRFieldsModel = defSealedObjModel('HDRFields',{
   master_display: String,
@@ -43,7 +47,10 @@ const MS_STREAM_COMMON_FIELDS = ({
   codec_name: String,
   codec_tag_string: [String],
   language: [String],
+  level_idc: [IntegerModel],
+  mime_codec_string: [String],
   profile: [String],
+  profile_idc: [IntegerModel],
   side_data_list: [null, Array, undefined],
   tags: [null, Object, undefined]
 })
@@ -78,15 +85,20 @@ const MS_DATA_STREAM_DURATION_FIELDS = ({
   time_base: String
 })
 
+
+// media.AudioOnlyFields
 const MS_STREAM_AUDIO_FIELDS = reduce(
   mergeRight,
   {},
   [
     MS_STREAM_COMMON_FIELDS,
     MS_STREAM_DURATION_FIELDS,
+    // media.AudioOnlyFields
     {
       channel_layout: String,
       channels: PositiveIntModel,
+      dolby_atmos: [Boolean],
+      ec3: [EC3InfoModel],
       sample_rate: PositiveIntModel,
       type: MEDIA_STREAM_TYPE_AUDIO
     }
@@ -96,7 +108,14 @@ const MS_STREAM_AUDIO_FIELDS = reduce(
 const MediaStreamAudioModel = defSealedObjModel(
   'MediaStreamAudio',
   MS_STREAM_AUDIO_FIELDS
+).assert(
+  x => x.dolby_atmos && !x.ec3,
+  'ec3 must be provided when dolby_atmos is true'
+).assert(
+  x => !x.dolby_atmos && x.ec3,
+  'dolby_atmos must be true when ec3 is present'
 )
+
 
 const MS_STREAM_DATA_FIELDS = reduce(
   mergeRight,
@@ -148,6 +167,7 @@ const MediaStreamSubtitleModel = defSealedObjModel(
   MS_STREAM_SUBTITLE_FIELDS
 )
 
+// media.VideoOnlyFields
 const MS_STREAM_VIDEO_FIELDS = reduce(
   mergeRight,
   {},
@@ -156,9 +176,11 @@ const MS_STREAM_VIDEO_FIELDS = reduce(
     MS_STREAM_DIMENSION_FIELDS,
     MS_STREAM_DURATION_FIELDS,
     {
+      dovi: [DOVIInfoModel],
       field_order: String,
       frame_rate: String,
       hdr: HDRFieldsOptionalModel,
+      layout: [IntegerModel],
       type: MEDIA_STREAM_TYPE_VIDEO
     }
   ]
