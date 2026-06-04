@@ -109,13 +109,12 @@ const MediaStreamAudioModel = defSealedObjModel(
   'MediaStreamAudio',
   MS_STREAM_AUDIO_FIELDS
 ).assert(
-  x => x.dolby_atmos && !x.ec3,
+  x => !(x.dolby_atmos && !x.ec3),
   'ec3 must be provided when dolby_atmos is true'
 ).assert(
-  x => !x.dolby_atmos && x.ec3,
+  x => !(!x.dolby_atmos && x.ec3),
   'dolby_atmos must be true when ec3 is present'
 )
-
 
 const MS_STREAM_DATA_FIELDS = reduce(
   mergeRight,
