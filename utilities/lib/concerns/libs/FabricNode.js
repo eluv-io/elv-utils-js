@@ -40,7 +40,7 @@ const New = context => {
     return CBOR.decodeFirstSync(nodeInfoCBOR.slice(16, nodeInfoCBOR.length))
   }
 
-  const list = async ({elvgeo, getFabricVersion, writeToken}) => {
+  const list = async ({elvgeo, getFabricVersion, nodeId, writeToken}) => {
     const client = await context.concerns.Client.get()
     const authToken = await context.concerns.AuthToken.getPlain()
     const response = await client.utils.ResponseToJson(
@@ -57,6 +57,11 @@ const New = context => {
       })
     )
     let result = response.nodes
+
+    if (nodeId) {
+      result = result.filter(n => n.id === nodeId)
+    }
+
     if (getFabricVersion) {
       for (const n of result) {
         const urls = n.services?.fabric_api?.urls
@@ -67,7 +72,7 @@ const New = context => {
         }
       }
     }
-    return response.nodes
+    return result
   }
 
   const version = async (nodeURL) => {

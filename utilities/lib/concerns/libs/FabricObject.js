@@ -10,7 +10,7 @@ const Finalize = require('./Finalize.js')
 const Library = require('./Library')
 const Logger = require('../kits/Logger.js')
 const Metadata = require('./Metadata.js')
-const Part = require('../Part')
+const Part = require('./Part.js')
 const Version = require('./Version')
 
 const blueprint = {

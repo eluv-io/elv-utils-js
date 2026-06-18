@@ -2,9 +2,11 @@
 'use strict'
 
 const Utility = require('./lib/Utility')
+const {ModOpt} = require('./lib/options')
 
 const ArgElvGeo = require('./lib/concerns/args/ArgElvGeo')
 const ArgFabricVersion = require('./lib/concerns/args/ArgFabricVersion.js')
+const ArgNodeId = require('./lib/concerns/args/ArgNodeId.js')
 const ArgWriteToken = require('./lib/concerns/args/ArgWriteToken')
 const FabricNode = require('./lib/concerns/libs/FabricNode')
 const Logger = require('./lib/concerns/kits/Logger')
@@ -12,16 +14,22 @@ const Logger = require('./lib/concerns/kits/Logger')
 class ListLibraries extends Utility {
   static blueprint() {
     return {
-      concerns: [ArgElvGeo, ArgFabricVersion, ArgWriteToken, FabricNode, Logger]
+      concerns: [ArgElvGeo, ArgFabricVersion, ArgNodeId, ArgWriteToken, FabricNode, Logger],
+      options: [
+        ModOpt('nodeId', {
+          conflicts: 'writeToken'
+        })
+      ]
     }
   }
 
   async body() {
     const logger = this.logger
-    const {elvGeo, fabricVersion, writeToken} = this.args
+    const {elvGeo, fabricVersion, nodeId, writeToken} = this.args
     const nodeList = await this.concerns.FabricNode.list({
       elvGeo,
       getFabricVersion: fabricVersion,
+      nodeId,
       writeToken
     })
 
@@ -76,7 +84,7 @@ class ListLibraries extends Utility {
 
 }
 
-if(require.main === module) {
+if (require.main === module) {
   Utility.cmdLineInvoke(ListLibraries)
 } else {
   module.exports = ListLibraries

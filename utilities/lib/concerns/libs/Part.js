@@ -2,11 +2,11 @@
 'use strict'
 const isString = require('@eluvio/elv-js-helpers/Boolean/isString')
 
-const {fabricItemDesc} = require('../helpers')
+const {fabricItemDesc} = require('../../helpers.js')
 
-const Client = require('./Client')
-const Logger = require('./kits/Logger.js')
-const Edit = require('./Edit')
+const Client = require('../Client.js')
+const Logger = require('../kits/Logger.js')
+const Edit = require('../Edit.js')
 
 const blueprint = {
   name: 'Part',

@@ -90,68 +90,6 @@ class FilesAdd extends Utility {
       writeToken
     })
 
-
-    // let accessc
-    // if (this.args.s3Reference || this.args.s3Copy) access = this.concerns.CloudFile.credentialSet()
-    //
-    // let fileHandles = []
-    // const fileInfo = access
-    //   ? this.concerns.CloudFile.fileInfo()
-    //   : this.concerns.LocalFile.fileInfo(fileHandles)
-    //
-    // if (destDir) {
-    //   for (const f of fileInfo) {
-    //     f.path = path.join(destDir, f.path)
-    //   }
-    // }
-    //
-    // const {libraryId, objectId, writeToken} = await this.concerns.ExistObjOrDft.argsProc()
-    //
-    // const suppliedOrNewWriteToken = writeToken || (await this.concerns.Edit.getWriteToken({
-    //   libraryId,
-    //   objectId
-    // })).writeToken
-    //
-    // if (access) {
-    //   await this.concerns.CloudFile.add({
-    //     libraryId,
-    //     objectId,
-    //     writeToken: suppliedOrNewWriteToken,
-    //     access,
-    //     fileInfo,
-    //     encrypt: !storeClear
-    //   })
-    // } else {
-    //   await this.concerns.LocalFile.add({
-    //     libraryId,
-    //     objectId,
-    //     writeToken: suppliedOrNewWriteToken,
-    //     fileInfo,
-    //     encrypt: !storeClear
-    //   })
-    //   // Close file handles
-    //   this.concerns.LocalFile.closeFileHandles(fileHandles)
-    // }
-    //
-    // const fileBasenamesList = this.args.files.map(x => path.basename(x))
-    //
-    // logger.logList(
-    //   '',
-    //   'File(s) added.'
-    // )
-
-    // if (!writeToken) {
-    //   const hash = await this.concerns.Edit.finalize({
-    //     commitMessage: `Add files ${fileBasenamesList.join(', ')}${destDir ? ` to folder ${destDir}` : ''}`,
-    //     libraryId,
-    //     noWait,
-    //     objectId,
-    //     writeToken: suppliedOrNewWriteToken
-    //   })
-    //   logger.log(`New version hash: ${hash}`)
-    //   logger.data('version_hash', hash)
-    // }
-
     logger.log('')
   }
 

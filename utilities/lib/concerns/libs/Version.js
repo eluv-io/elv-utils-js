@@ -7,7 +7,7 @@ const Utils = require('@eluvio/elv-client-js/src/Utils')
 const Client = require('../Client')
 const Logger = require('../kits/Logger.js')
 const Metadata = require('./Metadata.js')
-const Part = require('../Part')
+const Part = require('./Part.js')
 
 const blueprint = {
   name: 'Version',

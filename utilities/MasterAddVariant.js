@@ -5,16 +5,18 @@ const {VariantModel} = require('./lib/models/Variant')
 
 const Utility = require('./lib/Utility')
 const {ModOpt, NewOpt} = require('./lib/options')
+const {fabricItemDesc} = require('./lib/helpers')
 
 const ArgVariantKey = require('./lib/concerns/args/ArgVariantKey.js')
-const Edit = require('./lib/concerns/Edit')
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
 const ProcessJSON = require('./lib/concerns/libs/ProcessJSON.js')
+const Write = require('./lib/concerns/kits/Write')
+const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 
 class MasterAddVariant extends Utility {
   static blueprint() {
     return {
-      concerns: [ArgVariantKey, ExistObj, Edit, ProcessJSON],
+      concerns: [ArgVariantKey, ExistObjOrDft, ProcessJSON, Write],
       options: [
         ModOpt('variantKey', {
           default: null,
@@ -23,7 +25,7 @@ class MasterAddVariant extends Utility {
         }),
         NewOpt('streams', {
           demand: true,
-          descTemplate:'JSON string (or file path if prefixed with \'@\') containing stream specifications for new variant',
+          descTemplate:'Either a JSON string containing stream specifications for new variant, or the path to a JSON file containing the info',
           type: 'string'
         })
       ]
@@ -31,16 +33,35 @@ class MasterAddVariant extends Utility {
   }
 
   async body() {
-    const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
+    const logger = this.logger
 
-    const {variantKey} = this.args
+    const processedArgs = await this.concerns.ExistObjOrDft.argsProc()
+
+    // create a write token if needed
+    const writeInfo = await this.concerns.Write.prepare(processedArgs)
+
+    const {
+      commitMsg,
+      finalize,
+      libraryId,
+      newDraftCreated,
+      noFinalize,
+      noWaitPublish,
+      objectId,
+      variantKey,
+      writeToken
+    } = Object.assign(
+      clone(processedArgs),
+      writeInfo
+    )
+
 
     const streams = this.concerns.ProcessJSON.parseStringOrFile({strOrPath: this.args.streams})
     const variant = {streams}
     VariantModel(variant)
 
     // get production_master metadata
-    const master = await this.concerns.ExistObj.metadata({subtree: '/production_master'})
+    const master = await this.concerns.ExistObjOrDft.metadata({subtree: '/production_master'})
     if(master.variants[variantKey]) throw Error(`Variant '${variantKey}' already exists`)
 
     const sources = master.sources
@@ -54,21 +75,33 @@ class MasterAddVariant extends Utility {
     MasterModel(testMaster)
 
     master.variants[variantKey] = variant
-    this.logger.log('Saving changes...')
+    logger.log('Saving changes...')
     // write metadata back
-    const newHash = await this.concerns.Metadata.write({
-      commitMessage: `Add variant '${variantKey}'`,
+    this.concerns.Metadata.write({
       libraryId,
       metadata: master.variants,
       objectId,
-      subtree: '/production_master/variants'
+      subtree: '/production_master/variants',
+      writeToken
     })
 
-    this.logger.log(`New version hash: ${newHash}`)
+    await this.concerns.Write.conclude({
+      commitMsg,
+      defaultCommitMsg: `MasterAddVariant.js: Add variant '${variantKey}'`,
+      finalize,
+      libraryId,
+      newDraftCreated,
+      noFinalize,
+      noWaitPublish,
+      objectId,
+      writeToken
+    })
+
+    logger.log('')
   }
 
   header() {
-    return `Add variant '${this.args.variantKey}' to production master: ${this.args.objectId}`
+    return `Add variant '${this.args.variantKey}' to production master in ${fabricItemDesc(this.args)}`
   }
 }
 

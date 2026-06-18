@@ -83,6 +83,8 @@ describe('MetaGet.js', () => {
     readFinalizedWriteTokenResult.exitCode.should.not.equal(0)
     readFinalizedWriteTokenResult.failureReason.should.match(/^Write token .+ not found/)
 
+    // Cleanup
+    await ITH.deleteObject({objectId})
   })
 })
 

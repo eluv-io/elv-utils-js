@@ -128,6 +128,7 @@ class MasterCreate extends Utility {
     // Log object id immediately, in case of error later in script
     // Don't log hash yet, it will change if --streams was provided (or any other revision to object is needed)
     logger.data('object_id', id)
+    logger.data('objectId', id)
 
     let hash = createResponse.hash
 
@@ -178,7 +179,6 @@ class MasterCreate extends Utility {
       ''
     )
 
-    logger.data('objectId', hash)
     logger.data('versionHash', hash)
     // preserve backwards compatibility
     logger.data('version_hash', hash)

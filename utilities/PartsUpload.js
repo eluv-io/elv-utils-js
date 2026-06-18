@@ -11,7 +11,7 @@ const Utility = require('./lib/Utility')
 const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
 const LocalFile = require('./lib/concerns/kits/LocalFile')
 const Logger = require('./lib/concerns/kits/Logger.js')
-const Part = require('./lib/concerns/Part')
+const Part = require('./lib/concerns/libs/Part.js')
 const Write = require('./lib/concerns/kits/Write')
 const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 

@@ -5,7 +5,7 @@ const mergeDeepRight = require('@eluvio/elv-js-helpers/Functional/mergeDeepRight
 
 const Client = require('../Client')
 const Logger = require('../kits/Logger.js')
-const Part = require('../Part')
+const Part = require('./Part.js')
 
 const blueprint = {
   name: 'Library',

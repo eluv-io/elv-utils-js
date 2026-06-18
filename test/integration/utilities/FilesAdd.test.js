@@ -18,6 +18,7 @@ describe('FilesAdd.js', () => {
       libraryId: testConfig.mezLib
     })
 
+    const objectId = draftInfo.objectId
     const writeToken = draftInfo.writeToken
 
     const fa = new FilesAdd({
@@ -37,6 +38,9 @@ describe('FilesAdd.js', () => {
     fileList[0].path.should.equal('/video.mp4')
     fileList[0].size.should.equal(3821124)
     fileList[0].encrypted.should.be.true
+
+    // Cleanup
+    await ITH.deleteObject({objectId})
   })
 
 })
