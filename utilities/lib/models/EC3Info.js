@@ -8,9 +8,9 @@ const EC3InfoModel = defSealedObjModel(
   {
     chan_map: defBoundedIntModel('ChanMap', 1, 65535, true, true),
     joc: Boolean,
-    complexity_index: IntegerModel
+    complexity_index: [IntegerModel]
   }
-).assert(x => !(x.joc && x.complexity_index <= 0), (assertionResult, data, attributePath) => {
+).assert(x => !(x.joc && !x.complexity_index > 0), (assertionResult, data, attributePath) => {
   return `complexity_index must be > 0 when joc is true (got: ${data.complexity_index})`
 })
 
