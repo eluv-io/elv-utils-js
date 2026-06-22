@@ -81,6 +81,9 @@ class OfferingAddSubtitles extends Utility {
     const filePath = this.args.file
     const fileName = path.basename(filePath)
 
+    const fileExt = path.extname(filePath)
+    const format = (fileExt === '.xml' || fileExt === '.XML') ? 'imsc' : 'vtt'
+
     const {libraryId, objectId} = await this.concerns.ExistObj.argsProc()
 
     const offering = await this.concerns.Metadata.get({
@@ -96,7 +99,7 @@ class OfferingAddSubtitles extends Utility {
     // read captions file and apply any time shift
     let originalData = fs.readFileSync(filePath)
     const partData = isNumber(timeShift) && (timeShift !== 0)
-      ? Subtitle.adjustTimestamps(timeShift, originalData)
+      ? Subtitle.captionAdjustTimestamps(timeShift, originalData, format)
       : originalData
 
     const {writeToken} = await this.concerns.Edit.getWriteToken({libraryId, objectId})
@@ -109,12 +112,12 @@ class OfferingAddSubtitles extends Utility {
       partData
     })
     const partHash = partUploadResult.partHash
-    console.log(`Subtitles uploaded as new part: ${partHash}`)
 
     const revisedOffering = Subtitle.addToOffering({
       offering,
       partHash,
       forced,
+      format,
       isDefault,
       label,
       language,

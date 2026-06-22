@@ -77,7 +77,7 @@ class MasterAddVariant extends Utility {
     master.variants[variantKey] = variant
     logger.log('Saving changes...')
     // write metadata back
-    this.concerns.Metadata.write({
+    await this.concerns.Metadata.write({
       libraryId,
       metadata: master.variants,
       objectId,

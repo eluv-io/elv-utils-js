@@ -1,5 +1,6 @@
 // code related to working with subtitles/captions
 'use strict'
+
 const clone = require('@eluvio/elv-js-helpers/Functional/clone')
 
 const Logger = require('../kits/Logger.js')
@@ -10,13 +11,73 @@ const blueprint = {
   concerns: [Logger]
 }
 
-const RE_VTT_TIMESTAMP_LINE = /^(([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3}) --> (([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*$)/
-const RE_VTT_TIMESTAMP_PARTS = /(([0-9]{2}):)?([0-9]{2}):([0-9]{2}\.[0-9]{3})/
+const RE_CAPTION_TIMESTAMP_PARTS = /(([0-9]{2}):)?([0-9]{2}):([0-9]{2}\.[0-9]{3})/
 
-const addToOffering = ({offering, partHash, forced, isDefault, label, language, streamKey}) => {
+const RE_VTT_TIMESTAMP_LINE = /^(([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3}) --> (([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*$)/
+const RE_XML_TIMESTAMP_LINE = /^(.+begin=")(([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3})" end="(([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3})(".+)/
+
+const captionAdjustTimestamps = (timeShift, strOrBuffer, format) => {
+  if (format !== 'vtt' && format !== 'imsc') throw new Error(`format must be 'vtt' or 'imsc' (got: '${format}')`)
+
+  const contentString = strOrBuffer.toString('utf8')
+  const lines = contentString.split(/\r?\n/)
+  const remappedLines = lines.map(x => (format === 'vtt' ? vttLineTimeShift : xmlLineTimeShift)(x, timeShift))
+  return remappedLines.join('\n')}
+
+const shiftDecimalTimestamp = (timestamp, offset) => {
+  const match = RE_CAPTION_TIMESTAMP_PARTS.exec(timestamp)
+  const shiftedSeconds = parseInt(match[2] || 0, 10) * 3600 + parseInt(match[3], 10) * 60 + parseFloat(match[4]) + offset
+  if(shiftedSeconds < 0) {
+    throw new Error('timeShift resulted in negative timestamp')
+  }
+
+  const hours = Math.floor(shiftedSeconds / 3600)
+  const minutes = Math.floor((shiftedSeconds % 3600) / 60)
+  const seconds = Math.floor(shiftedSeconds % 60)
+  const milliseconds = Math.floor((shiftedSeconds % 1) * 1000)
+  return zeroPadLeft(hours, 2) + ':' + zeroPadLeft(minutes, 2) + ':' + zeroPadLeft(seconds, 2) + '.' + zeroPadLeft(milliseconds, 3)
+}
+
+const vttLineTimeShift = (line, offset) => {
+  const match = RE_VTT_TIMESTAMP_LINE.exec(line)
+  if(match !== null) {
+    return shiftDecimalTimestamp(match[1], offset) + ' --> ' + shiftDecimalTimestamp(match[3], offset) + match[5]
+  } else {
+    return line
+  }
+}
+
+const xmlLineTimeShift = (line, offset) => {
+  const match = RE_XML_TIMESTAMP_LINE.exec(line)
+  if(match !== null) {
+    console.log(JSON.stringify(match,null, 2))
+    console.log([
+      match[1],
+      shiftDecimalTimestamp(match[2], offset),
+      '" end="',
+      shiftDecimalTimestamp(match[4], offset),
+      match[6]
+    ].join(''))
+    return [
+      match[1],
+      shiftDecimalTimestamp(match[2], offset),
+      '" end="',
+      shiftDecimalTimestamp(match[4], offset),
+      match[6]
+    ].join('')
+  } else {
+    return line
+  }
+}
+
+const zeroPadLeft = (value, width) => (value + '').padStart(width, '0')
+
+const addToOffering = ({offering, partHash, forced, isDefault, label, language, streamKey, format}) => {
+  if (format !== 'vtt' && format !== 'imsc') throw new Error(`format must be 'vtt' or 'imsc' (got: '${format}')`)
+
   const offeringCopy = clone(offering)
 
-  let subtitleRepKey = streamKey + '-vtt' // representation is VTT, append as suffix as convention
+  let subtitleRepKey = streamKey + '-' + format
 
   const vidStreamKey = Offering.firstVideoStreamKey({offering: offeringCopy})
 
@@ -31,7 +92,7 @@ const addToOffering = ({offering, partHash, forced, isDefault, label, language, 
 
   const mediaStructStream = {
     bit_rate: 100,
-    codec_name: 'webvtt',
+    codec_name: format === 'vtt' ? 'webvtt' : 'xml',
     codec_type: 'captions',
     default_for_media_type: isDefault,
     duration: {
@@ -40,6 +101,7 @@ const addToOffering = ({offering, partHash, forced, isDefault, label, language, 
     },
     label: label,
     language: language,
+    non_vtt_type: format === 'imsc' ? 'imsc' : undefined,
     optimum_seg_dur: {
       time_base: timeBase,
       ts: durationTs
@@ -48,21 +110,25 @@ const addToOffering = ({offering, partHash, forced, isDefault, label, language, 
     sources: [
       {
         duration: {
+          rat: durationRat,
           time_base: timeBase,
           ts: durationTs
         },
         entry_point: {
           rat: '0',
-          time_base: timeBase
+          time_base: timeBase,
+          ts: 0
         },
         source: partHash,
         timeline_end: {
           rat: durationRat,
-          time_base: timeBase
+          time_base: timeBase,
+          ts: durationTs
         },
         timeline_start: {
           rat: '0',
-          time_base: timeBase
+          time_base: timeBase,
+          ts: 0
         }
       }
     ],
@@ -94,38 +160,6 @@ const addToOffering = ({offering, partHash, forced, isDefault, label, language, 
   return offeringCopy
 }
 
-const adjustTimestamps = (timeShift, strOrBuffer) => {
-  const contentString = strOrBuffer.toString('utf8')
-  const lines = contentString.split(/\r?\n/)
-  const remappedLines = lines.map(x => vttLineTimeShift(x, timeShift))
-  return remappedLines.join('\n')
-}
-
-const timeStampShift = (timestamp, offset) => {
-  const match = RE_VTT_TIMESTAMP_PARTS.exec(timestamp)
-  const shiftedSeconds = parseInt(match[2] || 0, 10) * 3600 + parseInt(match[3], 10) * 60 + parseFloat(match[4]) + offset
-  if(shiftedSeconds < 0) {
-    throw new Error('timeShift resulted in negative timestamp')
-  }
-
-  const hours = Math.floor(shiftedSeconds / 3600)
-  const minutes = Math.floor((shiftedSeconds % 3600) / 60)
-  const seconds = Math.floor(shiftedSeconds % 60)
-  const milliseconds = Math.floor((shiftedSeconds % 1) * 1000)
-  return zeroPadLeft(hours, 2) + ':' + zeroPadLeft(minutes, 2) + ':' + zeroPadLeft(seconds, 2) + '.' + zeroPadLeft(milliseconds, 3)
-}
-
-const vttLineTimeShift = (line, offset) => {
-  const match = RE_VTT_TIMESTAMP_LINE.exec(line)
-  if(match !== null) {
-    return timeStampShift(match[1], offset) + ' --> ' + timeStampShift(match[3], offset) + match[5]
-  } else {
-    return line
-  }
-}
-
-const zeroPadLeft = (value, width) => (value + '').padStart(width, '0')
-
 const New = () => {
 
   // instance interface
@@ -137,8 +171,8 @@ const New = () => {
 module.exports = {
   addToOffering,
   blueprint,
+  captionAdjustTimestamps,
   New,
-  adjustTimestamps,
-  timeStampShift,
+  shiftDecimalTimestamp,
   vttLineTimeShift
 }

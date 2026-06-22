@@ -15,8 +15,8 @@ const reduce = require('@eluvio/elv-js-helpers/Functional/reduce')
 
 const {TagsOptionalModel} = require('./Tags.js')
 
-const EC3InfoModel = require('./EC3Info')
-const DOVIInfoModel = require('./DOVIInfo')
+const EC3InfoModel = require('./EC3InfoModel.js')
+const DOVIInfoModel = require('./DOVIInfoModel.js')
 
 const HDRFieldsModel = defSealedObjModel('HDRFields',{
   master_display: String,

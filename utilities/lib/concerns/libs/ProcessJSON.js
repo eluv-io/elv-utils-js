@@ -42,7 +42,6 @@ const New = (context) => {
   }
 
   const parseStringOrFile = ({strOrPath}) => {
-    console.log(strOrPath)
     try {
       return parseString({
         str: stringOrFileContents(strOrPath, cwd, logger)

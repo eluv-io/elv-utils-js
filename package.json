@@ -48,7 +48,7 @@
     "objectmodel": "^4.4.5",
     "shell-escape": "^0.2.0",
     "urijs": "^1.19.11",
-    "yargs": "^16.2.0"
+    "yargs": "^16.2.2"
   },
   "devDependencies": {
     "chai": "^4.3.7",

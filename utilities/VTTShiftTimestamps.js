@@ -39,7 +39,7 @@ class VTTShiftTimestamps extends Utility {
     // read captions file and apply any time shift
     const originalData = this.concerns.ArgFile.read()
     const shiftedData = isNumber(timeShift) && (timeShift !== 0)
-      ? Subtitle.adjustTimestamps(timeShift, originalData)
+      ? Subtitle.captionAdjustTimestamps(timeShift, originalData)
       : originalData
 
     logger.data('adjusted_subtitles', shiftedData)

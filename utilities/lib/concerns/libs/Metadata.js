@@ -1,8 +1,10 @@
 'use strict'
-const kindOf = require('kind-of')
 const objectPath = require('object-path')
 const R = require('@eluvio/ramda-fork')
 
+const kind = require('@eluvio/elv-js-helpers/Validation/kind')
+const isArray = require('@eluvio/elv-js-helpers/Boolean/isArray')
+const isObject = require('@eluvio/elv-js-helpers/Boolean/isObject')
 const isString = require('@eluvio/elv-js-helpers/Boolean/isString')
 
 const {fabricItemDesc} = require('../../helpers.js')
@@ -64,11 +66,11 @@ const validateTargetPath = ({metadata, path}) => {
       // get parent value (if it exists)
       const value = objectPath.get(metadata, pathArr)
       // check that key is valid
-      switch (kindOf(value)) {
-        case 'object':
+      switch (kind(value)) {
+        case 'Object':
         case 'undefined': // not expected, but allow it
           return true
-        case 'array':
+        case 'Array':
           if (pathPieceIsInt(key)) {
             const i = parseInt(key, 10)
             if (i < 0 || i > value.length) throw Error(`${path} is not a valid target metadata path, ${arrayToPath(pathArr)} contains an array of length ${value.length} (${key} is not a valid index for setting or adding a value)`)
@@ -89,6 +91,7 @@ const validPathFormat = ({path}) => path === '/' || path.match(pathRegex) && pat
 const validTargetPath = ({metadata, targetPath}) => {
   let pathArr = pathToArray({path: targetPath})
   let currentSubtree = R.clone(metadata)
+  let traversed = '/'
 
   for (const key of pathArr) {
 
@@ -96,10 +99,22 @@ const validTargetPath = ({metadata, targetPath}) => {
       // reached end of tree, all the rest of keys in targetPath can be created under this point
       return true
     }
-    if (kindOf(currentSubtree) !== 'object') {
+
+    if (isObject(currentSubtree)) {
+      currentSubtree = currentSubtree[key]
+    } else if (isArray(currentSubtree)) {
+      // Check that key is an integer
+      const i = parseInt(key, 10)
+      if (`${i}` !== key) {
+        throw new Error(`Metadata path '${targetPath}' failed traversal: Array found at ${traversed} but '${key}' is not a valid array index`)
+      }
+      if (i < 0 || i > currentSubtree.length) {
+        throw new Error(`Metadata path '${targetPath}' failed traversal: Array found at ${traversed} but '${key}' is out of bounds`)
+      }
+      currentSubtree = currentSubtree[i]
+    } else {
       break
     }
-    currentSubtree = currentSubtree[key]
   }
   // Make sure end is undefined
   return currentSubtree === undefined
@@ -127,7 +142,7 @@ const New = context => {
       if (force) {
         logger.warn(`Data already exists at '${targetPath}', --force specified, replacing...\nOverwritten data: ${existingExcerpt}`)
       } else {
-        throw new Error(`Metadata path '${targetPath}' is invalid (already exists, use --force to replace). Existing data: ${existingExcerpt}`)
+        throw new Error(`Metadata path '${targetPath}' is invalid (already exists, use --force to replace). Existing data: '${existingExcerpt}'`)
       }
     }
   }
@@ -143,7 +158,7 @@ const New = context => {
     })
   }
 
-  const del = async({commitMessage, libraryId, subtree, objectId, writeToken}) => {
+  const del = async ({commitMessage, libraryId, subtree, objectId, writeToken}) => {
     logger.log(`Deleting metadata ${pathDesc(subtree)}from ${fabricItemDesc({objectId, writeToken})}...`)
     return await context.concerns.Edit.deleteMetadata({
       commitMessage,
@@ -176,7 +191,7 @@ const New = context => {
       metadataSubtree: subtree,
       noWait,
       objectId,
-      writeToken,
+      writeToken
     })
   }
 
