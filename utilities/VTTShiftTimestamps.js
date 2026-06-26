@@ -48,7 +48,7 @@ class VTTShiftTimestamps extends Utility {
     // read captions file and apply any time shift
     let originalData = fs.readFileSync(filePath)
     const shiftedData = isNumber(timeShift) && (timeShift !== 0)
-      ? Subtitle.adjustTimestamps(timeShift, originalData)
+      ? Subtitle.captionAdjustTimestamps(timeShift, originalData, 'vtt')
       : originalData
 
     logger.data('adjusted_subtitles', shiftedData)

@@ -110,11 +110,16 @@ const verifyCompatibility = (offering, formatKey, elvCryptDrmKids = {}) => {
     // check that needed encryption schemes / keys are present in elvCrypt and in playout.drm_keys
     const encSchemeKey = format.drm.enc_scheme_name
     for(const [streamKey, stream] of Object.entries(offering.playout.streams)){
-      const streamEncScheme = stream.encryption_schemes[encSchemeKey]
-      if(!streamEncScheme) throw Error(`Stream '${streamKey}' does not have DRM key needed for format '${formatKey}'. Use the MezRegenDrmKeys.js script first.`)
-      const drmKeyId = streamEncScheme.key_id
-      if(!elvCryptKeyIds.includes(drmKeyId)) throw Error(`DRM key with id '${drmKeyId}' used by stream '${streamKey}' not found in /elv/crypt/drm/kids. Use the MezRegenDrmKeys.js script first to repair.`)
-      if(!offeringPOKeyIds.includes(drmKeyId)) throw Error(`DRM key with id '${drmKeyId}' used by stream '${streamKey}' not found in offering playout/drm_keys. Use the MezRegenDrmKeys.js script first to repair.`)
+      // find playout stream type
+      const streamOrRepType = stream.media_type || stream.representations[Object.keys(stream.representations)[0]]
+
+      if (['audio', 'video', 'RepAudio', 'RepVideo', ].includes(streamOrRepType)) {
+        const streamEncScheme = stream.encryption_schemes[encSchemeKey]
+        if(!streamEncScheme) throw Error(`Stream '${streamKey}' does not have DRM key needed for format '${formatKey}'. Use the MezRegenDrmKeys.js script first.`)
+        const drmKeyId = streamEncScheme.key_id
+        if(!elvCryptKeyIds.includes(drmKeyId)) throw Error(`DRM key with id '${drmKeyId}' used by stream '${streamKey}' not found in /elv/crypt/drm/kids. Use the MezRegenDrmKeys.js script first to repair.`)
+        if(!offeringPOKeyIds.includes(drmKeyId)) throw Error(`DRM key with id '${drmKeyId}' used by stream '${streamKey}' not found in offering playout/drm_keys. Use the MezRegenDrmKeys.js script first to repair.`)
+      }
     }
   } else {
     // clear format
