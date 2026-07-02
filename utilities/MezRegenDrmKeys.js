@@ -46,7 +46,7 @@ class MezRegenDrmKeys extends Utility {
       // set DRM optional true
       offering.drm_optional = true
 
-      // replace playout formats awith hls-clear
+      // replace playout formats with hls-clear
       offering.playout.playout_formats = {
         'hls-clear': {
           drm: null,
