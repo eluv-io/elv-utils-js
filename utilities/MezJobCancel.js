@@ -10,7 +10,7 @@ const ArgObjectId = require('./lib/concerns/ArgObjectId')
 const Logger = require('./lib/concerns/Logger')
 const LRO = require('./lib/concerns/LRO')
 
-class MezzanineJobStatus extends Utility {
+class MezzanineJobCancel extends Utility {
   static blueprint() {
     return {
       concerns: [Logger, ArgObjectId, Client, LRO, ArgNoWait],
@@ -100,7 +100,7 @@ class MezzanineJobStatus extends Utility {
 }
 
 if (require.main === module) {
-  Utility.cmdLineInvoke(MezzanineJobStatus)
+  Utility.cmdLineInvoke(MezzanineJobCancel)
 } else {
-  module.exports = MezzanineJobStatus
+  module.exports = MezzanineJobCancel
 }
