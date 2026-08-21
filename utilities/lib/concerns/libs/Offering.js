@@ -40,10 +40,7 @@ const msStreamForPoStream = ({offering, poStreamKey}) => {
   const topRep = Representations.topRep({representations: safeReps})
   const msStreamKey = topRep.media_struct_stream_key
 
-  // const msStreamKey = Representations.topRep({representations: PlayoutStream.safeRepresentations({poStream})}).media_struct_stream_key
-  const msStream = safeMediaStructStream({offering, msStreamKey})
-  return msStream
-  // return safeMediaStructStream({offering, msStreamKey})
+  return safeMediaStructStream({offering, msStreamKey})
 }
 const safeMediaStruct = ({offering}) => offering.media_struct || throwError('Offering has no media_struct')
 
@@ -92,7 +89,7 @@ const withAudioVideoStreamsOnly = ({offering}) => {
   )
 
   oCopy.media_struct.streams = pickBy(
-    (msStream, msStreamKey) => ['audio', 'video'].includes(msStream.codec_type),
+    msStream => ['audio', 'video'].includes(msStream.codec_type),
     safeMediaStructStreams({offering})
   )
 
