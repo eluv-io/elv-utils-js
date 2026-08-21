@@ -250,7 +250,7 @@ module.exports = class Utility {
       if(isArray(failureReason?.body?.errors)) this.logger.error(failureReason?.body?.errors.map(e => e.reason || `${e}`))
 
       this.logger.log()
-      if(this.env.ELVUTILS_THROW) throw Error(failureReason)
+      if(this.env.ELVUTILS_THROW) throw Error(failureReason.message + '\n' + failureReason.stack)
       if(!process.exitCode) process.exitCode = 1
       this.logger.exitCode(process.exitCode)
       this.logger.failureReason(failureReason)

@@ -1,0 +1,155 @@
+{
+  "comments": [
+    "Content definition for a v1 composition that has 2 sources",
+    "  1: an offering in the same object as the composition",
+    "  2: an offering in a different object than the composition",
+    "",
+    "The timeline alternates ~5 second clips between the two sources",
+    "",
+    "NOTE: sources for v1 compositions MUST all have matching stream names (keys in playout.streams{}) and",
+    "bitrate ladders, and must not use DRM",
+    "",
+    "Each offering.playout.streams must contain keys that match 'stream_keys' below",
+    "",
+    "The first element in 'sources' is used as the template to construct composition playout structure"
+  ],
+  "version": 1,
+  "stream_keys": [
+    "video",
+    "audio",
+    "audio_fr"
+  ],
+  "sources": [
+    {
+      "comment": "VoD offering in same object as composition",
+      "offering_key": "default"
+    },
+    {
+      "comment": "VoD offering in a different object than composition.",
+      "offering_key": "default",
+      "object_id": "iq__3aveuzL1gftBeL1nE1zDpgUGuBMr"
+    }
+  ],
+  "timeline": [
+    {
+      "source_index": 0,
+      "start": "0/24000",
+      "end": "120120/24000",
+      "desc": "clip 1"
+    },
+    {
+      "source_index": 1,
+      "start": "120120/24000",
+      "end": "240240/24000",
+      "desc": "clip 2"
+    },
+    {
+      "source_index": 0,
+      "start": "240240/24000",
+      "end": "360360/24000",
+      "desc": "clip 3"
+    },
+    {
+      "source_index": 1,
+      "start": "360360/24000",
+      "end": "480480/24000",
+      "desc": "clip 4"
+    },
+    {
+      "source_index": 0,
+      "start": "480480/24000",
+      "end": "600600/24000",
+      "desc": "clip 5"
+    },
+    {
+      "source_index": 1,
+      "start": "600600/24000",
+      "end": "720720/24000",
+      "desc": "clip 6"
+    },
+    {
+      "source_index": 0,
+      "start": "720720/24000",
+      "end": "840840/24000",
+      "desc": "clip 7"
+    },
+    {
+      "source_index": 1,
+      "start": "840840/24000",
+      "end": "960960/24000",
+      "desc": "clip 8"
+    },
+    {
+      "source_index": 0,
+      "start": "960960/24000",
+      "end": "1081080/24000",
+      "desc": "clip 9"
+    },
+    {
+      "source_index": 1,
+      "start": "1081080/24000",
+      "end": "1201200/24000",
+      "desc": "clip 10"
+    },
+    {
+      "source_index": 0,
+      "start": "1201200/24000",
+      "end": "1321320/24000",
+      "desc": "clip 11"
+    },
+    {
+      "source_index": 1,
+      "start": "1321320/24000",
+      "end": "1441440/24000",
+      "desc": "clip 12"
+    },
+    {
+      "source_index": 0,
+      "start": "1441440/24000",
+      "end": "1561560/24000",
+      "desc": "clip 13"
+    },
+    {
+      "source_index": 1,
+      "start": "1561560/24000",
+      "end": "1681680/24000",
+      "desc": "clip 14"
+    },
+    {
+      "source_index": 0,
+      "start": "1681680/24000",
+      "end": "1801800/24000",
+      "desc": "clip 15"
+    },
+    {
+      "source_index": 1,
+      "start": "1801800/24000",
+      "end": "1921920/24000",
+      "desc": "clip 16"
+    },
+    {
+      "source_index": 0,
+      "start": "1921920/24000",
+      "end": "2042040/24000",
+      "desc": "clip 17"
+    },
+    {
+      "source_index": 1,
+      "start": "2042040/24000",
+      "end": "2162160/24000",
+      "desc": "clip 18"
+    },
+    {
+      "source_index": 0,
+      "start": "2162160/24000",
+      "end": "2282280/24000",
+      "desc": "clip 19"
+    },
+    {
+      "source_index": 1,
+      "start": "2282280/24000",
+      "end": "2402400/24000",
+      "desc": "clip 20"
+    }
+  ]
+}
