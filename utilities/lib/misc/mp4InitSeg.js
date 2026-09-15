@@ -31,7 +31,7 @@ const decoderConfigAtom = pipe(
   M.findAndEnter(['stbl']),
   M.findAndEnter(['stsd']),
   M.moveWithin(8),
-  M.findAndEnter(['avc1', 'encv', 'hev1']),
+  M.findAndEnter(['avc1', 'encv', 'hvc1', 'hev1']),
   M.moveWithin(78),
   M.find(['avcC', 'hvcC']),
   M.readAtom,

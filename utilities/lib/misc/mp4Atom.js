@@ -60,10 +60,13 @@ const find = curry(
       if(atomTypes.includes(atomType)) {
         found = true
       } else {
-        // skip to next atom
-        readContext = moveWithin(atomLength, readContext)
         // check if we have run out of data
-        if(readContext.posWithinAtom === readContext.currentAtomLength) eof = true
+        if(readContext.posWithinAtom + atomLength === readContext.currentAtomLength) {
+          eof = true
+        } else {
+          // skip to next atom
+          readContext = moveWithin(atomLength, readContext)
+        }
       }
     }
     if(!found) throw Error(`Atom type(s) not found: ${atomTypes}`)
@@ -81,7 +84,6 @@ const findAndEnter = curry(
 const moveWithin = curry(
   (offset, readContext) => {
     // logger.log(`Move within atom: ${offset} bytes`);
-
     const newPosWithinParent = readContext.posWithinAtom + offset
     if(newPosWithinParent >= readContext.currentAtomLength) throw Error('Cannot move past end of atom')
     if(newPosWithinParent < 0) throw Error('Cannot move before beginning of atom')
