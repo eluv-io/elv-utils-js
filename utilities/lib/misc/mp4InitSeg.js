@@ -77,7 +77,7 @@ const x265codecString = atomBodyBuf => {
   // CODECSTRING = CODEC "." PROFILE "." LEVEL "." CONSTRAINTS
 
   // CODEC = ("hev1" | "hvc1" )
-  let pieces = ['hcv1']
+  let pieces = ['hvc1']
 
   // PROFILE = PROFILE_SPACE PROFILE_IDC "." PROFILE_COMPATIBILITY
 
