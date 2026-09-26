@@ -1,20 +1,32 @@
 // thumbnails/create
 
-const {ModOpt} = require('./lib/options')
+const {ModOpt, NewOpt} = require('./lib/options')
 const Utility = require('./lib/Utility')
 
 const Client = require('./lib/concerns/Client')
-const ExistObj = require('./lib/concerns/kits/ExistObj')
+const ExistObjOrDft = require('./lib/concerns/kits/ExistObjOrDft')
 const Logger = require('./lib/concerns/Logger')
 const ArgOfferingKey = require('./lib/concerns/args/ArgOfferingKey')
+const PositiveIntModel = require('@eluvio/elv-js-helpers/Model/PositiveIntModel')
 
 class OfferingAddThumbnails extends Utility {
   static blueprint() {
     return {
-      concerns: [Logger, ExistObj, Client, ArgOfferingKey],
+      concerns: [Logger, ExistObjOrDft, Client, ArgOfferingKey],
       options: [
+        ModOpt('writeToken', {ofX: 'offering'}),
         ModOpt('objectId', {ofX: 'offering'}),
-        ModOpt('libraryId', {forX: 'offering'})
+        ModOpt('libraryId', {forX: 'offering'}),
+        NewOpt('targetThumbCount', {
+          descTemplate: 'Number of thumbnails to create',
+          coerce: PositiveIntModel,
+          type: 'number'
+        }),
+        NewOpt('thumbHeight', {
+          descTemplate: 'Thumbnail height in pixels',
+          coerce: PositiveIntModel,
+          type: 'number'
+        })
       ]
     }
   }
@@ -23,30 +35,39 @@ class OfferingAddThumbnails extends Utility {
     const client = await this.concerns.Client.get()
     const logger = this.logger
 
-    const {libraryId, objectId, offeringKey} = await this.concerns.ArgObjectId.argsProc()
+    let {libraryId, objectId, writeToken, offeringKey, targetThumbCount, thumbHeight} = await this.concerns.ExistObjOrDft.argsProc()
+    const writeTokenSupplied = !!writeToken
 
-    const {writeToken} = await this.concerns.Edit.getWriteToken({libraryId, objectId})
+    if (!writeTokenSupplied) writeToken = await this.concerns.Edit.getWriteToken({libraryId, objectId}).writeToken
 
     const {errors, warnings} = await client.CallBitcodeMethod({
       writeToken,
       objectId,
       libraryId,
       method: '/media/thumbnails/create',
-      constant: false, // needs to be a POST in case S3 credentials are needed
-      body: {offeringKey}
+      constant: false, // needs to be a POST, it modifies object
+      body: {
+        offeringKey,
+        target_thumb_count: targetThumbCount || 100,
+        thumb_height: thumbHeight || -1
+      }
     })
     this.logger.errorsAndWarnings({errors, warnings})
 
-    // finalize
-    const newHash = await this.concerns.Edit.finalize({
-      commitMessage: `Generate thumbnail/storyboard stream for offering '${offeringKey}'`,
-      libraryId,
-      objectId,
-      writeToken
-    })
+    // finalize if token not supplied
+    if (writeTokenSupplied) {
+      logger.log('Write token NOT finalized')
+    } else {
+      const newHash = await this.concerns.Edit.finalize({
+        commitMessage: `Generate thumbnail/storyboard stream for offering '${offeringKey}'`,
+        libraryId,
+        objectId,
+        writeToken
+      })
 
-    logger.data('version_hash', newHash)
-    logger.log('New version hash: ' + newHash)
+      logger.data('version_hash', newHash)
+      logger.log('New version hash: ' + newHash)
+    }
   }
 
   header() {
