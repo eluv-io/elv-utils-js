@@ -38,7 +38,7 @@ class OfferingAddThumbnails extends Utility {
     let {libraryId, objectId, writeToken, offeringKey, targetThumbCount, thumbHeight} = await this.concerns.ExistObjOrDft.argsProc()
     const writeTokenSupplied = !!writeToken
 
-    if (!writeTokenSupplied) writeToken = await this.concerns.Edit.getWriteToken({libraryId, objectId}).writeToken
+    if (!writeTokenSupplied) writeToken = (await this.concerns.Edit.getWriteToken({libraryId, objectId})).writeToken
 
     const {errors, warnings} = await client.CallBitcodeMethod({
       writeToken,
