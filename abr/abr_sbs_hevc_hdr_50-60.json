@@ -1,0 +1,223 @@
+{
+  "audio_individual_drm_keys": false,
+  "no_upscale": true,
+  "drm_optional": true,
+  "store_clear": false,
+  "ladder_specs": {
+    "{\"media_type\":\"audio\",\"channels\":1}": {
+      "rung_specs": [
+        {
+          "bit_rate": 128000,
+          "media_type": "audio",
+          "pregenerate": true
+        }
+      ]
+    },
+    "{\"media_type\":\"audio\",\"channels\":2}": {
+      "rung_specs": [
+        {
+          "bit_rate": 192000,
+          "media_type": "audio",
+          "pregenerate": true
+        }
+      ]
+    },
+    "{\"media_type\":\"audio\",\"channels\":6}": {
+      "rung_specs": [
+        {
+          "bit_rate": 384000,
+          "media_type": "audio",
+          "pregenerate": true
+        }
+      ]
+    },
+    "{\"media_type\":\"video\",\"aspect_ratio_height\":9,\"aspect_ratio_width\":32}": {
+      "rung_specs": [
+        {
+          "bit_rate": 34000000,
+          "height": 2160,
+          "media_type": "video",
+          "pregenerate": true,
+          "width": 7680,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 21000000,
+          "height": 1440,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 5120,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 15000000,
+          "height": 1080,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 3840,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 8000000,
+          "height": 720,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 2560,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 4200000,
+          "height": 540,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 1920,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 1800000,
+          "height": 432,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 1536,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 1200000,
+          "height": 360,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 1280,
+          "profile": "main10"
+        }
+      ]
+    },
+    "{\"media_type\":\"video\",\"aspect_ratio_height\":9,\"aspect_ratio_width\":16}": {
+      "rung_specs": [
+        {
+          "bit_rate": 17000000,
+          "height": 2160,
+          "media_type": "video",
+          "pregenerate": true,
+          "width": 3840,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 10500000,
+          "height": 1440,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 2560,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 7500000,
+          "height": 1080,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 1920,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 4000000,
+          "height": 720,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 1280,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 2100000,
+          "height": 540,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 960,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 900000,
+          "height": 432,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 768,
+          "profile": "main10"
+        },
+        {
+          "bit_rate": 600000,
+          "height": 360,
+          "media_type": "video",
+          "pregenerate": false,
+          "width": 640,
+          "profile": "main10"
+        }
+      ]
+    }
+  },
+  "playout_formats": {
+    "dash-widevine": {
+      "drm": {
+        "content_id": "",
+        "enc_scheme_name": "cenc",
+        "lic_srvs_in_manifest": true,
+        "license_servers": [],
+        "mp4ff_encryptor": true,
+        "type": "DrmWidevine"
+      },
+      "protocol": {
+        "min_buffer_length": 2,
+        "type": "ProtoDash"
+      }
+    },
+    "hls-aes128": {
+      "drm": {
+        "enc_scheme_name": "aes-128",
+        "type": "DrmAes128"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
+    "hls-playready-cenc": {
+      "drm": {
+        "enc_scheme_name": "cenc",
+        "type": "DrmPlayReady"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
+    "hls-sample-aes": {
+      "drm": {
+        "enc_scheme_name": "cbcs",
+        "type": "DrmSampleAes"
+      },
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    },
+    "dash-clear": {
+      "drm": null,
+      "protocol": {
+        "min_buffer_length": 2,
+        "type": "ProtoDash"
+      }
+    },
+    "hls-clear": {
+      "drm": null,
+      "protocol": {
+        "type": "ProtoHls"
+      }
+    }
+  },
+  "segment_specs": {
+    "audio": {
+      "segs_per_chunk": 15,
+      "target_dur": 2
+    },
+    "video": {
+      "segs_per_chunk": 15,
+      "target_dur": 2,
+      "bit_depth": 10,
+      "encoding": "h265"
+    }
+  }
+}
