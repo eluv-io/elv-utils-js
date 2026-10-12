@@ -49,6 +49,8 @@ class MezCopyOffering extends Utility {
     })
 
     this.logger.log(`New version hash: ${newHash}`)
+    this.logger.data('version_hash', newHash)
+
   }
 
   header() {
