@@ -40,7 +40,7 @@ class ObjectCreate extends Utility {
     logger.log(`New object ID: ${objectId}`)
     logger.data('objectId', objectId)
     logger.log(`version hash: ${versionHash}`)
-    logger.data('versionHash', versionHash)
+    logger.data('version_hash', versionHash)
   }
 
   header() {

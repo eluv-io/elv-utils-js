@@ -21,7 +21,7 @@ class VersionHashInfo extends Utility {
   async body() {
     const {versionHash} = this.args
     const result = this.concerns.Version.decode({versionHash})
-    this.logger.data('versionHashInfo', result)
+    this.logger.data('version_hash_info', result)
     this.logger.log(JSON.stringify(result, null, 2))
   }
 

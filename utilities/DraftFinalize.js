@@ -32,7 +32,7 @@ class DraftFinalize extends Utility {
         writeToken
       }
     )
-    logger.data('versionHash', result)
+    logger.data('version_hash', result)
 
     logger.log()
     logger.log(`New version hash: ${result}`)

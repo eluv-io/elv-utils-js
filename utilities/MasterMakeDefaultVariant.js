@@ -74,7 +74,7 @@ class MasterMakeDefaultVariant extends Utility {
       )
     }
 
-    this.logger.data('versionHash', versionHash)
+    this.logger.data('version_hash', versionHash)
     this.logger.logList(
       '',
       'New version hash: ' + versionHash,
